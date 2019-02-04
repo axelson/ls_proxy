@@ -23,6 +23,9 @@ defmodule LsProxy.Protocol.Message do
 
       {:ok, header_state, command} ->
         {:ok, {:header, header_state}, command}
+
+      {:error, message} ->
+        {:error, message}
     end
   end
 

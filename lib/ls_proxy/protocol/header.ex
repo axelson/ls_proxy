@@ -23,10 +23,13 @@ defmodule LsProxy.Protocol.Header do
     case line do
       "\r\n" -> done(lines)
       "\n" -> done(lines)
-      :eof -> done(lines)
+      :eof -> done(lines, :eof)
       _line -> {:ok, {:started, [line | lines]}, :read_line}
     end
   end
+
+  defp done([], :eof), do: {:error, :eof}
+  defp done(lines, _), do: done(lines)
 
   defp done(lines) do
     case parse(lines) do
@@ -34,6 +37,8 @@ defmodule LsProxy.Protocol.Header do
       {:error, errors} -> {:error, errors}
     end
   end
+
+  def parse([]), do: {:error, :no_content}
 
   def parse(header_text) do
     header_text
