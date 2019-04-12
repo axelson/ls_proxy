@@ -1,21 +1,48 @@
 # LsProxy
 
-**TODO: Add description**
+Proxy for [Language Server](https://microsoft.github.io/language-server-protocol/)'s.
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ls_proxy` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:ls_proxy, "~> 0.1.0"}
-  ]
-end
+Architecture:
+```
+           Browser
+              ^
+              |
+              v
+Editor <-> LsProxy <-> LanguageServer
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
+LsProxy reads input from the Editor (stdin), collects metrics on it, and then sends it to the LanguageServer, and sends all responses back to the Editor.
 
+It also exposes a website with metrics of what was sent to aid in debugging and understanding a LanguageServer.
+
+Steps:
+1) Read from stdin
+2) Read from stdin until killed (or receive eof?)
+3) Forward on to the LanguageServer
+4) Return output from the LanguageServer to the Editor 
+
+LsProxy architecture:
+```
+            LsProxy.Collector
+                    ^
+                    |
+                    v
+EditorPort <-> LsProxy.Tee <-> LanguageServerPort
+```
+
+And the `LsProxy.Collector` collects the metrics info to be displayed via HTTP or other interfaces
+
+Since EditorPort is the entrypoint into the system it will be the group leader for all of the processes because it has to write to stdout.
+
+Once published, the docs can be found at
+[https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
+
+
+
+Related:
+* https://github.com/Microsoft/language-server-protocol-inspector
+
+Future Features:
+* Render a web page showing the features that the server supports
+* Support TCP sockets? Is that even part of LSP?
+# ls_proxy
