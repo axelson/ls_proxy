@@ -4,6 +4,7 @@ defmodule LsProxy.Application do
   def start(_type, _args) do
     children = [
       {ErlexecInit, []},
+      {LsProxy.ProxyPort, []}
     ]
 
     opts = [strategy: :one_for_one, name: LsProxy.Supervisor]
