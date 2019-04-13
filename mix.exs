@@ -16,6 +16,7 @@ defmodule LsProxy.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      mod: {LsProxy.Application, []},
       extra_applications: [:logger]
     ]
   end
@@ -27,9 +28,10 @@ defmodule LsProxy.MixProject do
   defp deps do
     [
       {:jason, "~> 1.1"},
+      # runtime: false because for an escript we need to manually start it
+      # Use current master: https://github.com/saleyn/erlexec/issues/124
+      {:erlexec, github: "saleyn/erlexec", runtime: false},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false}
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
     ]
   end
 end
