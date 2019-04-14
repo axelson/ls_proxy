@@ -41,6 +41,7 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 
 - [x] parse basic messages
 - [x] work transparently but with some logging
+- [ ] move to poncho style project and create a phoenix web server
 
 Once published, the docs can be found at
 [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
