@@ -69,4 +69,19 @@ defmodule LsProxy.Protocol.Header do
 
   # For backwards compatibility it is highly recommended that a client and a server treats the string utf8 as utf-8
   def parse_content_type("utf8"), do: :utf8
+
+  # This could be DRYer
+  def to_string(%__MODULE__{} = header) do
+    # Trying without utf-8
+    # """
+    # Content-Length: #{header.content_length}
+    # Content-Type: utf-8
+    # """
+    # |> String.trim()
+
+    """
+    Content-Length: #{header.content_length}
+    """
+    |> String.trim()
+  end
 end

@@ -36,8 +36,11 @@ defmodule LsProxy.Protocol.Message do
     end
   end
 
-  # def read({:content, header}, content_text) do
-  #   {:ok, content} = Protocol.Content.parse(content_text)
-  #   {:ok, :done, %__MODULE__{header: header, content: content}}
-  # end
+  def to_string(%__MODULE__{} = message) do
+    """
+    #{Protocol.Header.to_string(message.header)}
+
+    #{Protocol.Content.to_string(message.content)}
+    """
+  end
 end

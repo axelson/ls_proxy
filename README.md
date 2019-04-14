@@ -34,6 +34,11 @@ And the `LsProxy.Collector` collects the metrics info to be displayed via HTTP o
 
 Since EditorPort is the entrypoint into the system it will be the group leader for all of the processes because it has to write to stdout.
 
+# TODO
+
+- [x] parse basic messages
+- [x] work transparently but with some logging
+
 Once published, the docs can be found at
 [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
 
@@ -45,4 +50,3 @@ Related:
 Future Features:
 * Render a web page showing the features that the server supports
 * Support TCP sockets? Is that even part of LSP?
-# ls_proxy

@@ -10,18 +10,29 @@ defmodule LsProxy.CLI do
     read_messages()
   end
 
+  @doc """
+  Reads message from stdio until stdio is closed. Forwards the responses to the
+  LS and prints the responses back to stdout
+
+  TODO: Should this module be responsible for sending the messages back to stdout? Maybe that should be in a GenServer
+  """
   def read_messages() do
     case LsProxy.ParserRunner.read_message(Protocol.Message, :stdio) do
       {:ok, %Protocol.Message{} = message} ->
-        IO.inspect(message, label: "message")
+        str = Protocol.Message.to_string(message)
+        # LsProxy.Logger.info ["read_messages:\n", str]
+
+        # Get actual response
+        :ok = LsProxy.ProxyPort.send_message(str)
+
         read_messages()
 
       {:error, :no_content} ->
-        IO.puts "no content"
+        LsProxy.Logger.info "no content"
         Process.sleep(1000)
 
       {:error, :eof} ->
-        IO.puts "DONE!"
+        LsProxy.Logger.info "DONE!"
     end
   end
 end

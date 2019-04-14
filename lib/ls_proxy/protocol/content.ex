@@ -18,4 +18,8 @@ defmodule LsProxy.Protocol.Content do
   def parse(content_text) do
     Jason.decode(content_text)
   end
+
+  def to_string(content) do
+    Jason.encode!(content)
+  end
 end
