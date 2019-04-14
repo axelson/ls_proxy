@@ -30,9 +30,12 @@ LsProxy architecture:
 EditorPort <-> LsProxy.Tee <-> LanguageServerPort
 ```
 
+`EditorPort` to `LsProxy.Tee` is controlled purely by our `stdin` and `stdout`
+`LsProxy.Tee` communicates with `LanguageServerPort` via `erlexec`
+
 And the `LsProxy.Collector` collects the metrics info to be displayed via HTTP or other interfaces
 
-Since EditorPort is the entrypoint into the system it will be the group leader for all of the processes because it has to write to stdout.
+Since EditorPort is the entrypoint into the system it will be the group leader for all of the processes because it has to write to stdout (not implemented yet).
 
 # TODO
 

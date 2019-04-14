@@ -16,3 +16,10 @@ Header fields:
 * Content-Type 	string 	The mime type of the content part. Defaults to application/vscode-jsonrpc; charset=utf-8
 
 Content uses jsonrpc (is there a useful jsonrpc library in Elixir?)
+
+
+Useful debugging commands
+`mix escript.build`?
+`mix escript.build; cat sample | ./ls_proxy`?
+`mix escript.build; cat /tmp/sample | ./ls_proxy |head`
+`ln -s real_language_server.sh language_server.sh`
