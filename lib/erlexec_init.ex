@@ -27,7 +27,7 @@ defmodule ErlexecInit do
   def init(_) do
     port_exe_path =
       System.tmp_dir!()
-      |> Path.join("tmp-exec-port-#{System.unique_integer([:positive])}")
+      |> Path.join("tmp-exec-port-#{:rand.uniform(1000)}")
       |> String.to_charlist()
 
     File.write!(port_exe_path, @execport_binary)
