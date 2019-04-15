@@ -47,5 +47,24 @@ defmodule LsProxy.Protocol.MessageTest do
                {:ok,
                 %Message{header: %Protocol.Header{content_length: 99}, content: expected_content}}
     end
+
+    test "parses and unparses a window/logMessage message" do
+      text = """
+      Content-Length: 99
+      Content-Type: utf-8
+
+      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+      """
+
+      expected_content = %{
+        "jsonrpc" => "2.0",
+        "method" => "window/logMessage",
+        "params" => %{"message" => "Started ElixirLS", "type" => 4}
+      }
+
+      assert {:ok, message} = ParserHarness.read_message(Message, text)
+      assert message.content == expected_content
+      assert Protocol.Message.to_string(message) == text
+    end
   end
 end
