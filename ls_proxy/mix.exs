@@ -31,6 +31,7 @@ defmodule LsProxy.MixProject do
       # runtime: false because for an escript we need to manually start it
       # Use current master: https://github.com/saleyn/erlexec/issues/124
       {:erlexec, github: "saleyn/erlexec", runtime: false},
+      {:lspp_web, path: "../lspp_web"},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false}
     ]
   end
