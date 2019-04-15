@@ -46,8 +46,6 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 Once published, the docs can be found at
 [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
 
-
-
 Related:
 * https://github.com/Microsoft/language-server-protocol-inspector
 

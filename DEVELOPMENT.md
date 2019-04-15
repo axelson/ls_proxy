@@ -23,3 +23,10 @@ Useful debugging commands
 `mix escript.build; cat sample | ./ls_proxy`?
 `mix escript.build; cat /tmp/sample | ./ls_proxy |head`
 `ln -s real_language_server.sh language_server.sh`
+
+# Files
+
+* `sample` is sample input
+* `shell_proxy.sh` - A pure-shell proxy that logs output
+* `ls_proxy.sh` - adds some debugging then calls ls_proxy
+* `ls_proxy` - the actual elixir ls_proxy built as an escript
