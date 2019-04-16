@@ -4,6 +4,7 @@ defmodule LsProxy.Application do
   def start(_type, _args) do
     children = [
       {ErlexecInit, []},
+      {LsProxy.ProxyState, []},
       {LsProxy.ProxyPort, []}
     ]
 

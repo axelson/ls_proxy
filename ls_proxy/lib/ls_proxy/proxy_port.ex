@@ -42,15 +42,18 @@ defmodule LsProxy.ProxyPort do
     # TODO: Rename stdin and send this output to somewhere else for a cleaner
     # architecture
     IO.write(msg)
+    LsProxy.ProxyState.record_outgoing(msg)
 
     {:noreply, state}
   end
 
   @impl true
   def handle_call({:send_message, msg}, _from, %State{os_pid: os_pid} = state) do
+    # TODO: Do we really need to trim this here?
     msg = String.trim_trailing(msg)
     LsProxy.Logger.info("Send Message:\n#{msg}")
     result = :exec.send(os_pid, msg)
+    LsProxy.ProxyState.record_incoming(msg)
 
     {:reply, result, state}
   end
