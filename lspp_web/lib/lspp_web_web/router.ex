@@ -19,6 +19,10 @@ defmodule LsppWebWeb.Router do
     get "/", PageController, :index
   end
 
+  get "/css/app.css", LsppWebWeb.StaticAssetController, :app_css
+  get "/js/app.js", LsppWebWeb.StaticAssetController, :app_js
+  get "/images/phoenix.png", LsppWebWeb.StaticAssetController, :phoenix_png
+
   # Other scopes may use custom stacks.
   # scope "/api", LsppWebWeb do
   #   pipe_through :api
