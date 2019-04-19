@@ -5,10 +5,8 @@ defmodule LsppWebWeb.Endpoint do
     websocket: true,
     longpoll: false
 
-  # Serve at "/" the static files from "priv/static" directory.
-  #
-  # You should set gzip to true if you are running phx.digest
-  # when deploying your static files in production.
+  # Disabling Plug.Static because we can't use it with escript's (and maybe
+  # releases)
   # plug Plug.Static,
   #   at: "/",
   #   from: :lspp_web,
