@@ -23,6 +23,7 @@ defmodule App.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:exsync, github: "falood/exsync", ref: "master"},
       {:ls_proxy, path: "../ls_proxy"},
       {:lspp_web, path: "../lspp_web"}
     ]
