@@ -24,7 +24,8 @@ config :lspp_web, LsppWebWeb.Endpoint,
       ~r"../lspp_web/priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"../lspp_web/priv/gettext/.*(po)$",
       ~r"../lspp_web/lib/lspp_web_web/{live,views}/.*(ex)$",
-      ~r"../lspp_web/lib/lspp_web_web/templates/.*(eex)$"
+      ~r"../lspp_web/lib/lspp_web_web/templates/.*(eex)$",
+      ~r{../lspp_web/lib/lspp_web_web/live/.*(ex)$}
     ]
   ]
 

@@ -5,6 +5,8 @@ defmodule LsppWebWeb.Endpoint do
     websocket: true,
     longpoll: false
 
+  socket "/live", Phoenix.LiveView.Socket
+
   # Disabling Plug.Static because we can't use it with escript's (and maybe
   # releases)
   # plug Plug.Static,

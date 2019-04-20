@@ -5,6 +5,7 @@ defmodule LsppWebWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
+    plug Phoenix.LiveView.Flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -22,6 +23,12 @@ defmodule LsppWebWeb.Router do
   get "/css/app.css", LsppWebWeb.StaticAssetController, :app_css
   get "/js/app.js", LsppWebWeb.StaticAssetController, :app_js
   get "/images/phoenix.png", LsppWebWeb.StaticAssetController, :phoenix_png
+
+  scope "/" do
+    pipe_through :browser
+
+    live "/messages", LsppWebWeb.MessagesLive
+  end
 
   # Other scopes may use custom stacks.
   scope "/api", LsppWebWeb do
