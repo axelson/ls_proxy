@@ -52,6 +52,8 @@ Long-term:
 - [ ] A way to view collected logs after the fact
   - lsp-mode: `(setq lsp-print-io t)`
   - vscode: C-S-p -> User Settings -> type "trace" mark css language server to use verbose and then from the output view you will find the vscode trace log
+- [ ] if the specified port is taken, try the next one
+  - [ ] and register with that other server so we can do discovery
 
 Once published, the docs can be found at
 [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
