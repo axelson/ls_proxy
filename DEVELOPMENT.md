@@ -23,6 +23,7 @@ Useful debugging commands
 `mix escript.build; cat sample | ./ls_proxy`?
 `mix escript.build; cat /tmp/sample | ./ls_proxy |head`
 `ln -s real_language_server.sh language_server.sh`
+`curl -H "Content-Type: application/json" --data '{"message": "hihi", "direction": "incoming"}' http://localhost:4001/api/messages`
 
 # Files
 

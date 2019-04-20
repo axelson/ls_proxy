@@ -38,6 +38,10 @@ defmodule LsProxy.ProxyState do
     GenServer.call(name, {:messages})
   end
 
+  def clear(name \\ __MODULE__) do
+    GenServer.call(name, {:clear})
+  end
+
   @impl GenServer
   def handle_call({:record_incoming, msg}, _from, state) do
     message = LsProxy.Message.new(msg, :incoming)
@@ -49,7 +53,7 @@ defmodule LsProxy.ProxyState do
   def handle_call({:record_outgoing, msg}, _from, state) do
     message = LsProxy.Message.new(msg, :outgoing)
     queue = state.outgoing_messages
-    state = %{state | outgoing_messages: :queue.in(msg, queue)}
+    state = %{state | outgoing_messages: :queue.in(message, queue)}
     {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
@@ -60,6 +64,15 @@ defmodule LsProxy.ProxyState do
     }
 
     {:reply, messages, state}
+  end
+
+  def handle_call({:clear}, _from, state) do
+    state = %{
+      incoming_messages: :queue.new(),
+      outgoing_messages: :queue.new()
+    }
+
+    {:reply, :ok, state}
   end
 
   @impl GenServer

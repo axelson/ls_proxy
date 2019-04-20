@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :lspp_web, LsppWebWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: System.get_env("PORT") || 4000],
   debug_errors: true,
   # code_reloader: true,
   check_origin: false,

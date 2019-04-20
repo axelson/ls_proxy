@@ -43,6 +43,7 @@ defmodule LsProxy.ProxyPort do
     # architecture
     IO.write(msg)
     LsProxy.ProxyState.record_outgoing(msg)
+    LsProxy.MessageHTTPForwarder.send_to_server(msg, "outgoing")
 
     {:noreply, state}
   end
@@ -54,6 +55,7 @@ defmodule LsProxy.ProxyPort do
     LsProxy.Logger.info("Send Message:\n#{msg}")
     result = :exec.send(os_pid, msg)
     LsProxy.ProxyState.record_incoming(msg)
+    LsProxy.MessageHTTPForwarder.send_to_server(msg, "incoming")
 
     {:reply, result, state}
   end

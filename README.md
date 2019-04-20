@@ -44,6 +44,7 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] move to poncho style project and create a phoenix web server
 - [x] Add Phoenix LiveView
 - [x] implement two modes, direct where we receive input from stdin and http where we receive input over http
+- [x] Compile ls_proxy to proxy requests to a standalone instance
 - [ ] Display just the method for each message
 - [ ] Add a button to show the whole message
 

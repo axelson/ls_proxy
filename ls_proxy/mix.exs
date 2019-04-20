@@ -27,6 +27,7 @@ defmodule LsProxy.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:mojito, "~> 0.2.0"},
       {:jason, "~> 1.1"},
       # runtime: false because for an escript we need to manually start it
       # Use current master: https://github.com/saleyn/erlexec/issues/124
