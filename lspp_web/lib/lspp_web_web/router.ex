@@ -24,7 +24,9 @@ defmodule LsppWebWeb.Router do
   get "/images/phoenix.png", LsppWebWeb.StaticAssetController, :phoenix_png
 
   # Other scopes may use custom stacks.
-  # scope "/api", LsppWebWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", LsppWebWeb do
+    pipe_through :api
+
+    post "/messages", MessagesController, :create
+  end
 end
