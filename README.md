@@ -41,7 +41,15 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 
 - [x] parse basic messages
 - [x] work transparently but with some logging
-- [ ] move to poncho style project and create a phoenix web server
+- [x] move to poncho style project and create a phoenix web server
+- [ ] Add Phoenix LiveView
+- [ ] implement two modes, direct where we receive input from stdin and http where we receive input over http
+- [ ] collect client-server communication for bug filing on clients and servers
+
+Long-term:
+- [ ] A way to view collected logs after the fact
+  - lsp-mode: `(setq lsp-print-io t)`
+  - vscode: C-S-p -> User Settings -> type "trace" mark css language server to use verbose and then from the output view you will find the vscode trace log
 
 Once published, the docs can be found at
 [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
