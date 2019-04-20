@@ -10,7 +10,9 @@ config :lspp_web, LsppWebWeb.Endpoint,
     signing_salt: "5itHJeTZaUHrXCWtNeWQVM0IzZKWiVfM"
   ]
 
-config :ls_proxy, http_proxy_to: System.get_env("LS_HTTP_PROXY_TO")
+config :ls_proxy,
+  proxy_to: System.get_env("LS_PROXY_TO") || "elixir_ls",
+  http_proxy_to: System.get_env("LS_HTTP_PROXY_TO")
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -5,11 +5,19 @@ defmodule LsProxy.Application do
     children = [
       {ErlexecInit, []},
       {LsProxy.ProxyState, []},
-      {LsProxy.ProxyPort, []},
       {Registry, [keys: :unique, name: LsProxy.MessageRegistry]}
     ]
+    |> maybe_add_proxy_port()
 
     opts = [strategy: :one_for_one, name: LsProxy.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp maybe_add_proxy_port(children) do
+    if Application.get_env(:ls_proxy, :proxy_to) != "none" do
+      [{LsProxy.ProxyPort, []} | children]
+    else
+      children
+    end
   end
 end
