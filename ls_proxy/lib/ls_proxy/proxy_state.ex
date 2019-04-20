@@ -72,7 +72,7 @@ defmodule LsProxy.ProxyState do
       outgoing_messages: :queue.new()
     }
 
-    {:reply, :ok, state}
+    {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
   @impl GenServer

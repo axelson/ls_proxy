@@ -19,6 +19,11 @@ defmodule LsppWebWeb.MessagesLive do
     {:noreply, update_messages(socket)}
   end
 
+  def handle_event("reset", _, socket) do
+    LsProxy.ProxyState.clear()
+    {:noreply, socket}
+  end
+
   defp update_messages(socket) do
     messages = LsProxy.ProxyState.messages()
     update(socket, :messages, fn _ -> messages end)
