@@ -38,3 +38,8 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :exsync,
+  extensions: [".erl", ".hrl", ".ex", ".leex", ".eex"],
+  reload_timeout: 75,
+  reload_callback: {LsProxy.ProxyState, :kill_listeners, []}

@@ -75,4 +75,12 @@ defmodule LsProxy.ProxyState do
       end
     end)
   end
+
+  def kill_listeners do
+    Registry.dispatch(LsProxy.MessageRegistry, "listener", fn entries ->
+      for {pid, _value} <- entries do
+        Process.exit(pid, :kill)
+      end
+    end)
+  end
 end

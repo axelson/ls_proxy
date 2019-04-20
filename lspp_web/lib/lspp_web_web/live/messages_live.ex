@@ -2,14 +2,7 @@ defmodule LsppWebWeb.MessagesLive do
   use Phoenix.LiveView
 
   def render(assigns) do
-    ~L"""
-    <div>
-      messages:
-      <pre>
-      <%= inspect(@messages, pretty: true) %>
-      </pre>
-    </div>
-    """
+    LsppWeb.MessagesView.render("messages.html", assigns)
   end
 
   def mount(_session, socket) do
