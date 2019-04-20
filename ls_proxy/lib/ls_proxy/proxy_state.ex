@@ -22,6 +22,10 @@ defmodule LsProxy.ProxyState do
     {:ok, initial_state}
   end
 
+  def register_listener() do
+    Registry.register(LsProxy.MessageRegistry, "listener", :value)
+  end
+
   def record_incoming(msg, name \\ __MODULE__) do
     GenServer.call(name, {:record_incoming, msg})
   end
@@ -36,15 +40,17 @@ defmodule LsProxy.ProxyState do
 
   @impl GenServer
   def handle_call({:record_incoming, msg}, _from, state) do
+    message = LsProxy.Message.new(msg, :incoming)
     queue = state.incoming_messages
-    state = %{state | incoming_messages: :queue.in(msg, queue)}
-    {:reply, :ok, state}
+    state = %{state | incoming_messages: :queue.in(message, queue)}
+    {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
   def handle_call({:record_outgoing, msg}, _from, state) do
+    message = LsProxy.Message.new(msg, :outgoing)
     queue = state.outgoing_messages
     state = %{state | outgoing_messages: :queue.in(msg, queue)}
-    {:reply, :ok, state}
+    {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
   def handle_call({:messages}, _from, state) do
@@ -54,5 +60,19 @@ defmodule LsProxy.ProxyState do
     }
 
     {:reply, messages, state}
+  end
+
+  @impl GenServer
+  def handle_continue(:notify_listeners, state) do
+    notify_listeners()
+    {:noreply, state}
+  end
+
+  def notify_listeners do
+    Registry.dispatch(LsProxy.MessageRegistry, "listener", fn entries ->
+      for {pid, _value} <- entries do
+        send(pid, {:update_messages})
+      end
+    end)
   end
 end

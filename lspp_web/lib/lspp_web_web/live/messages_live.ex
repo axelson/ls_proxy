@@ -2,7 +2,6 @@ defmodule LsppWebWeb.MessagesLive do
   use Phoenix.LiveView
 
   def render(assigns) do
-    IO.puts "render!"
     ~L"""
     <div>
       messages:
@@ -14,17 +13,16 @@ defmodule LsppWebWeb.MessagesLive do
   end
 
   def mount(_session, socket) do
-    IO.puts "Mounting!"
-    if connected?(socket), do: IO.puts "CONNECTED!"
-    if connected?(socket), do: :timer.send_interval(1000, self(), :tick)
+    if connected?(socket) do
+      LsProxy.ProxyState.register_listener()
+    end
 
     socket = assign(socket, :messages, [])
 
     {:ok, update_messages(socket)}
   end
 
-  def handle_info(:tick, socket) do
-    IO.puts "tick!"
+  def handle_info({:update_messages}, socket) do
     {:noreply, update_messages(socket)}
   end
 

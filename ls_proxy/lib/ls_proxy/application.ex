@@ -5,7 +5,8 @@ defmodule LsProxy.Application do
     children = [
       {ErlexecInit, []},
       {LsProxy.ProxyState, []},
-      {LsProxy.ProxyPort, []}
+      {LsProxy.ProxyPort, []},
+      {Registry, [keys: :unique, name: LsProxy.MessageRegistry]}
     ]
 
     opts = [strategy: :one_for_one, name: LsProxy.Supervisor]
