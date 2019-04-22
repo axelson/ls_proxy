@@ -40,7 +40,8 @@ defmodule LsppWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:ls_proxy, path: "../ls_proxy"}
+      {:ls_proxy, path: "../ls_proxy"},
+      {:utils, path: "../utils"}
     ]
   end
 end
