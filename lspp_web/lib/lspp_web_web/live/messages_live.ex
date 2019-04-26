@@ -47,7 +47,6 @@ defmodule LsppWebWeb.MessagesLive do
     message
   rescue
     e ->
-      DataTracer.store(message_text)
       message_text
   end
 end

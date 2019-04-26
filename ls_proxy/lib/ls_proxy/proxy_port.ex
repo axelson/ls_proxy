@@ -33,6 +33,10 @@ defmodule LsProxy.ProxyPort do
 
   @impl true
   def handle_info({:stdout, _, msg}, state) do
+    # FIXME: there is a bug here. Currently we are assuming that this `msg` is complete, but instead it is chunked in sizes around up to 3988 bytes
+    # So we need to buffer here until we parse a message successfully
+    # once it's parsed or we receive the start of a next frame (not sure how to detect that robustly)
+    # only then can we record the outgoing message in our local state and forward it on to the upstream server
     LsProxy.Logger.info("Got message:\n#{msg}")
 
     # Send the output we just received from the LSP Server back to the client

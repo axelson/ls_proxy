@@ -9,6 +9,18 @@ defmodule LsppWeb.MessagesView do
     Phoenix.HTML.Format.text_to_html(message)
   end
 
+  def render_message(%{"method" => method}) do
+    ~E"""
+    method: <%= method %>
+    """
+  end
+
+  def render_message(%{"result" => %{"range" => %{"start" => start_range, "end" => end_range}}}) do
+    ~E"""
+    <%= inspect(start_range) %> to <%= inspect(end_range) %>
+    """
+  end
+
   def render_message(other) do
     ~E"""
     <pre><code>
