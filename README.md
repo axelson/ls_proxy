@@ -45,6 +45,7 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] Add Phoenix LiveView
 - [x] implement two modes, direct where we receive input from stdin and http where we receive input over http
 - [x] Compile ls_proxy to proxy requests to a standalone instance
+- [ ] Issue: not reliably sending messages via json and via "plain-text" (is this worth fixing?)
 - [ ] Display just the method for each message
 - [ ] Add a button to show the whole message
 
