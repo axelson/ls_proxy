@@ -14,7 +14,6 @@ config :ls_proxy,
   proxy_to: System.get_env("LS_PROXY_TO") || "elixir_ls",
   http_proxy_to: System.get_env("LS_HTTP_PROXY_TO")
 
-# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]

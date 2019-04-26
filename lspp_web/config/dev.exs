@@ -1,11 +1,5 @@
 use Mix.Config
 
-# For development, we disable any cache and enable
-# debugging and code reloading.
-#
-# The watchers configuration can be used to run external
-# watchers to your application. For example, we use it
-# with webpack to recompile .js and .css sources.
 config :lspp_web, LsppWebWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
@@ -65,3 +59,8 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :exsync,
+  extensions: [".erl", ".hrl", ".ex", ".leex", ".eex"],
+  reload_timeout: 75,
+  reload_callback: {LsProxy.ProxyState, :kill_listeners, []}
