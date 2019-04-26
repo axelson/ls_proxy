@@ -6,7 +6,11 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_message(message) when is_binary(message) do
-    Phoenix.HTML.Format.text_to_html(message)
+    ~E"""
+    <pre><code>
+    <%= Phoenix.HTML.Format.text_to_html(message) %>
+    </code></pre>
+    """
   end
 
   def render_message(%{"method" => method}) do
