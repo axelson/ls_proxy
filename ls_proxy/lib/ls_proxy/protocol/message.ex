@@ -7,6 +7,11 @@ defmodule LsProxy.Protocol.Message do
   @enforce_keys [:header, :content]
   defstruct [:header, :content]
 
+  @type t :: %__MODULE__{
+    header: map(),
+    content: map()
+  }
+
   alias LsProxy.Protocol
 
   @impl Protocol.Parser

@@ -10,7 +10,10 @@ defmodule LsppWebWeb.MessagesLive do
       LsProxy.ProxyState.register_listener()
     end
 
-    socket = assign(socket, :messages, [])
+    socket =
+      socket
+      |> assign(:incoming, [])
+      |> assign(:outgoing, [])
 
     {:ok, update_messages(socket)}
   end
@@ -26,6 +29,25 @@ defmodule LsppWebWeb.MessagesLive do
 
   defp update_messages(socket) do
     messages = LsProxy.ProxyState.messages()
-    update(socket, :messages, fn _ -> messages end)
+    incoming = messages.incoming |> Enum.map(&parse_message(&1.raw_text))
+    outgoing = messages.outgoing |> Enum.map(&parse_message(&1.raw_text))
+
+    socket
+    |> update(:incoming, fn _ -> incoming end)
+    |> update(:outgoing, fn _ -> outgoing end)
+  end
+
+  # defp parse_message(message_text), do: message_text
+  @spec parse_message(String.t()) :: LsProxy.Protocol.Message.t() | String.t()
+  defp parse_message(message_text) do
+    IO.inspect(message_text, label: "message_text")
+    {:ok, pid} = StringIO.open(message_text)
+    {:ok, message} = LsProxy.ParserRunner.read_message(LsProxy.Protocol.Message, pid)
+    StringIO.close(pid)
+    message
+  rescue
+    e ->
+      DataTracer.store(message_text)
+      message_text
   end
 end

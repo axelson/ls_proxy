@@ -1,6 +1,22 @@
-<div>
+<div class="row">
   <button phx-click="reset">Reset</button>
-  <pre>
-    <%= inspect(@messages, pretty: true) %>
-  </pre>
+</div>
+
+<div class="row">
+  <div class="column">
+    Incoming
+    <%= for message <- @incoming do %>
+      <div>
+        <%= render_message(message) %>
+      </div>
+    <% end %>
+  </div>
+  <div class="column">
+    Outgoing
+    <%= for message <- @outgoing do %>
+      <div>
+        <%= render_message(message) %>
+      </div>
+    <% end %>
+  </div>
 </div>

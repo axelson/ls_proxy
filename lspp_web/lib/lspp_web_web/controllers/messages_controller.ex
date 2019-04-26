@@ -1,6 +1,16 @@
 defmodule LsppWebWeb.MessagesController do
   use LsppWebWeb, :controller
 
+  def incoming(conn, params) do
+    [{message, nil}] = Map.to_list(params)
+    create(conn, %{"message" => message, "direction" => "incoming"})
+  end
+
+  def outgoing(conn, params) do
+    [{message, nil}] = Map.to_list(params)
+    create(conn, %{"message" => message, "direction" => "outgoing"})
+  end
+
   def create(conn, %{"message" => message, "direction" => direction_str}) do
     case parse_direction(direction_str) do
       :incoming -> :ok = LsProxy.ProxyState.record_incoming(message)

@@ -35,5 +35,7 @@ defmodule LsppWebWeb.Router do
     pipe_through :api
 
     post "/messages", MessagesController, :create
+    post "/incoming_messages", MessagesController, :incoming
+    post "/outgoing_messages", MessagesController, :outgoing
   end
 end
