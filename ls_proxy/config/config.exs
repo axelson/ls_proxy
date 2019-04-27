@@ -30,3 +30,10 @@ config :ls_proxy, proxy_to: System.get_env("LS_PROXY_TO") || "elixir_ls"
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env()}.exs"
+case Mix.env() do
+  :test ->
+    config :ls_proxy, proxy_to: "none"
+
+  _ ->
+    nil
+end

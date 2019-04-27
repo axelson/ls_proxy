@@ -11,6 +11,7 @@ config :lspp_web, LsppWebWeb.Endpoint,
   ]
 
 config :ls_proxy,
+  run_language_server: System.get_env("LS_PROXY_RUN_LANGUAGE_SERVER") || "true",
   proxy_to: System.get_env("LS_PROXY_TO") || "elixir_ls",
   http_proxy_to: System.get_env("LS_HTTP_PROXY_TO")
 
