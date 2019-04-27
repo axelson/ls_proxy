@@ -15,7 +15,8 @@ defmodule LsProxy.Application do
 
   defp maybe_add_proxy_port(children) do
     if Application.get_env(:ls_proxy, :proxy_to) != "none" do
-      [{LsProxy.ProxyPort, []} | children]
+      # Specifically append at the end because ProxyPort depends on ErlexecInit
+      children ++ [{LsProxy.ProxyPort, []}]
     else
       children
     end
