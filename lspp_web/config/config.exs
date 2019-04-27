@@ -12,6 +12,7 @@ config :lspp_web, LsppWebWeb.Endpoint,
 
 # When we run lspp_web directly we aren't doing actual proxying
 config :ls_proxy,
+  run_language_server: "false",
   proxy_to: "none",
   http_proxy_to: nil
 
