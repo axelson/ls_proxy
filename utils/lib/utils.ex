@@ -3,16 +3,17 @@ defmodule Utils do
   Documentation for Utils.
   """
 
-  @doc """
-  Hello world.
+  def tap(input, fun) when is_function(fun, 1) do
+    fun.(input)
+    input
+  end
 
-  ## Examples
-
-      iex> Utils.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def truncate(string, length, fill \\ "…") do
+    if String.length(string) < length do
+      string
+    else
+      {string, _} = String.split_at(string, length)
+      string <> fill
+    end
   end
 end
