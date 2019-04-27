@@ -46,6 +46,7 @@ defmodule LsProxy.Protocol.Message do
     #{Protocol.Header.to_string(message.header)}
 
     #{Protocol.Content.to_string(message.content)}
+
     """
   end
 end

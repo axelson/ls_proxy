@@ -1,5 +1,14 @@
 defmodule LsProxy.ParserRunner do
-  def read_message(module, device \\ :stdio) do
+  def read_message(module, device_or_string \\ :stdio)
+
+  def read_message(module, string) when is_binary(string) do
+    {:ok, pid} = StringIO.open(string)
+    result = read_message(module, pid)
+    StringIO.close(pid)
+    result
+  end
+
+  def read_message(module, device) do
     read_message(module, device, :init, nil)
   end
 
@@ -9,8 +18,10 @@ defmodule LsProxy.ParserRunner do
         {:ok, result}
 
       {:ok, state, command} ->
-        input = handle_parser_command(command, device)
-        read_message(module, device, state, input)
+        case handle_parser_command(command, device) do
+          {:ok, input} -> read_message(module, device, state, input)
+          {:error, message} -> {:error, message}
+        end
 
       {:error, message} ->
         {:error, message}
@@ -19,10 +30,20 @@ defmodule LsProxy.ParserRunner do
 
   @spec handle_parser_command(Protocol.Parser.command(), any) :: any
   defp handle_parser_command(:read_line, device) do
-    IO.read(device, :line)
+    {:ok, IO.read(device, :line)}
   end
 
   defp handle_parser_command({:read_bytes, bytes}, device) do
-    IO.read(device, bytes)
+    case IO.read(device, bytes) do
+      string when byte_size(string) == bytes ->
+        {:ok, string}
+
+      string ->
+        additional_bytes = bytes - byte_size(string)
+        case IO.read(device, additional_bytes) do
+          :eof -> {:error, "not_enough_input. Wanted #{bytes}. Got: #{byte_size(string)}"}
+          additional_string when byte_size(additional_bytes) -> {:ok, string <> additional_string}
+        end
+    end
   end
 end

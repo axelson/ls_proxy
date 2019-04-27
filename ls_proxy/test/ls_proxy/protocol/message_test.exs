@@ -9,7 +9,8 @@ defmodule LsProxy.Protocol.MessageTest do
       text = """
       Content-Length: 131
 
-      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Elixir version: \\"1.6.6 (compiled with OTP 20)\\"","type":4}}
+      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Elixir version: \\"1.6.6 (compiled with OTP 20)\\"","type":4}}\r
+      \r
       """
 
       expected_content = %{
@@ -35,7 +36,9 @@ defmodule LsProxy.Protocol.MessageTest do
       Content-Type: utf-8
 
       {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+
       """
+      |> String.replace("\n", "\r\n")
 
       expected_content = %{
         "jsonrpc" => "2.0",
@@ -54,7 +57,9 @@ defmodule LsProxy.Protocol.MessageTest do
       Content-Type: utf-8
 
       {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+
       """
+      |> String.replace("\n", "\r\n")
 
       expected_content = %{
         "jsonrpc" => "2.0",
@@ -64,7 +69,9 @@ defmodule LsProxy.Protocol.MessageTest do
 
       assert {:ok, message} = ParserHarness.read_message(Message, text)
       assert message.content == expected_content
-      assert Protocol.Message.to_string(message) == text
+
+      actual = Protocol.Message.to_string(message)
+      assert String.replace(actual, "\n", "\r\n") == text
     end
   end
 end

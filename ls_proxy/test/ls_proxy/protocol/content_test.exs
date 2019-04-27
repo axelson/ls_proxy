@@ -7,7 +7,9 @@ defmodule LsProxy.Protocol.ContentTest do
     test "parses a well-formed content" do
       content = """
       {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+
       """
+      |> String.replace("\n", "\r\n")
 
       header = %Header{content_length: 99}
 
@@ -22,7 +24,8 @@ defmodule LsProxy.Protocol.ContentTest do
 
     test "fails when the length is correct but the json is mal-formed" do
       content = """
-      ["jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+      ["jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}\r
+      \r
       """
 
       header = %Header{content_length: 99}
@@ -32,7 +35,8 @@ defmodule LsProxy.Protocol.ContentTest do
 
     test "fails when the length is incorrect" do
       content = """
-      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}\r
+      \r
       """
 
       header = %Header{content_length: 10}
