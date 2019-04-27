@@ -13,6 +13,17 @@ defmodule LsppWeb.MessagesView do
     """
   end
 
+  def render_message(%{"method" => "window/logMessage"} = message) do
+    %{"params" => %{"message" => log_message}} = message
+    IO.puts "Log: #{log_message}"
+    ~E"""
+    <div>
+    Log: <%= Utils.truncate(log_message, 100) %>
+    </div>
+    <br>
+    """
+  end
+
   def render_message(%{"method" => method}) do
     ~E"""
     method: <%= method %>

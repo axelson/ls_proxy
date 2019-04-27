@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="column">
-    Incoming
+    <h1>Incoming</h1>
     <%= for message <- @incoming do %>
       <div>
         <%= render_message(message) %>
@@ -12,7 +12,7 @@
     <% end %>
   </div>
   <div class="column">
-    Outgoing
+    <h1>Outgoing</h1>
     <%= for message <- @outgoing do %>
       <div>
         <%= render_message(message) %>
