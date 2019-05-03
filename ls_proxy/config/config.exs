@@ -3,6 +3,7 @@
 use Mix.Config
 
 config :ls_proxy, proxy_to: System.get_env("LS_PROXY_TO") || "elixir_ls"
+config :ls_proxy, logging_enabled: false
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

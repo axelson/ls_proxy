@@ -18,6 +18,9 @@ config :lspp_web, LsppWebWeb.Endpoint,
 
 config :logger, level: :warn
 
+config :ls_proxy,
+  logging_enabled: true
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
