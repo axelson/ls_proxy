@@ -46,6 +46,7 @@ defmodule LsProxy.ProxyPort do
     # TODO: Rename stdin and send this output to somewhere else for a cleaner
     # architecture
     IO.write(msg)
+    LsProxy.Logger.log_out(msg)
     LsProxy.ProxyState.record_outgoing(msg)
     LsProxy.MessageHTTPForwarder.send_to_server(msg, "outgoing")
 
@@ -57,6 +58,7 @@ defmodule LsProxy.ProxyPort do
     # TODO: Do we really need to trim this here?
     msg = String.trim_trailing(msg)
     LsProxy.Logger.info("Send Message:\n#{msg}")
+    LsProxy.Logger.log_in(msg)
     result = :exec.send(os_pid, msg)
     LsProxy.ProxyState.record_incoming(msg)
     LsProxy.MessageHTTPForwarder.send_to_server(msg, "incoming")
