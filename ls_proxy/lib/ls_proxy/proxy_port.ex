@@ -37,7 +37,7 @@ defmodule LsProxy.ProxyPort do
     # So we need to buffer here until we parse a message successfully
     # once it's parsed or we receive the start of a next frame (not sure how to detect that robustly)
     # only then can we record the outgoing message in our local state and forward it on to the upstream server
-    LsProxy.Logger.info("Got message:\n#{msg}")
+    LsProxy.Logger.info("Got message3:\n#{msg}")
 
     # Send the output we just received from the LSP Server back to the client
     # via our own stdout
@@ -56,7 +56,12 @@ defmodule LsProxy.ProxyPort do
   @impl true
   def handle_call({:send_message, msg}, _from, %State{os_pid: os_pid} = state) do
     # TODO: Do we really need to trim this here?
-    msg = String.trim_trailing(msg)
+    # Previously was working correctly with this. Now I see:
+    # With this: constant restarts
+    # Without this: Works but elixir-ls fails
+    # Also related: having a newline at the end of the to_string for a LsProxy.Protocol.Message
+    # msg = String.trim_trailing(msg)
+
     LsProxy.Logger.info("Send Message:\n#{msg}")
     LsProxy.Logger.log_in(msg)
     result = :exec.send(os_pid, msg)

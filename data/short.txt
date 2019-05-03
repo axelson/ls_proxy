@@ -1,0 +1,4 @@
+Content-Length: 52
+Content-Type: utf-8
+
+{"jsonrpc":"2.0","method":"initialized","params":{}}

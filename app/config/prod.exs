@@ -21,6 +21,14 @@ config :logger, level: :warn
 config :ls_proxy,
   logging_enabled: true
 
+config :logger,
+  backends: [{LoggerFileBackend, :error_log}]
+
+# On two lines below typing /tmp/ls_proxy_errors is causing the language_server to spin incessantly, grow in memory and take over the computer
+config :logger, :error_log,
+  # path: "/tmp/ls_p
+  level: :error
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

@@ -29,6 +29,7 @@ defmodule LsProxy.MixProject do
     [
       {:mojito, "~> 0.2.0"},
       {:jason, "~> 1.1"},
+      {:logger_file_backend, "~> 0.0.10"},
       # runtime: false because for an escript we need to manually start it
       # Use current master: https://github.com/saleyn/erlexec/issues/124
       {:erlexec, github: "saleyn/erlexec", runtime: false},

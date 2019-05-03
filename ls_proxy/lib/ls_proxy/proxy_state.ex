@@ -5,7 +5,7 @@ defmodule LsProxy.ProxyState do
   use GenServer
 
   defmodule State do
-    defstruct [:incoming_messages, :outgoing_messages]
+    defstruct [:pending_outgoing_message, :incoming_messages, :outgoing_messages]
   end
 
   def start_link(_, name \\ __MODULE__) do
@@ -15,6 +15,7 @@ defmodule LsProxy.ProxyState do
   @impl GenServer
   def init(_) do
     initial_state = %State{
+      pending_outgoing_message: nil,
       incoming_messages: :queue.new(),
       outgoing_messages: :queue.new()
     }
@@ -46,14 +47,32 @@ defmodule LsProxy.ProxyState do
   def handle_call({:record_incoming, msg}, _from, state) do
     message = LsProxy.Message.new(msg, :incoming)
     queue = state.incoming_messages
-    state = %{state | incoming_messages: :queue.in(message, queue)}
+    state = %State{state | incoming_messages: :queue.in(message, queue)}
     {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
   def handle_call({:record_outgoing, msg}, _from, state) do
+    %State{pending_outgoing_message: pending_message} = state
+
+    # msg =
+    #   case pending_message do
+    #     nil -> msg
+    #     pending_message -> pending_message <> msg
+    #   end
+
+    # {:ok, pid} = StringIO.open(msg)
+
+    # # How does the parser runner work when the message is incomplete?
+    # case LsProxy.ParserRunner.read_message(Protocol.Message, pid) do
+    #   {:ok, message} ->
+    #     IO.puts "Got complete message! #{inspect message}"
+    #   other ->
+    #     IO.inspect(other, label: "got error other")
+    # end
+
     message = LsProxy.Message.new(msg, :outgoing)
     queue = state.outgoing_messages
-    state = %{state | outgoing_messages: :queue.in(message, queue)}
+    state = %State{state | outgoing_messages: :queue.in(message, queue)}
     {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
@@ -66,8 +85,8 @@ defmodule LsProxy.ProxyState do
     {:reply, messages, state}
   end
 
-  def handle_call({:clear}, _from, state) do
-    state = %{
+  def handle_call({:clear}, _from, _state) do
+    state = %State{
       incoming_messages: :queue.new(),
       outgoing_messages: :queue.new()
     }
