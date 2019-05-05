@@ -2,6 +2,11 @@
 
 Proxy for [Language Server](https://microsoft.github.io/language-server-protocol/)'s.
 
+It is kind of similar to:
+https://github.com/Microsoft/language-server-protocol-inspector
+
+But it is Live! You can see the messages coming in in real-time.
+
 Architecture:
 ```
            Browser
@@ -45,9 +50,11 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] Add Phoenix LiveView
 - [x] implement two modes, direct where we receive input from stdin and http where we receive input over http
 - [x] Compile ls_proxy to proxy requests to a standalone instance
+- [ ] Get clustering to work for easier debugging
 - [ ] Issue: large messages are being broken up, causing parsing issues
 - [ ] Display just the method for each message
 - [ ] Add a button to show the whole message
+- [ ] Get app.css and app.js to be compiled before StaticAssetController so we can compile them into StaticAssetController (or another module)
 
 Later:
 - [ ] Issue: not reliably sending messages via json and via "plain-text" (is this worth fixing?)
@@ -59,6 +66,7 @@ Long-term:
   - vscode: C-S-p -> User Settings -> type "trace" mark css language server to use verbose and then from the output view you will find the vscode trace log
 - [ ] if the specified port is taken, try the next one
   - [ ] and register with that other server so we can do discovery
+- [ ] Support language-server-protocol-inspector format
 
 Once published, the docs can be found at
 [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
