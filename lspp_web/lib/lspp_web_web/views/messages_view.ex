@@ -24,17 +24,38 @@ defmodule LsppWeb.MessagesView do
     """
   end
 
-  def render_message(%{"method" => method}) do
+  def render_message(%{"method" => "textDocument/hover", "id" => id}) do
     ~E"""
-    method: <%= method %>
+    textDocument/hover id: <%= id %>
     """
   end
 
-  def render_message(%{"result" => %{"range" => %{"start" => start_range, "end" => end_range}}}) do
+  def render_message(%{"method" => "$/cancelRequest", "params" => params}) do
+    %{"id" => id} = params
+
     ~E"""
-    <%= inspect(start_range) %> to <%= inspect(end_range) %>
+    $/cancelRequest id: <%= id %>
     """
   end
+
+  # def render_message(%{"method" => method, "id" => id}) do
+  #   ~E"""
+  #   method: <%= method %>
+  #   id: <%= id %>
+  #   """
+  # end
+
+  def render_message(%{"id" => id, "result" => %{"contents" => contents}}) do
+    ~E"""
+    <%= id %> result: <%= contents %>
+    """
+  end
+
+  # def render_message(%{"result" => %{"range" => %{"start" => start_range, "end" => end_range}}}) do
+  #   ~E"""
+  #   <%= inspect(start_range) %> to <%= inspect(end_range) %>
+  #   """
+  # end
 
   def render_message(other) do
     ~E"""
