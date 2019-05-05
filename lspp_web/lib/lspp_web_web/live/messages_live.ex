@@ -40,7 +40,7 @@ defmodule LsppWebWeb.MessagesLive do
   # defp parse_message(message_text), do: message_text
   @spec parse_message(String.t()) :: LsProxy.Protocol.Message.t() | String.t()
   defp parse_message(message_text) do
-    IO.inspect(message_text, label: "message_text")
+    # IO.inspect(message_text, label: "message_text")
     {:ok, pid} = StringIO.open(message_text)
     {:ok, message} = LsProxy.ParserRunner.read_message(LsProxy.Protocol.Message, pid)
     StringIO.close(pid)
