@@ -43,10 +43,10 @@ defmodule LsProxy.Protocol.Message do
 
   def to_string(%__MODULE__{} = message) do
     """
-    #{Protocol.Header.to_string(message.header)}
-
-    #{Protocol.Content.to_string(message.content)}
-
+    #{Protocol.Header.to_string(message.header)}\r
+    \r
+    #{Protocol.Content.to_string(message.content)}\r
+    \r
     """
   end
 end
