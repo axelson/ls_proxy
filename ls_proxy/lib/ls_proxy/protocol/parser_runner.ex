@@ -10,6 +10,10 @@ defmodule LsProxy.ParserRunner do
 
   def read_message(module, device) do
     read_message(module, device, :init, nil)
+    |> Utils.tap(fn
+      {:ok, _} -> nil
+      {:error, message} -> LsProxy.Logger.info("Error reading message: #{inspect message}")
+    end)
   end
 
   def read_message(module, device, state, result) do
@@ -36,6 +40,8 @@ defmodule LsProxy.ParserRunner do
   defp handle_parser_command({:read_bytes, bytes}, device) do
     case IO.read(device, bytes) do
       string when byte_size(string) == bytes ->
+        # LsProxy.Logger.info "Successfully read #{bytes}"
+        # LsProxy.Logger.info "From: #{inspect string}"
         {:ok, string}
 
       string ->
