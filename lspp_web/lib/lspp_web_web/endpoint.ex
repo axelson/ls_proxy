@@ -9,11 +9,13 @@ defmodule LsppWebWeb.Endpoint do
 
   # Disabling Plug.Static because we can't use it with escript's (and maybe
   # releases)
-  # plug Plug.Static,
-  #   at: "/",
-  #   from: :lspp_web,
-  #   gzip: false,
-  #   only: ~w(css fonts images js favicon.ico robots.txt)
+  if Application.fetch_env!(:lspp_web, :static_assets) == :dynamic do
+    plug Plug.Static,
+      at: "/",
+      from: :lspp_web,
+      gzip: false,
+      only: ~w(css fonts images js favicon.ico robots.txt)
+  end
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

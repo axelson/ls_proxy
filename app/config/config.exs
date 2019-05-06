@@ -10,6 +10,9 @@ config :lspp_web, LsppWebWeb.Endpoint,
     signing_salt: "5itHJeTZaUHrXCWtNeWQVM0IzZKWiVfM"
   ]
 
+config :lspp_web,
+  static_assets: :static
+
 config :ls_proxy,
   run_language_server: System.get_env("LS_PROXY_RUN_LANGUAGE_SERVER") || "true",
   proxy_to: System.get_env("LS_PROXY_TO") || "elixir_ls",

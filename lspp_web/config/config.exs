@@ -10,6 +10,9 @@ config :lspp_web, LsppWebWeb.Endpoint,
     signing_salt: "5itHJeTZaUHrXCWtNeWQVM0IzZKWiVfM"
   ]
 
+config :lspp_web,
+  static_assets: :dynamic
+
 # When we run lspp_web directly we aren't doing actual proxying
 config :ls_proxy,
   run_language_server: "false",

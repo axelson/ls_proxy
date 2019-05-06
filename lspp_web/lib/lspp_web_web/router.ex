@@ -20,9 +20,11 @@ defmodule LsppWebWeb.Router do
     get "/", PageController, :index
   end
 
-  get "/css/app.css", LsppWebWeb.StaticAssetController, :app_css
-  get "/js/app.js", LsppWebWeb.StaticAssetController, :app_js
-  get "/images/phoenix.png", LsppWebWeb.StaticAssetController, :phoenix_png
+  if Application.fetch_env!(:lspp_web, :static_assets) == :static do
+    get "/css/app.css", LsppWebWeb.StaticAssetController, :app_css
+    get "/js/app.js", LsppWebWeb.StaticAssetController, :app_js
+    get "/images/phoenix.png", LsppWebWeb.StaticAssetController, :phoenix_png
+  end
 
   scope "/" do
     pipe_through :browser
