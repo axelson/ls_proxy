@@ -50,9 +50,9 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] Add Phoenix LiveView
 - [x] implement two modes, direct where we receive input from stdin and http where we receive input over http
 - [x] Compile ls_proxy to proxy requests to a standalone instance
-- [ ] Get clustering to work for easier debugging
-- [ ] Issue: large messages are being broken up, causing parsing issues
-- [ ] Display just the method for each message
+- [x] Get clustering to work for easier debugging
+- [x] Issue: large messages are being broken up, causing parsing issues
+- [x] Display just the method for each message
 - [ ] Add a button to show the whole message
 - [ ] Get app.css and app.js to be compiled before StaticAssetController so we can compile them into StaticAssetController (or another module)
 
