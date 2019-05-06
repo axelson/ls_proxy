@@ -68,14 +68,25 @@ defmodule LsProxy.ProxyPort do
         {:noreply, %State{state | partial_message: msg}}
     end
   end
+
+  @impl GenServer
+  def handle_info({:DOWN, _os_pid, :process, _pid, {:exit_status, exit_status}}, state) do
+    LsProxy.Logger.info("Language Server crashed with exit status #{exit_status} :(")
+    # TODO: Restart it?
     {:noreply, state}
   end
 
-  @impl true
+  def handle_info(msg, state) do
+    LsProxy.Logger.info("UNHANDLED HANDLE_INFO: #{inspect msg}")
+    {:noreply, state}
+  end
+
+  @impl GenServer
   def handle_call({:send_message, msg}, _from, %State{os_pid: os_pid} = state) do
-    # TODO: Do we really need to trim this here?
+    # Without this: elixir-ls is unable to parse the message
     msg = String.trim_trailing(msg)
-    LsProxy.Logger.info("Send Message:\n#{msg}")
+
+    # LsProxy.Logger.info("Incoming Message:\n#{msg}")
     LsProxy.Logger.log_in(msg)
     result = :exec.send(os_pid, msg)
     LsProxy.ProxyState.record_incoming(msg)
