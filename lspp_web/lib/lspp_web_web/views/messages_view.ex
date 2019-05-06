@@ -45,9 +45,13 @@ defmodule LsppWeb.MessagesView do
   #   """
   # end
 
-  def render_message(%{"id" => id, "result" => %{"contents" => contents}}) do
+  def render_message(%{"id" => id, "result" => %{"contents" => []}}) do
+    ~E"<b><%= id %></b> result is empty"
+  end
+
+  def render_message(%{"id" => id, "result" => %{"contents" => contents}}) when is_binary(contents) do
     ~E"""
-    <%= id %> result: <%= contents %>
+    <b><%= id %></b> result: <%= Utils.truncate(contents, 100) %>
     """
   end
 

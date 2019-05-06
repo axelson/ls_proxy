@@ -1,5 +1,13 @@
 /* This file is for your main application css. */
 
 @import "./phoenix.css";
-/* Temp */
+
+.message {
+  margin: 6px 0;
+  padding-left: 8px;
+  border-left: 1px solid blue;
+}
+
+/* Temp? */
 @import "../../deps/phoenix_live_view/assets/css/live_view.css"
+
