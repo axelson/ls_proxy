@@ -73,7 +73,7 @@ defmodule LsProxy.Protocol.Header do
   # This could be DRYer
   def to_string(%__MODULE__{} = header) do
     """
-    Content-Length: #{header.content_length}
+    Content-Length: #{header.content_length}\r
     Content-Type: utf-8
     """
     |> String.trim()

@@ -47,8 +47,11 @@ defmodule LsProxy.ParserRunner do
       string ->
         additional_bytes = bytes - byte_size(string)
         case IO.read(device, additional_bytes) do
-          :eof -> {:error, "not_enough_input. Wanted #{bytes}. Got: #{byte_size(string)}"}
-          additional_string when byte_size(additional_bytes) -> {:ok, string <> additional_string}
+          :eof ->
+            {:error, {:incomplete_message, {bytes, byte_size(string)}}}
+
+          additional_string when byte_size(additional_string) == additional_bytes ->
+            {:ok, string <> additional_string}
         end
     end
   end

@@ -53,6 +53,6 @@ defmodule LsProxy.Protocol.ParserRunnerTest do
 
   test "returns an error with when an incomplete message is received" do
     assert {:error, error} = ParserRunner.read_message(Protocol.Message, @incomplete_message)
-    assert error == "not_enough_input. Wanted 131. Got: 89"
+    assert error == {:incomplete_message, {131, 89}}
   end
 end

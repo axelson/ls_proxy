@@ -53,13 +53,12 @@ defmodule LsProxy.Protocol.MessageTest do
 
     test "parses and unparses a window/logMessage message" do
       text = """
-      Content-Length: 99
-      Content-Type: utf-8
-
-      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
-
+      Content-Length: 99\r
+      Content-Type: utf-8\r
+      \r
+      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}\r
+      \r
       """
-      |> String.replace("\n", "\r\n")
 
       expected_content = %{
         "jsonrpc" => "2.0",
@@ -71,7 +70,8 @@ defmodule LsProxy.Protocol.MessageTest do
       assert message.content == expected_content
 
       actual = Protocol.Message.to_string(message)
-      assert String.replace(actual, "\n", "\r\n") == text
+      assert actual == text
+      # assert String.replace(actual, "\n", "\r\n") == text
     end
   end
 end
