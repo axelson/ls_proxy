@@ -1,15 +1,22 @@
 defmodule LsppWeb.MessagesView do
   use LsppWebWeb, :view
 
-  def render_message(%LsProxy.Protocol.Message{content: content}) do
+  def render_message(%LsProxy.MessageRecord{} = message_record, true) do
     ~E"""
     <div>
-      <%= link "Show all", to: "/" %>
-      <div phx-click="inc">inc</div>
+    <a phx-click="collapse:<%= message_record.id %>">collapse</a>
     </div>
-    <%= render_message(content) %>
+    <%= render_full(message_record.message.content) %>
     """
-    render_message(content)
+  end
+
+  def render_message(%LsProxy.MessageRecord{} = message_record, expanded) do
+    ~E"""
+    <div>
+      <a phx-click="expand:<%= message_record.id %>">expand</a>
+    </div>
+    <%= render_message(message_record.message.content) %>
+    """
   end
 
   def render_message(message) when is_binary(message) do
@@ -69,10 +76,15 @@ defmodule LsppWeb.MessagesView do
   # end
 
   def render_message(other) do
+    render_full(other)
+  end
+
+  def render_full(other) do
     ~E"""
     <pre><code>
-      <%= inspect(other, pretty: true) %>
+    <%= inspect(other, pretty: true) %>
     </code></pre>
     """
   end
+
 end

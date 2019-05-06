@@ -13,6 +13,7 @@ defmodule LsppWebWeb.MessagesLive do
     socket =
       socket
       |> assign(:message_records, [])
+      |> assign(:expanded, %{})
 
     {:ok, update_messages(socket)}
   end
@@ -26,15 +27,29 @@ defmodule LsppWebWeb.MessagesLive do
     {:noreply, socket}
   end
 
-  # def handle_event("inc:" <> id, _, socket) do
-  #   %{expanded: expanded} = socket.assigns
+  def handle_event("expand:" <> id, _, socket) do
+    id = String.to_integer(id)
+    %{expanded: expanded} = socket.assigns
+    expanded = Map.put(expanded, id, true)
 
-  #   socket =
-  #     socket
-  #     |> assign(:expanded, expanded)
+    socket =
+      socket
+      |> assign(:expanded, expanded)
 
-  #   {:noreply, socket}
-  # end
+    {:noreply, socket}
+  end
+
+  def handle_event("collapse:" <> id, _, socket) do
+    id = String.to_integer(id)
+    %{expanded: expanded} = socket.assigns
+    expanded = Map.put(expanded, id, false)
+
+    socket =
+      socket
+      |> assign(:expanded, expanded)
+
+    {:noreply, socket}
+  end
 
   defp update_messages(socket) do
     socket

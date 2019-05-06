@@ -7,7 +7,7 @@
     <h1>Messages</h1>
     <%= for message_record <- @message_records do %>
       <div class="message">
-        <%= render_message(message_record.message) %>
+        <%= render_message(message_record, Map.get(@expanded, message_record.id)) %>
       </div>
     <% end %>
   </div>

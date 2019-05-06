@@ -53,8 +53,8 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] Get clustering to work for easier debugging
 - [x] Issue: large messages are being broken up, causing parsing issues
 - [x] Display just the method for each message
-- [ ] Add a button to show the whole message
-- [ ] Get app.css and app.js to be compiled before StaticAssetController so we can compile them into StaticAssetController (or another module)
+- [x] Add a button to show the whole message
+- [x] Get app.css and app.js to be compiled before StaticAssetController so we can compile them into StaticAssetController (or another module)
 
 Later:
 - [ ] Issue: not reliably sending messages via json and via "plain-text" (is this worth fixing?)
