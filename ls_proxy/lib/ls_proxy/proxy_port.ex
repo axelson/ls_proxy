@@ -1,13 +1,13 @@
 defmodule LsProxy.ProxyPort do
   @moduledoc """
-  Proxy for Port IO operations.
+  GenServer that handles communication with the language_server process via stdin/stdout. Is linked to the Port.
   """
 
   use GenServer
   require Logger
 
   defmodule State do
-    defstruct [:pid, :os_pid]
+    defstruct [:pid, :os_pid, :partial_message]
   end
 
   def send_message(msg) do
@@ -18,38 +18,56 @@ defmodule LsProxy.ProxyPort do
     GenServer.start_link(__MODULE__, nil, name: name)
   end
 
-  @impl true
+  @impl GenServer
   def init(_) do
     # LsProxy.Logger.info("ProxyPort starting!")
     cmd = LsProxy.Config.language_server_script_path() |> to_charlist()
 
     {:ok, pid, os_pid} = :exec.run(cmd, [:stdout, :stderr, :stdin, :monitor])
 
-    initial_state = %State{pid: pid, os_pid: os_pid}
+    initial_state = %State{pid: pid, os_pid: os_pid, partial_message: ""}
 
     # LsProxy.Logger.info("ProxyPort initial state: #{inspect initial_state}")
     {:ok, initial_state}
   end
 
-  @impl true
-  def handle_info({:stdout, _, msg}, state) do
-    # FIXME: there is a bug here. Currently we are assuming that this `msg` is complete, but instead it is chunked in sizes around up to 3988 bytes
-    # So we need to buffer here until we parse a message successfully
-    # once it's parsed or we receive the start of a next frame (not sure how to detect that robustly)
-    # only then can we record the outgoing message in our local state and forward it on to the upstream server
-    LsProxy.Logger.info("Got message:\n#{msg}")
+  def read_message(msg) when is_binary(msg) do
+    {:ok, string_io} = StringIO.open(msg)
 
-    # Send the output we just received from the LSP Server back to the client
-    # via our own stdout
-    # NOTE: Don't use IO.puts because it adds trailing newlines and newlines are
-    # significant in the LSP
-    # TODO: Rename stdin and send this output to somewhere else for a cleaner
-    # architecture
-    IO.write(msg)
+    LsProxy.ParserRunner.read_message(LsProxy.Protocol.Message, string_io)
+    |> Utils.tap(fn _ -> StringIO.close(string_io) end)
+  end
+
+  def handle_successful_message(message) do
+    msg = LsProxy.Protocol.Message.to_string(message)
+    # LsProxy.Logger.info("parsed outgoing string: #{inspect msg}")
+    LsProxy.Logger.info("LS->Editor: #{msg}")
+    # LsProxy.Logger.info("Sending outgoing message")
+    IO.write(:stdio, msg)
+    # IO.puts(msg)
     LsProxy.Logger.log_out(msg)
     LsProxy.ProxyState.record_outgoing(msg)
     LsProxy.MessageHTTPForwarder.send_to_server(msg, "outgoing")
 
+    :ok
+  end
+
+  # Language Server -> LsProxy -> LsProxyUpstream
+  #                            -> LsProxyLog
+  #                            -> Editor (stdout)
+  @impl GenServer
+  def handle_info({:stdout, _, msg}, %State{partial_message: partial_message} = state) do
+    msg = partial_message <> msg
+
+    case read_message(msg) do
+      {:ok, message} ->
+        handle_successful_message(message)
+        {:noreply, %State{state | partial_message: ""}}
+
+      {:error, {:incomplete_message, _}} ->
+        {:noreply, %State{state | partial_message: msg}}
+    end
+  end
     {:noreply, state}
   end
 
