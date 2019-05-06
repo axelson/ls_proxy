@@ -5,7 +5,7 @@ defmodule LsProxy.ProxyState do
   use GenServer
 
   defmodule State do
-    defstruct [:incoming_messages, :outgoing_messages]
+    defstruct [:messages]
   end
 
   def start_link(_, name \\ __MODULE__) do
@@ -15,8 +15,7 @@ defmodule LsProxy.ProxyState do
   @impl GenServer
   def init(_) do
     initial_state = %State{
-      incoming_messages: :queue.new(),
-      outgoing_messages: :queue.new()
+      messages: :queue.new(),
     }
 
     {:ok, initial_state}
@@ -44,32 +43,26 @@ defmodule LsProxy.ProxyState do
 
   @impl GenServer
   def handle_call({:record_incoming, msg}, _from, state) do
-    message = LsProxy.Message.new(msg, :incoming)
-    queue = state.incoming_messages
-    state = %State{state | incoming_messages: :queue.in(message, queue)}
+    message = LsProxy.MessageRecord.new(msg, :incoming)
+    queue = state.messages
+    state = %State{state | messages: :queue.in(message, queue)}
     {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
   def handle_call({:record_outgoing, msg}, _from, state) do
-    message = LsProxy.Message.new(msg, :outgoing)
-    queue = state.outgoing_messages
-    state = %State{state | outgoing_messages: :queue.in(message, queue)}
+    message = LsProxy.MessageRecord.new(msg, :outgoing)
+    queue = state.messages
+    state = %State{state | messages: :queue.in(message, queue)}
     {:reply, :ok, state, {:continue, :notify_listeners}}
   end
 
   def handle_call({:messages}, _from, state) do
-    messages = %{
-      incoming: :queue.to_list(state.incoming_messages),
-      outgoing: :queue.to_list(state.outgoing_messages)
-    }
-
-    {:reply, messages, state}
+    {:reply, :queue.to_list(state.messages), state}
   end
 
   def handle_call({:clear}, _from, _state) do
     state = %State{
-      incoming_messages: :queue.new(),
-      outgoing_messages: :queue.new()
+      messages: :queue.new(),
     }
 
     {:reply, :ok, state, {:continue, :notify_listeners}}

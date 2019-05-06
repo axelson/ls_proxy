@@ -2,6 +2,13 @@ defmodule LsppWeb.MessagesView do
   use LsppWebWeb, :view
 
   def render_message(%LsProxy.Protocol.Message{content: content}) do
+    ~E"""
+    <div>
+      <%= link "Show all", to: "/" %>
+      <div phx-click="inc">inc</div>
+    </div>
+    <%= render_message(content) %>
+    """
     render_message(content)
   end
 

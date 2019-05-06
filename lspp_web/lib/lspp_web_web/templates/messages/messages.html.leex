@@ -4,18 +4,10 @@
 
 <div class="row">
   <div class="column">
-    <h1>Incoming</h1>
-    <%= for message <- @incoming do %>
+    <h1>Messages</h1>
+    <%= for message_record <- @message_records do %>
       <div class="message">
-        <%= render_message(message) %>
-      </div>
-    <% end %>
-  </div>
-  <div class="column">
-    <h1>Outgoing</h1>
-    <%= for message <- @outgoing do %>
-      <div class="message">
-        <%= render_message(message) %>
+        <%= render_message(message_record.message) %>
       </div>
     <% end %>
   </div>
