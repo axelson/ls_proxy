@@ -20,7 +20,9 @@ defmodule LsppWeb.MessagesView do
     <%= message_common(message_record, expanded, formatted) %>
     <div class="text-btn">
       <a phx-click="expand:<%= message_record.id %>">show full</a>
-      <a phx-click="expand-formatted:<%= message_record.id %>">show formatted message</a>
+      <%= if(has_formatting?(message_record.message.content)) do %>
+        <a phx-click="expand-formatted:<%= message_record.id %>">show formatted message</a>
+      <% end %>
     </div>
     """
   end
@@ -160,7 +162,7 @@ defmodule LsppWeb.MessagesView do
     end
   end
 
-  def render_message_contents(%{"id" => id, "result" => %{"contents" => contents}}, formatted)
+  def render_message_contents(%{"id" => id, "result" => %{"contents" => contents}}, _formatted)
       when is_binary(contents) do
     ~E"""
     Result: <%= Utils.truncate(contents, 100) %>
@@ -209,6 +211,12 @@ defmodule LsppWeb.MessagesView do
   def render_timestamp(%MessageRecord{timestamp: timestamp}, :full) do
     NaiveDateTime.to_string(timestamp)
   end
+
+  defp has_formatting?(%{"result" => %{"contents" => contents}}) when is_binary(contents) do
+    true
+  end
+
+  defp has_formatting?(_), do: false
 
   defp zero_pad(number), do: String.pad_leading(to_string(number), 2, "0")
 
