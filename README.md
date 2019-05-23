@@ -66,7 +66,7 @@ Long-term:
   - vscode: C-S-p -> User Settings -> type "trace" mark css language server to use verbose and then from the output view you will find the vscode trace log
 - [ ] if the specified port is taken, try the next one
   - [ ] and register with that other server so we can do discovery
-- [ ] Support language-server-protocol-inspector format
+- [ ] Support language-server-protocol-inspector format (is there docs for this?)
 
 Once published, the docs can be found at
 [https://hexdocs.pm/ls_proxy](https://hexdocs.pm/ls_proxy).
