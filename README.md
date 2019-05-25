@@ -55,6 +55,8 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] Display just the method for each message
 - [x] Add a button to show the whole message
 - [x] Get app.css and app.js to be compiled before StaticAssetController so we can compile them into StaticAssetController (or another module)
+- [x] Show request/response timings
+- [ ] Show cancelled request/responses
 
 Later:
 - [ ] Issue: not reliably sending messages via json and via "plain-text" (is this worth fixing?)

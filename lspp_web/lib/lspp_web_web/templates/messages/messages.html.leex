@@ -5,7 +5,7 @@
 <div class="row">
   <div class="column">
     <h3>Outstanding</h3>
-    <%= for req_resp <- @outstanding do %>
+    <%= for req_resp <- Enum.take(@outstanding, 15) do %>
       <div>
         <%= render "_request_response.html", req_resp: req_resp %>
       </div>
