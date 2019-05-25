@@ -15,6 +15,7 @@ defmodule LsppWebWeb.MessagesLive do
       |> assign(:message_records, [])
       |> assign(:expanded, %{})
       |> assign(:formatted, %{})
+      |> assign(:outstanding, %{})
 
     {:ok, update_messages(socket)}
   end
@@ -81,6 +82,34 @@ defmodule LsppWebWeb.MessagesLive do
     |> update(:message_records, fn _ ->
       LsProxy.ProxyState.messages()
       |> Enum.reverse()
+    end)
+    |> update_outstanding()
+  end
+
+  defp update_outstanding(socket) do
+    %{message_records: message_records} = socket.assigns
+    outstanding = process(message_records)
+    |> Enum.sort_by(fn {id, _} -> id end)
+    |> Enum.reverse()
+    |> Enum.map(fn {_id, req_resp} -> req_resp end)
+
+    socket
+    |> assign(:outstanding, outstanding)
+  end
+
+  defp process(message_records) do
+    message_records
+    |> Enum.reduce(%{}, fn
+      %{lsp_id: nil}, outstanding ->
+        outstanding
+
+      %{lsp_id: lsp_id} = message_record, outstanding ->
+        {:ok, initial} = LsProxy.RequestResponse.new(message_record)
+
+        Map.update(outstanding, lsp_id, initial, fn existing ->
+          {:ok, req_resp} = LsProxy.RequestResponse.add(existing, message_record)
+          req_resp
+        end)
     end)
   end
 end

@@ -122,7 +122,7 @@ defmodule LsppWeb.MessagesView do
         _formatted
       ) do
     case message_record["params"]["uri"] do
-      uri_str ->
+      uri_str when not is_nil(uri_str) ->
         ~E"""
         textDocument/publishDiagnostics: <code><%= uri_str %></code>
         """

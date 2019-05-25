@@ -1,0 +1,14 @@
+Request Response <%= @req_resp.id %>
+<% req = @req_resp.request %>
+<% resp = @req_resp.response %>
+
+<div>
+  Start: <%= req.timestamp %>
+</div>
+<%= if resp do %>
+  <div>
+    Duration: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
+  </div>
+<% end %>
+
+<br />
