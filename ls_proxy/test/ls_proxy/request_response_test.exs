@@ -111,5 +111,16 @@ defmodule LsProxy.RequestResponseTest do
 
       assert {:ok, ^req_resp} = LsProxy.RequestResponse.add(req_resp, cancel_outgoing)
     end
+
+    test "when the response comes before the result", %{
+      incoming_request: incoming_request,
+      cancel_outgoing: cancel_outgoing
+    } do
+      assert {:ok, req_resp} = LsProxy.RequestResponse.new(cancel_outgoing)
+      assert req_resp.status == :partial
+
+      assert {:ok, req_resp} = LsProxy.RequestResponse.add(req_resp, incoming_request)
+      assert req_resp.status == :canceled
+    end
   end
 end

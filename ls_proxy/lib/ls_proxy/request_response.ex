@@ -30,24 +30,37 @@ defmodule LsProxy.RequestResponse do
         %__MODULE__{request: nil, id: id} = req_resp,
         %LsProxy.MessageRecord{direction: :incoming, lsp_id: id} = message_record
       ) do
-    {:ok, %__MODULE__{req_resp | request: message_record, status: :complete}}
+    status = if is_cancel_response(req_resp.response) do
+      :canceled
+    else
+      :complete
+    end
+
+    {:ok, %__MODULE__{req_resp | request: message_record, status: status}}
   end
 
   def add(
     %__MODULE__{response: nil, id: id} = req_resp,
     %LsProxy.MessageRecord{direction: :outgoing, lsp_id: id} = message_record
   ) do
-    case message_record.error do
-      %{error_name: "RequestCancelled"} ->
-        {:ok, %__MODULE__{req_resp | response: message_record, status: :canceled}}
-
-      _ ->
-        {:ok, %__MODULE__{req_resp | response: message_record, status: :complete}}
+    status = if is_cancel_response(message_record) do
+      :canceled
+    else
+      :complete
     end
+
+    {:ok, %__MODULE__{req_resp | response: message_record, status: status}}
   end
 
   # Ignore additional messages if this is already canceled or complete
   # This could occur due to a race condition
   def add(%__MODULE__{status: :canceled} = req_resp, _), do: {:ok, req_resp}
   def add(%__MODULE__{status: :complete} = req_resp, _), do: {:ok, req_resp}
+
+  defp is_cancel_response(message_record) do
+    case message_record.error do
+      %{error_name: "RequestCancelled"} -> true
+      _ -> false
+    end
+  end
 end
