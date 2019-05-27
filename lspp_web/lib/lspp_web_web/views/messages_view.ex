@@ -21,7 +21,11 @@ defmodule LsppWeb.MessagesView do
     <div class="text-btn">
       <a phx-click="expand:<%= message_record.id %>">show full</a>
       <%= if(has_formatting?(message_record.message.content)) do %>
-        <a phx-click="expand-formatted:<%= message_record.id %>">show formatted message</a>
+        <%= if formatted do %>
+          <a phx-click="collapse-formatted:<%= message_record.id %>">hide formatted message</a>
+        <% else %>
+          <a phx-click="expand-formatted:<%= message_record.id %>">show formatted message</a>
+        <% end %>
       <% end %>
     </div>
     """
@@ -53,12 +57,19 @@ defmodule LsppWeb.MessagesView do
     """
   end
 
+  def render_message_contents(%{"method" => "window/logMessage"} = message, true) do
+    %{"params" => %{"message" => log_message}} = message
+    ~E"""
+    <div>Log: <%= Utils.truncate(log_message, 100) %></div>
+    <pre>
+      <%= log_message %>
+    </pre>
+    """
+  end
   def render_message_contents(%{"method" => "window/logMessage"} = message, _formatted) do
     %{"params" => %{"message" => log_message}} = message
     ~E"""
-    <div>
-    Log: <%= Utils.truncate(log_message, 100) %>
-    </div>
+    <div>Log: <%= Utils.truncate(log_message, 100) %></div>
     """
   end
 
@@ -211,6 +222,8 @@ defmodule LsppWeb.MessagesView do
   def render_timestamp(%MessageRecord{timestamp: timestamp}, :full) do
     NaiveDateTime.to_string(timestamp)
   end
+
+  defp has_formatting?(%{"method" => "window/logMessage"}), do: true
 
   defp has_formatting?(%{"result" => %{"contents" => contents}}) when is_binary(contents) do
     true
