@@ -2,23 +2,30 @@ Request Response <%= @req_resp.id %>
 <% req = @req_resp.request %>
 <% resp = @req_resp.response %>
 
-<%= if req do %>
-  <div>
-    Start: <%= req.timestamp %>
-  </div>
-<% else %>
-  <%= if resp do %>
+<%= case @req_resp.status do %>
+  <% :pending -> %>
     <div>
-      End: <%= resp.timestamp %>
+      Started: <%= req.timestamp %>
     </div>
-  <% else %>
-    <div>No start message</div>
-  <% end %>
-<% end %>
-<%= if req && resp do %>
-  <div>
-    Duration: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
-  </div>
+
+  <% :partial -> %>
+    <div>
+      Partial message: <%= resp.timestamp %>
+    </div>
+
+  <% :complete -> %>
+    <div>
+      Duration: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
+    </div>
+    <!-- <pre><%= raw (inspect @req_resp, pretty: true)  %></pre> -->
+
+  <% :canceled -> %>
+    <div>
+      Cancelled after: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
+    </div>
+
+  <% _ -> %>
+    <div>Other</div>
 <% end %>
 
 <br />
