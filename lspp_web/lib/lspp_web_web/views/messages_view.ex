@@ -188,6 +188,22 @@ defmodule LsppWeb.MessagesView do
     """
   end
 
+  def render_message_contents(%{"error" => error} = message_contents, formatted) do
+    %{"code" => error_code, "message" => error_message} = error
+    error_name =
+      case LsProxy.ErrorCodes.error_name(error_code) do
+        {:ok, error_name} -> error_name
+        _ -> "An Unknown Error"
+      end
+
+    ~E"""
+    <div>#{error_name}: <%= Utils.truncate(error_message, 100) %></div>
+    <%= if formatted do %>
+      <pre><%= error_message %></pre>
+    <% end %>
+    """
+  end
+
   def render_message_contents(other, _formatted) do
     render_full(other)
   end
@@ -224,6 +240,8 @@ defmodule LsppWeb.MessagesView do
   end
 
   defp has_formatting?(%{"method" => "window/logMessage"}), do: true
+
+  defp has_formatting?(%{"error" => %{"message" => _message}}), do: true
 
   defp has_formatting?(%{"result" => %{"contents" => contents}}) when is_binary(contents) do
     true
