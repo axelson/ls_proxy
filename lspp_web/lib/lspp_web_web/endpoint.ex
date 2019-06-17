@@ -45,4 +45,11 @@ defmodule LsppWebWeb.Endpoint do
     signing_salt: "GfSf47g8"
 
   plug LsppWebWeb.Router
+
+  def init(supervisor, config) do
+    port = LsppWeb.PhoenixPortSupervisor.get_port()
+    config = put_in(config[:http], [:inet6, {:port, port}])
+
+    {:ok, config}
+  end
 end

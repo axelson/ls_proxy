@@ -9,7 +9,8 @@ defmodule LsppWeb.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      LsppWebWeb.Endpoint
+      {DynamicSupervisor, strategy: :one_for_one, name: LsppWeb.DynamicSupervisor},
+      LsppWeb.PhoenixPortSupervisor,
       # Starts a worker by calling: LsppWeb.Worker.start_link(arg)
       # {LsppWeb.Worker, arg},
     ]
