@@ -15,7 +15,7 @@ defmodule LsProxy.ProxyState do
   @impl GenServer
   def init(_) do
     initial_state = %State{
-      messages: :queue.new(),
+      messages: :queue.new()
     }
 
     {:ok, initial_state}
@@ -44,7 +44,14 @@ defmodule LsProxy.ProxyState do
   @impl GenServer
   def handle_call({:record_incoming, msg}, _from, state) do
     message = LsProxy.MessageRecord.new(msg, :incoming)
-    queue = state.messages
+
+    queue =
+      if message.message.content["method"] == "initialize" do
+        :queue.new()
+      else
+        state.messages
+      end
+
     state = %State{state | messages: :queue.in(message, queue)}
     {:reply, :ok, state, {:continue, :notify_listeners}}
   end
@@ -62,7 +69,7 @@ defmodule LsProxy.ProxyState do
 
   def handle_call({:clear}, _from, _state) do
     state = %State{
-      messages: :queue.new(),
+      messages: :queue.new()
     }
 
     {:reply, :ok, state, {:continue, :notify_listeners}}
