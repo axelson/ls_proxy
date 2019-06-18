@@ -197,9 +197,12 @@ defmodule LsppWeb.MessagesView do
       end
 
     ~E"""
-    <div>#{error_name}: <%= Utils.truncate(error_message, 100) %></div>
+    <div><%= error_name %>: <%= Utils.truncate(error_message, 100) %></div>
     <%= if formatted do %>
       <pre><%= error_message %></pre>
+    <% end %>
+    <%= if message_contents["id"] do %>
+      <%= render_id(message_contents["id"]) %>
     <% end %>
     """
   end
