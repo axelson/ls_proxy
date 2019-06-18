@@ -56,7 +56,7 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] Add a button to show the whole message
 - [x] Get app.css and app.js to be compiled before StaticAssetController so we can compile them into StaticAssetController (or another module)
 - [x] Show request/response timings
-- [ ] Don't require erlang distribution to already be started up
+- [x] Don't require erlang distribution to already be started up
 - [x] Don't fail if port 5000 is already taken
   - Maybe we can no set `server: true` initially but start up the server after the fact, that wasy we can register a handler to see if it failed (or in the Endpoint.init callback we can check what ports we've already tried)
 - [ ] Show cancelled request/responses

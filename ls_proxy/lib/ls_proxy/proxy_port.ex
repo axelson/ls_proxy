@@ -27,7 +27,7 @@ defmodule LsProxy.ProxyPort do
 
     initial_state = %State{pid: pid, os_pid: os_pid, partial_message: ""}
 
-    # LsProxy.Logger.info("ProxyPort initial state: #{inspect initial_state}")
+    LsProxy.Logger.info("ProxyPort initial state: #{inspect initial_state}")
     {:ok, initial_state}
   end
 
@@ -39,9 +39,10 @@ defmodule LsProxy.ProxyPort do
   end
 
   def handle_successful_message(message) do
+    LsProxy.Logger.info("LS->Editor: received message: #{inspect message}")
     msg = LsProxy.Protocol.Message.to_string(message)
     # LsProxy.Logger.info("parsed outgoing string: #{inspect msg}")
-    LsProxy.Logger.info("LS->Editor: #{msg}")
+    LsProxy.Logger.info("LS->Editor sent: #{msg}")
     # LsProxy.Logger.info("Sending outgoing message")
     IO.write(:stdio, msg)
     # IO.puts(msg)

@@ -8,7 +8,7 @@ defmodule App.MixProject do
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: [main_module: LsProxy.CLI],
+      escript: escript(),
     ]
   end
 
@@ -26,6 +26,14 @@ defmodule App.MixProject do
       {:exsync, github: "falood/exsync", ref: "master", only: :dev},
       {:ls_proxy, path: "../ls_proxy"},
       {:lspp_web, path: "../lspp_web"}
+    ]
+  end
+
+  defp escript do
+    [
+      main_module: LsProxy.CLI,
+      # Needed to enable epmd to start automatically
+      emu_args: "-sname proxy"
     ]
   end
 end
