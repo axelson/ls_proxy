@@ -7,7 +7,7 @@ defmodule LsProxy.CLI do
   alias LsProxy.Protocol
 
   def main(_args) do
-    Node.set_cookie :cookie
+    # Node.set_cookie :cookie
     LsProxy.Logger.info("Started node: #{inspect({Node.self, Node.get_cookie})}")
     read_messages()
   end

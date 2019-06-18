@@ -33,7 +33,7 @@ defmodule App.MixProject do
     [
       main_module: LsProxy.CLI,
       # Needed to enable epmd to start automatically
-      emu_args: "-sname proxy"
+      # emu_args: "-sname proxy"
     ]
   end
 end
