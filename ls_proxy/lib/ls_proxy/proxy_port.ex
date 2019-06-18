@@ -20,7 +20,7 @@ defmodule LsProxy.ProxyPort do
 
   @impl GenServer
   def init(_) do
-    # LsProxy.Logger.info("ProxyPort starting!")
+    LsProxy.Logger.info("ProxyPort starting!")
     cmd = LsProxy.Config.language_server_script_path() |> to_charlist()
 
     {:ok, pid, os_pid} = :exec.run(cmd, [:stdout, :stderr, :stdin, :monitor])
@@ -84,12 +84,15 @@ defmodule LsProxy.ProxyPort do
 
   @impl GenServer
   def handle_call({:send_message, msg}, _from, %State{os_pid: os_pid} = state) do
+    # This trim was previously needed before generating our own content-length heades
     # Without this: elixir-ls is unable to parse the message
-    msg = String.trim_trailing(msg)
+    # msg = String.trim_trailing(msg)
 
-    # LsProxy.Logger.info("Incoming Message:\n#{msg}")
+    # LsProxy.Logger.info("Editor->LS:\n#{inspect msg}")
+    # LsProxy.Logger.info("Editor->LS: message size: #{byte_size(msg)}")
     LsProxy.Logger.log_in(msg)
     result = :exec.send(os_pid, msg)
+    # LsProxy.Logger.info("sent message to elixir-ls and got: #{inspect result}")
     LsProxy.ProxyState.record_incoming(msg)
     LsProxy.MessageHTTPForwarder.send_to_server(msg, "incoming")
 

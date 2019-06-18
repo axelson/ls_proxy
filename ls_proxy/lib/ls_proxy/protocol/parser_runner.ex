@@ -38,19 +38,30 @@ defmodule LsProxy.ParserRunner do
   end
 
   defp handle_parser_command({:read_bytes, bytes}, device) do
+    # LsProxy.Logger.info "Trying to read #{bytes} from #{inspect device}"
     case IO.read(device, bytes) do
       string when byte_size(string) == bytes ->
-        # LsProxy.Logger.info "Successfully read #{bytes}"
-        # LsProxy.Logger.info "From: #{inspect string}"
+        #LsProxy.Logger.info "Successfully read #{bytes}"
+        #LsProxy.Logger.info "From: #{inspect string}"
         {:ok, string}
 
       string ->
         additional_bytes = bytes - byte_size(string)
+        LsProxy.Logger.info "Need to read: #{inspect additional_bytes} additional bytes"
         case IO.read(device, additional_bytes) do
           :eof ->
-            {:error, {:incomplete_message, {bytes, byte_size(string)}}}
+            # Fudge factor
+            if additional_bytes == 1 do
+              string = string <> "\n"
+              LsProxy.Logger.info("Returning fudged string: #{string}")
+              {:ok, string}
+            else
+              {:error, {:incomplete_message, {bytes, byte_size(string)}}}
+            end
 
           additional_string when byte_size(additional_string) == additional_bytes ->
+            #LsProxy.Logger.info("Got additional string: #{additional_string}")
+            #LsProxy.Logger.info("Returning full string: #{string <> additional_string}")
             {:ok, string <> additional_string}
         end
     end
