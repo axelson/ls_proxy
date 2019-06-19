@@ -1,6 +1,7 @@
 defmodule LsppWeb.PhoenixPortSupervisor do
   @moduledoc """
-  Starts up Phoenix, but controls the port with application configuration
+  Starts up Phoenix, but controls the port with application configuration,
+  increments the port until Phoenix starts up successfully.
   """
   use GenServer
 

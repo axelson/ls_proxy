@@ -1,6 +1,7 @@
 use Mix.Config
 
 config :lspp_web, LsppWebWeb.Endpoint,
+  # Note this is overridden in the Endpoint init callback
   http: [port: System.get_env("PORT") || 4000],
   debug_errors: true,
   # code_reloader: true,
