@@ -60,6 +60,11 @@ Since EditorPort is the entrypoint into the system it will be the group leader f
 - [x] Don't fail if port 5000 is already taken
   - Maybe we can no set `server: true` initially but start up the server after the fact, that wasy we can register a handler to see if it failed (or in the Endpoint.init callback we can check what ports we've already tried)
 - [ ] Show cancelled request/responses
+- [ ] Limit number of stored messages
+  - Ideally would drop the request along with the response
+- [ ] Use `Node.start/3`: https://hexdocs.pm/elixir/Node.html#start/3
+- [ ] Generate a random node name, and display the node name on the home page
+- [ ] Track down byte_length issue in messages_view.ex
 
 Later:
 - [ ] Issue: not reliably sending messages via json and via "plain-text" (is this worth fixing?)
