@@ -42,6 +42,15 @@ And the `LsProxy.Collector` collects the metrics info to be displayed via HTTP o
 
 Since EditorPort is the entrypoint into the system it will be the group leader for all of the processes because it has to write to stdout (not implemented yet).
 
+# Configuration
+
+Env var `LS_PROXY_TO`: Where to find the LanguageServer to proxy
+
+Typically used only for development:
+
+Env var `LS_HTTP_PROXY_TO`: Where to send copies of the HTTP messages to, useful to quickly iterate on the web frontend
+Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPort` (defaults to `true`)
+
 # TODO
 
 - [x] parse basic messages
