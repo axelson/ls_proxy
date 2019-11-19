@@ -1,6 +1,7 @@
 defmodule LsProxy.ProxyPort do
   @moduledoc """
-  GenServer that handles communication with the language_server process via stdin/stdout. Is linked to the Port.
+  GenServer that uses erlexec to launch the LanguageServer process, then
+  controls the stdin/stdout of the LanguageServer process.
   """
 
   use GenServer
@@ -27,7 +28,9 @@ defmodule LsProxy.ProxyPort do
 
     initial_state = %State{pid: pid, os_pid: os_pid, partial_message: ""}
 
-    LsProxy.Logger.info("ProxyPort initial state: #{inspect initial_state}")
+    LsProxy.Logger.info("ProxyPort initial state: #{inspect(initial_state)}")
+    log_message("LsProxy starting")
+
     {:ok, initial_state}
   end
 
@@ -78,7 +81,7 @@ defmodule LsProxy.ProxyPort do
   end
 
   def handle_info(msg, state) do
-    LsProxy.Logger.info("UNHANDLED HANDLE_INFO: #{inspect msg}")
+    LsProxy.Logger.info("UNHANDLED HANDLE_INFO: #{inspect(msg)}")
     {:noreply, state}
   end
 
@@ -97,5 +100,13 @@ defmodule LsProxy.ProxyPort do
     LsProxy.MessageHTTPForwarder.send_to_server(msg, "incoming")
 
     {:reply, result, state}
+  end
+
+  defp log_message(text) do
+    message =
+      LsProxy.Protocol.Messages.WindowLogMessage.build(text)
+      |> LsProxy.Protocol.JsonRPC.Protocol.to_rpc_message()
+
+    IO.write(:stdio, message)
   end
 end

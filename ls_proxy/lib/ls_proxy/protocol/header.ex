@@ -78,4 +78,10 @@ defmodule LsProxy.Protocol.Header do
     """
     |> String.trim()
   end
+
+  defimpl String.Chars, for: __MODULE__ do
+    def to_string(header) do
+      LsProxy.Protocol.Header.to_string(header)
+    end
+  end
 end

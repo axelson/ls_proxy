@@ -8,9 +8,9 @@ defmodule LsProxy.Protocol.Message do
   defstruct [:header, :content]
 
   @type t :: %__MODULE__{
-    header: map(),
-    content: map()
-  }
+          header: map(),
+          content: map()
+        }
 
   alias LsProxy.Protocol
 
@@ -50,5 +50,11 @@ defmodule LsProxy.Protocol.Message do
     #{message_content}
     """
     |> String.trim()
+  end
+
+  defimpl String.Chars, for: __MODULE__ do
+    def to_string(message) do
+      LsProxy.Protocol.Message.to_string(message)
+    end
   end
 end
