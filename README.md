@@ -68,6 +68,9 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
 - [x] Don't require erlang distribution to already be started up
 - [x] Don't fail if port 5000 is already taken
   - Maybe we can no set `server: true` initially but start up the server after the fact, that wasy we can register a handler to see if it failed (or in the Endpoint.init callback we can check what ports we've already tried)
+- [x] Add ability to log to lsp output
+- [x] Print http port running on to lsp output
+- [ ] Upgrade `phoenix_live_view`
 - [ ] Show cancelled request/responses
 - [ ] Limit number of stored messages
   - Ideally would drop the request along with the response
@@ -77,6 +80,9 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
 
 Later:
 - [ ] Issue: not reliably sending messages via json and via "plain-text" (is this worth fixing?)
+
+Maybe:
+- [ ] Use boundary instead of multiple apps
 
 Long-term:
 - [ ] collect client-server communication for bug filing on clients and servers
