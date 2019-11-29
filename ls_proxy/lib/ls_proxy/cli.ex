@@ -9,6 +9,10 @@ defmodule LsProxy.CLI do
   def main(_args) do
     # Node.set_cookie :cookie
     LsProxy.Logger.info("Started node: #{inspect({Node.self, Node.get_cookie})}")
+
+    # In order to use IO.binread/2 with stdio we need to change the encoding of the input device
+    # https://stackoverflow.com/a/34459112
+    :io.setopts(:standard_io, encoding: :latin1)
     read_messages()
   end
 
