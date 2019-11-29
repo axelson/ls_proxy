@@ -38,11 +38,20 @@ defmodule LsProxy.Protocol.Message do
     case Protocol.Content.read(content_state, input) do
       {:ok, :done, content} ->
         {:ok, :done, %__MODULE__{header: header, content: content}}
+
+      {:error, %Jason.DecodeError{data: data} = error} ->
+        # This is not an expectd case
+        # The problem that appears to be triggering this issue on message_view.ex is probably the -> emoji
+        LsProxy.Logger.info("Failed to decode JSON")
+        LsProxy.Logger.info(data)
+
+        {:error, error}
     end
   end
 
   def to_string(%__MODULE__{} = message) do
     message_content = Protocol.Content.to_string(message.content)
+
     """
     Content-Length: #{byte_size(message_content)}\r
     Content-Type: utf-8\r
