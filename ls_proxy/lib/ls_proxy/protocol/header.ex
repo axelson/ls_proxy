@@ -21,7 +21,6 @@ defmodule LsProxy.Protocol.Header do
 
   def read({:started, lines}, line) do
     case line do
-      "\r\n" -> done(lines)
       "\n" -> done(lines)
       :eof -> done(lines, :eof)
       _line -> {:ok, {:started, [line | lines]}, :read_line}

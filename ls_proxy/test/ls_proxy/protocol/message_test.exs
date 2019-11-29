@@ -7,10 +7,9 @@ defmodule LsProxy.Protocol.MessageTest do
   describe "Protocol.Parse behaviour" do
     test "parses a complete message" do
       text = """
-      Content-Length: 131
-
-      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Elixir version: \\"1.6.6 (compiled with OTP 20)\\"","type":4}}\r
+      Content-Length: 127\r
       \r
+      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Elixir version: \\"1.6.6 (compiled with OTP 20)\\"","type":4}}
       """
 
       expected_content = %{
@@ -22,23 +21,24 @@ defmodule LsProxy.Protocol.MessageTest do
         }
       }
 
-      assert ParserHarness.read_message(Message, text) ==
+      assert LsProxy.ParserRunner.read_message(Message, text) ==
                {:ok,
                 %Message{
-                  header: %Protocol.Header{content_length: 131},
+                  header: %Protocol.Header{content_length: 127},
                   content: expected_content
                 }}
     end
 
     test "parses a complete window/logMessage message" do
-      text = """
-      Content-Length: 99
-      Content-Type: utf-8
+      text =
+        """
+        Content-Length: 99
+        Content-Type: utf-8
 
-      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+        {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
 
-      """
-      |> String.replace("\n", "\r\n")
+        """
+        |> String.replace("\n", "\r\n")
 
       expected_content = %{
         "jsonrpc" => "2.0",
@@ -70,8 +70,18 @@ defmodule LsProxy.Protocol.MessageTest do
       assert message.content == expected_content
 
       actual = Protocol.Message.to_string(message)
-      assert actual == text
-      # assert String.replace(actual, "\n", "\r\n") == text
+
+      # We end up stripping whitespace off of messages, so we don't expect the same output as input
+      expected =
+        """
+        Content-Length: 95\r
+        Content-Type: utf-8\r
+        \r
+        {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+        """
+        |> String.trim()
+
+      assert actual == expected
     end
   end
 end

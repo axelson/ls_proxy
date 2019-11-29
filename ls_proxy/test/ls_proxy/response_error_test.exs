@@ -6,6 +6,5 @@ defmodule LsProxy.ResponseErrorTest do
   test "new/1" do
     map = %{"code" => -32800, "message" => "Request cancelled"}
     LsProxy.ResponseError.new(map)
-    |> IO.inspect(label: "res")
   end
 end

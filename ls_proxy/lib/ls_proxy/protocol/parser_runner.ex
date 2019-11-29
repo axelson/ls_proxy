@@ -38,11 +38,17 @@ defmodule LsProxy.ParserRunner do
   end
 
   defp handle_parser_command({:read_bytes, bytes}, device) do
-    # LsProxy.Logger.info "Trying to read #{bytes} from #{inspect device}"
-    case IO.read(device, bytes) do
+    # LsProxy.Logger.info("Trying to read #{bytes} bytes from #{inspect(device)}")
+
+    case IO.binread(device, bytes) do
       string when byte_size(string) == bytes ->
-        #LsProxy.Logger.info "Successfully read #{bytes}"
-        #LsProxy.Logger.info "From: #{inspect string}"
+        {:ok, string}
+
+      string when byte_size(string) >= bytes ->
+        # TODO: Log a message since this case is not expected
+        LsProxy.Logger.info("\nREAD #{byte_size(string)}, more than the expected #{bytes}!")
+        LsProxy.Logger.info(string)
+        LsProxy.Logger.info("\n\n")
         {:ok, string}
 
       string ->
