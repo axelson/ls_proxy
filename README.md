@@ -100,6 +100,7 @@ Later:
 
 Maybe:
 - [ ] Use boundary instead of multiple apps
+- [ ] Switch to using releases instead of an escript
 
 Long-term:
 - [ ] collect client-server communication for bug filing on clients and servers
