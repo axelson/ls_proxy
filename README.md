@@ -42,9 +42,26 @@ And the `LsProxy.Collector` collects the metrics info to be displayed via HTTP o
 
 Since EditorPort is the entrypoint into the system it will be the group leader for all of the processes because it has to write to stdout (not implemented yet).
 
+# Running
+
+```
+cd ~/dev/ls_proxy
+# maybe env MIX_ENV=prod LS_HTTP_PROXY_TO='http://localhost:4000/api/messages' mix escript.build; cp app /tmp/ls_proxy_release/language_server.sh
+# maybe env MIX_ENV=prod mix escript.build; cp app /tmp/ls_proxy_release/language_server.sh
+
+cd ~/dev/forks/vscode-elixir-ls/
+git checkout ls-proxy
+vsce package
+code --install-extension ./elixir-ls-0.3.1.vsix  --force
+code
+
+# In a browser navigate to:
+# http://localhost:5000
+```
+
 # Configuration
 
-Env var `LS_PROXY_TO`: Where to find the LanguageServer to proxy
+Env var `LS_PROXY_TO`: Where to find the LanguageServer to proxy to (defaults to `"/home/jason/dev/forks/elixir-ls/release/language_server.sh"`)
 
 Typically used only for development:
 
