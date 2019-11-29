@@ -66,4 +66,12 @@ defmodule LsProxy.Protocol.Message do
       LsProxy.Protocol.Message.to_string(message)
     end
   end
+
+  # TODO: Split the parsing from the operations on the finished data structure
+  @doc """
+  Returns the method name, or nil if it doesn't exist
+  """
+  def method(%__MODULE__{content: content} = message) do
+    content["method"]
+  end
 end

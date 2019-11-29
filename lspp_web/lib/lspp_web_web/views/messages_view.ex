@@ -33,13 +33,48 @@ defmodule LsppWeb.MessagesView do
 
   def message_common(%MessageRecord{} = message_record, expanded, formatted) do
     timestamp_format = if expanded, do: :full, else: :short
+    method_name = MessageRecord.method(message_record)
 
     ~E"""
     <%= render_direction(message_record) %>
     <%= render_timestamp(message_record, timestamp_format) %>
     <div>
-      <%= render_message_contents(message_record.message.content, formatted) %>
+      <%= render_message_details(message_record, method_name, formatted: formatted) %>
     </div>
+    """
+  end
+
+  def render_message_details(%MessageRecord{} = message_record, "textDocument/hover", opts)
+      when is_list(opts) do
+    content = message_record.message.content
+    %{"id" => id} = content
+
+    case content["params"] do
+      %{
+        "textDocument" => %{"uri" => uri_str},
+        "position" => %{"line" => line, "character" => character}
+      } ->
+        # IO.inspect(message_record, label: "new message_record for hover")
+
+        ~E"""
+        textDocument/hover <code><%= uri_str %>:<%= line %></code>(char <%= character %>)
+        <div class="code"><%= message_record.extra_info %></div>
+        <%= render_id(id) %>
+        """
+
+      _ ->
+        ~E"""
+        textDocument/hover
+        """
+    end
+  end
+
+  def render_message_details(%MessageRecord{} = message_record, _method, opts)
+      when is_list(opts) do
+    formatted = Keyword.get(opts, :formatted)
+
+    ~E"""
+    <%= render_message_contents(message_record.message.content, formatted) %>
     """
   end
 

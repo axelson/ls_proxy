@@ -8,6 +8,8 @@ defmodule Utils do
     input
   end
 
+  def wrap_in_ok(input), do: {:ok, input}
+
   def truncate(string, length, fill \\ "…") when is_binary(string) and is_number(length) do
     if String.length(string) < length do
       string

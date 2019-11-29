@@ -10,13 +10,15 @@ defmodule LsProxy.MessageRecord do
           direction: direction,
           error: LsProxy.ResponseError.t() | nil,
           message: LsProxy.Protocol.Message.t(),
-          timestamp: NaiveDateTime.t()
+          timestamp: NaiveDateTime.t(),
+          extra_info: String.t()
         }
 
-  defstruct [:id, :lsp_id, :direction, :error, :message, :timestamp]
+  defstruct [:id, :lsp_id, :direction, :error, :message, :timestamp, :extra_info]
 
   def new(raw_text, direction, now \\ NaiveDateTime.utc_now()) do
     {:ok, message} = LsProxy.ParserRunner.read_message(LsProxy.Protocol.Message, raw_text)
+    method_name = LsProxy.Protocol.Message.method(message)
 
     %__MODULE__{
       id: System.unique_integer([:positive, :monotonic]),
@@ -24,7 +26,8 @@ defmodule LsProxy.MessageRecord do
       error: error(message),
       message: message,
       direction: direction,
-      timestamp: now
+      timestamp: now,
+      extra_info: LsProxy.Methods.extra_info(method_name, message)
     }
   end
 
@@ -32,6 +35,16 @@ defmodule LsProxy.MessageRecord do
   # https://microsoft.github.io/language-server-protocol/specification#notification-message
   defp lsp_id(%{"id" => id}), do: id
   defp lsp_id(_), do: nil
+
+  @doc """
+  Returns the method name, or nil if it doesn't exist
+  """
+  def method(nil), do: nil
+
+  def method(%__MODULE__{} = message_record) do
+    %__MODULE__{message: %LsProxy.Protocol.Message{} = message} = message_record
+    LsProxy.Protocol.Message.method(message)
+  end
 
   def error(message) do
     case message.content do
