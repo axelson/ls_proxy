@@ -8,7 +8,7 @@ defmodule App.MixProject do
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: escript(),
+      escript: escript()
     ]
   end
 
@@ -31,7 +31,7 @@ defmodule App.MixProject do
 
   defp escript do
     [
-      main_module: LsProxy.CLI,
+      main_module: LsProxy.CLI
       # Needed to enable epmd to start automatically
       # emu_args: "-sname proxy"
     ]

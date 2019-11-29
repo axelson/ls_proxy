@@ -12,7 +12,7 @@ defmodule LsProxy.ParserRunner do
     read_message(module, device, :init, nil)
     |> Utils.tap(fn
       {:ok, _} -> nil
-      {:error, message} -> LsProxy.Logger.info("Error reading message: #{inspect message}")
+      {:error, message} -> LsProxy.Logger.info("Error reading message: #{inspect(message)}")
     end)
   end
 
@@ -47,7 +47,8 @@ defmodule LsProxy.ParserRunner do
 
       string ->
         additional_bytes = bytes - byte_size(string)
-        LsProxy.Logger.info "Need to read: #{inspect additional_bytes} additional bytes"
+        LsProxy.Logger.info("Need to read: #{inspect(additional_bytes)} additional bytes")
+
         case IO.read(device, additional_bytes) do
           :eof ->
             # Fudge factor
@@ -60,8 +61,8 @@ defmodule LsProxy.ParserRunner do
             end
 
           additional_string when byte_size(additional_string) == additional_bytes ->
-            #LsProxy.Logger.info("Got additional string: #{additional_string}")
-            #LsProxy.Logger.info("Returning full string: #{string <> additional_string}")
+            # LsProxy.Logger.info("Got additional string: #{additional_string}")
+            # LsProxy.Logger.info("Returning full string: #{string <> additional_string}")
             {:ok, string <> additional_string}
         end
     end

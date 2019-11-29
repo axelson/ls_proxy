@@ -5,11 +5,12 @@ defmodule LsProxy.Protocol.ContentTest do
 
   describe "Protocol.Parse behaviour" do
     test "parses a well-formed content" do
-      content = """
-      {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
+      content =
+        """
+        {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
 
-      """
-      |> String.replace("\n", "\r\n")
+        """
+        |> String.replace("\n", "\r\n")
 
       header = %Header{content_length: 99}
 

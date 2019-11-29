@@ -42,9 +42,9 @@ defmodule LsProxy.ProxyPort do
   end
 
   def handle_successful_message(message) do
-    LsProxy.Logger.info("LS->Editor: received message: #{inspect message}")
+    LsProxy.Logger.info("LS->Editor: received message: #{inspect(message)}")
     msg = LsProxy.Protocol.Message.to_string(message)
-    # LsProxy.Logger.info("parsed outgoing string: #{inspect msg}")
+    LsProxy.Logger.info("parsed outgoing string: #{inspect(msg)}")
     LsProxy.Logger.info("LS->Editor sent: #{msg}")
     # LsProxy.Logger.info("Sending outgoing message")
     IO.write(:stdio, msg)

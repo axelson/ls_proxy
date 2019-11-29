@@ -10,7 +10,7 @@ defmodule LsppWeb.Application do
     children = [
       # Start the endpoint when the application starts
       {DynamicSupervisor, strategy: :one_for_one, name: LsppWeb.DynamicSupervisor},
-      LsppWeb.PhoenixPortSupervisor,
+      LsppWeb.PhoenixPortSupervisor
       # Starts a worker by calling: LsppWeb.Worker.start_link(arg)
       # {LsppWeb.Worker, arg},
     ]

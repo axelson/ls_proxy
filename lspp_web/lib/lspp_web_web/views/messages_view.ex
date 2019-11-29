@@ -59,6 +59,7 @@ defmodule LsppWeb.MessagesView do
 
   def render_message_contents(%{"method" => "window/logMessage"} = message, true) do
     %{"params" => %{"message" => log_message}} = message
+
     ~E"""
     <div>Log: <%= Utils.truncate(log_message, 100) %></div>
     <pre>
@@ -66,14 +67,19 @@ defmodule LsppWeb.MessagesView do
     </pre>
     """
   end
+
   def render_message_contents(%{"method" => "window/logMessage"} = message, _formatted) do
     %{"params" => %{"message" => log_message}} = message
+
     ~E"""
     <div>Log: <%= Utils.truncate(log_message, 100) %></div>
     """
   end
 
-  def render_message_contents(%{"method" => "textDocument/hover", "id" => id} = message_record, _formatted) do
+  def render_message_contents(
+        %{"method" => "textDocument/hover", "id" => id} = message_record,
+        _formatted
+      ) do
     case message_record["params"] do
       %{
         "textDocument" => %{"uri" => uri_str},
@@ -190,6 +196,7 @@ defmodule LsppWeb.MessagesView do
 
   def render_message_contents(%{"error" => error} = message_contents, formatted) do
     %{"code" => error_code, "message" => error_message} = error
+
     error_name =
       case LsProxy.ErrorCodes.error_name(error_code) do
         {:ok, error_name} -> error_name

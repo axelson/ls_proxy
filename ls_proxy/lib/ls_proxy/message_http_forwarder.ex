@@ -5,6 +5,7 @@ defmodule LsProxy.MessageHTTPForwarder do
     if proxy_to() do
       headers = [{"Content-Type", "application/json"}]
       payload = Jason.encode!(%{message: raw_message, direction: direction})
+
       Task.start(fn ->
         result = Mojito.request(:post, proxy_to(), headers, payload)
         # LsProxy.Logger.info(inspect(result, label: "result"))

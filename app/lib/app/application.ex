@@ -16,7 +16,7 @@ defmodule App.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: App.Supervisor]
     started = Node.start(:app@jdesktop, :shortnames)
-    LsProxy.Logger.info("Started node! #{inspect started}")
+    LsProxy.Logger.info("Started node! #{inspect(started)}")
     Supervisor.start_link(children, opts)
   end
 end

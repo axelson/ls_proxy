@@ -30,24 +30,26 @@ defmodule LsProxy.RequestResponse do
         %__MODULE__{request: nil, id: id} = req_resp,
         %LsProxy.MessageRecord{direction: :incoming, lsp_id: id} = message_record
       ) do
-    status = if is_cancel_response(req_resp.response) do
-      :canceled
-    else
-      :complete
-    end
+    status =
+      if is_cancel_response(req_resp.response) do
+        :canceled
+      else
+        :complete
+      end
 
     {:ok, %__MODULE__{req_resp | request: message_record, status: status}}
   end
 
   def add(
-    %__MODULE__{response: nil, id: id} = req_resp,
-    %LsProxy.MessageRecord{direction: :outgoing, lsp_id: id} = message_record
-  ) do
-    status = if is_cancel_response(message_record) do
-      :canceled
-    else
-      :complete
-    end
+        %__MODULE__{response: nil, id: id} = req_resp,
+        %LsProxy.MessageRecord{direction: :outgoing, lsp_id: id} = message_record
+      ) do
+    status =
+      if is_cancel_response(message_record) do
+        :canceled
+      else
+        :complete
+      end
 
     {:ok, %__MODULE__{req_resp | response: message_record, status: status}}
   end

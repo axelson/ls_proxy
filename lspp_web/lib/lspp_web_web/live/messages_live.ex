@@ -88,10 +88,12 @@ defmodule LsppWebWeb.MessagesLive do
 
   defp update_outstanding(socket) do
     %{message_records: message_records} = socket.assigns
-    outstanding = process(message_records)
-    |> Enum.sort_by(fn {id, _} -> id end)
-    |> Enum.reverse()
-    |> Enum.map(fn {_id, req_resp} -> req_resp end)
+
+    outstanding =
+      process(message_records)
+      |> Enum.sort_by(fn {id, _} -> id end)
+      |> Enum.reverse()
+      |> Enum.map(fn {_id, req_resp} -> req_resp end)
 
     socket
     |> assign(:outstanding, outstanding)
