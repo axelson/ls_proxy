@@ -26,8 +26,9 @@ defmodule LsProxy.RequestResponse do
     {:ok, %__MODULE__{response: message_record, id: id, status: :partial}}
   end
 
+  # Record reqeust
   def add(
-        %__MODULE__{request: nil, id: id} = req_resp,
+        %__MODULE__{id: id} = req_resp,
         %LsProxy.MessageRecord{direction: :incoming, lsp_id: id} = message_record
       ) do
     status =
@@ -40,8 +41,9 @@ defmodule LsProxy.RequestResponse do
     {:ok, %__MODULE__{req_resp | request: message_record, status: status}}
   end
 
+  # Record response
   def add(
-        %__MODULE__{response: nil, id: id} = req_resp,
+        %__MODULE__{id: id} = req_resp,
         %LsProxy.MessageRecord{direction: :outgoing, lsp_id: id} = message_record
       ) do
     status =
