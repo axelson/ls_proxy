@@ -1,0 +1,47 @@
+.exc-tick {
+  stroke: grey;
+}
+
+.exc-tick text {
+  fill: grey;
+  stroke: none;
+  font-size: 0.7rem;
+}
+.exc-grid {
+  stroke: lightgrey;
+}
+
+.exc-legend {
+  stroke: black;
+}
+
+.exc-legend text {
+  fill: grey;
+  font-size: 0.8rem;
+  stroke: none;
+}
+
+.exc-title {
+  fill: darkslategray;
+  font-size: 2.3rem;
+  stroke: none;
+}
+.exc-subtitle {
+  fill: darkgrey;
+  font-size: 1.0rem;
+  stroke: none;
+}
+
+.exc-domain {
+  stroke:  rgb(207, 207, 207);
+}
+
+.exc-barlabel-in {
+  fill: white;
+  font-size: 0.7rem;
+}
+
+.exc-barlabel-out {
+  fill: grey;
+  font-size: 0.7rem;
+}

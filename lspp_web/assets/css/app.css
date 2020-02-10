@@ -1,6 +1,7 @@
 /* This file is for your main application css. */
 
 @import "./phoenix.css";
+@import "./contex.css";
 
 .message {
   margin: 6px 0;

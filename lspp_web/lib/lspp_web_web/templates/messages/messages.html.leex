@@ -2,9 +2,11 @@
   <button phx-click="reset">Reset</button>
 </div>
 
+<%= plot_response_times(@test_data) %>
+
 <div class="row">
   <div class="column">
-    <h3>Outstanding</h3>
+    <h3>Requests</h3>
     <%= for req_resp <- Enum.take(@outstanding, 15) do %>
       <div>
         <%= render "_request_response.html", req_resp: req_resp %>

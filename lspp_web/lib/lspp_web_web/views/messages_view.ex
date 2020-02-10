@@ -297,4 +297,6 @@ defmodule LsppWeb.MessagesView do
   defp zero_pad(number), do: String.pad_leading(to_string(number), 2, "0")
 
   def render_id(id), do: ~E"<div>id: <b><%= id %></b></div>"
+
+  defdelegate plot_response_times(data), to: LsppWebWeb.MessagesLive
 end

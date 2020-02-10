@@ -61,6 +61,11 @@ defmodule LsProxy.RequestResponse do
   def add(%__MODULE__{status: :canceled} = req_resp, _), do: {:ok, req_resp}
   def add(%__MODULE__{status: :complete} = req_resp, _), do: {:ok, req_resp}
 
+  def complete?(%__MODULE__{} = req_resp) do
+    %__MODULE__{request: req, response: resp} = req_resp
+    !is_nil(req) and !is_nil(resp)
+  end
+
   defp is_cancel_response(message_record) do
     case message_record.error do
       %{error_name: "RequestCancelled"} -> true
