@@ -61,7 +61,7 @@ code
 
 # Configuration
 
-Env var `LS_PROXY_TO`: Where to find the LanguageServer to proxy to (defaults to `"/home/jason/dev/forks/elixir-ls/release/language_server.sh"`)
+Env var `LS_PROXY_TO`: Where to find the LanguageServer to proxy to (defaults to `"elixir-ls/release/language_server.sh"`)
 
 Typically used only for development:
 
