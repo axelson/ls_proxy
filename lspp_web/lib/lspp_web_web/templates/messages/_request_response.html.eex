@@ -11,6 +11,8 @@
   <div>Request Response <%= @req_resp.id %></div>
 <% end %>
 
+<%= LsppWeb.RequestView.render_request(@req_resp) %>
+
 <%= case @req_resp.status do %>
   <% :pending -> %>
     <div>

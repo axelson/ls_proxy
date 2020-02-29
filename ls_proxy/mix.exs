@@ -32,6 +32,7 @@ defmodule LsProxy.MixProject do
       {:logger_file_backend, "~> 0.0.10"},
       # runtime: false because for an escript we need to manually start it
       {:erlexec, "~> 1.10.0", runtime: false},
+      {:ecto, "~> 3.3"},
       {:utils, path: "../utils"},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false}
     ]
