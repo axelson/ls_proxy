@@ -7,7 +7,7 @@ defmodule LsProxy.Requests.Initialize do
       field(:includeText, :boolean)
     end
 
-    def changeset(params) do
+    def changeset(_, params) do
       %__MODULE__{}
       |> cast(params, [:includeText])
       |> validate_required([])
@@ -27,7 +27,7 @@ defmodule LsProxy.Requests.Initialize do
       embeds_one(:save, LsProxy.Requests.Initialize.SaveOptions)
     end
 
-    def changeset(params) do
+    def changeset(_, params) do
       %__MODULE__{}
       |> cast(params, [:openClose, :change, :willSave, :willSaveWaitUntil])
       |> cast_embed(:save)
@@ -41,7 +41,7 @@ defmodule LsProxy.Requests.Initialize do
         :ok
 
       text_document_sync_options when is_map(text_document_sync_options) ->
-        case TextDocumentSyncCapabilities.changeset(text_document_sync_options) do
+        case TextDocumentSyncCapabilities.changeset(nil, text_document_sync_options) do
           %{valid?: true} ->
             :ok
 
