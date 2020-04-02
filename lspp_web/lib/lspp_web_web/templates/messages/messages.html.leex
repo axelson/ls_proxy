@@ -7,11 +7,24 @@
 <div class="row">
   <div class="column">
     <h3>Requests</h3>
-    <%= for req_resp <- Enum.take(@outstanding, 15) do %>
-      <div>
-        <%= render "_request_response.html", req_resp: req_resp %>
-      </div>
+    <form phx-change="filter_requests">
+      <input type="text" name="q" value="<%= @query %>" placeholder="Filter...">
+    </form>
+
+    <%= if @filtered_requests do %>
+      <%= for req_resp <- Enum.take(@filtered_requests, 15) do %>
+        <div>
+          <%= render "_request_response.html", req_resp: req_resp %>
+        </div>
+      <% end %>
+    <% else %>
+      <%= for req_resp <- Enum.take(@outstanding, 15) do %>
+        <div>
+          <%= render "_request_response.html", req_resp: req_resp %>
+        </div>
+      <% end %>
     <% end %>
+
     <h1>Messages</h1>
     <%= for message_record <- @message_records do %>
       <div class="message">

@@ -15,7 +15,10 @@ defmodule LsppWebWeb.MessagesLive do
       |> assign(:message_records, [])
       |> assign(:expanded, %{})
       |> assign(:formatted, %{})
+      # TODO: shouldn't this be an empty list?
       |> assign(:outstanding, %{})
+      |> assign(:query, nil)
+      |> assign(:filtered_requests, nil)
       |> update_messages()
       |> add_bar_chart_data()
 
@@ -52,6 +55,26 @@ defmodule LsppWebWeb.MessagesLive do
 
   def handle_event("reset", _, socket) do
     LsProxy.ProxyState.clear()
+    {:noreply, socket}
+  end
+
+  def handle_event("filter_requests", %{"q" => ""}, socket) do
+    socket = assign(socket, filtered_requests: nil)
+    {:noreply, socket}
+  end
+
+  def handle_event("filter_requests", %{"q" => query}, socket) when byte_size(query) <= 1000 do
+    filtered =
+      socket.assigns.outstanding
+      |> Enum.filter(fn req_resp ->
+        case LsProxy.MessageRecord.method(req_resp.request) do
+          nil -> false
+          method -> String.contains?(method, query)
+        end
+      end)
+
+    socket = assign(socket, filtered_requests: filtered)
+
     {:noreply, socket}
   end
 
@@ -112,6 +135,7 @@ defmodule LsppWebWeb.MessagesLive do
     |> update_outstanding()
   end
 
+  # TODO: outstanding seems like the wrong name for this
   defp update_outstanding(socket) do
     %{message_records: message_records} = socket.assigns
 
