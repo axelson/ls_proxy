@@ -68,7 +68,7 @@ defmodule LsppWebWeb.MessagesLive do
       |> Enum.filter(fn req_resp ->
         case LsProxy.MessageRecord.method(req_resp.request) do
           nil -> false
-          method -> String.contains?(method, query)
+          method -> String.contains?(String.downcase(method), String.downcase(query))
         end
       end)
 
