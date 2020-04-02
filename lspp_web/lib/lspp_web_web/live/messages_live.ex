@@ -15,9 +15,8 @@ defmodule LsppWebWeb.MessagesLive do
       |> assign(:message_records, [])
       |> assign(:expanded, %{})
       |> assign(:formatted, %{})
-      # TODO: shouldn't this be an empty list?
-      |> assign(:outstanding, %{})
       |> assign(:query, nil)
+      |> assign(:requests, %{})
       |> assign(:filtered_requests, nil)
       |> update_messages()
       |> add_bar_chart_data()
@@ -65,7 +64,7 @@ defmodule LsppWebWeb.MessagesLive do
 
   def handle_event("filter_requests", %{"q" => query}, socket) when byte_size(query) <= 1000 do
     filtered =
-      socket.assigns.outstanding
+      socket.assigns.requests
       |> Enum.filter(fn req_resp ->
         case LsProxy.MessageRecord.method(req_resp.request) do
           nil -> false
@@ -132,33 +131,32 @@ defmodule LsppWebWeb.MessagesLive do
       LsProxy.ProxyState.messages()
       |> Enum.reverse()
     end)
-    |> update_outstanding()
+    |> update_requests()
   end
 
-  # TODO: outstanding seems like the wrong name for this
-  defp update_outstanding(socket) do
+  defp update_requests(socket) do
     %{message_records: message_records} = socket.assigns
 
-    outstanding =
+    requests =
       process(message_records)
       |> Enum.sort_by(fn {id, _} -> id end)
       |> Enum.reverse()
       |> Enum.map(fn {_id, req_resp} -> req_resp end)
 
     socket
-    |> assign(:outstanding, outstanding)
+    |> assign(:requests, requests)
   end
 
   defp process(message_records) do
     message_records
     |> Enum.reduce(%{}, fn
-      %{lsp_id: nil}, outstanding ->
-        outstanding
+      %{lsp_id: nil}, requests ->
+        requests
 
-      %{lsp_id: lsp_id} = message_record, outstanding ->
+      %{lsp_id: lsp_id} = message_record, requests ->
         {:ok, initial} = LsProxy.RequestResponse.new(message_record)
 
-        Map.update(outstanding, lsp_id, initial, fn existing ->
+        Map.update(requests, lsp_id, initial, fn existing ->
           {:ok, req_resp} = LsProxy.RequestResponse.add(existing, message_record)
           req_resp
         end)
@@ -166,12 +164,12 @@ defmodule LsppWebWeb.MessagesLive do
   end
 
   defp add_bar_chart_data(socket) do
-    outstanding_requests =
-      socket.assigns.outstanding
+    requests =
+      socket.assigns.requests
       |> Enum.take(10)
 
     data =
-      outstanding_requests
+      requests
       |> Enum.filter(&LsProxy.RequestResponse.complete?/1)
       |> Enum.map(&to_contex_data/1)
 

@@ -18,7 +18,7 @@
         </div>
       <% end %>
     <% else %>
-      <%= for req_resp <- Enum.take(@outstanding, 15) do %>
+      <%= for req_resp <- Enum.take(@requests, 15) do %>
         <div>
           <%= render "_request_response.html", req_resp: req_resp %>
         </div>
