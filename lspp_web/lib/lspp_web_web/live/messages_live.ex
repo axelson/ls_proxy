@@ -5,7 +5,7 @@ defmodule LsppWebWeb.MessagesLive do
     LsppWeb.MessagesView.render("messages.html", assigns)
   end
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     if connected?(socket) do
       LsProxy.ProxyState.register_listener()
     end

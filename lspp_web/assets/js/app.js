@@ -15,10 +15,12 @@ import css from "../css/app.css"
 //
 import "phoenix_html"
 
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
 
-let liveSocket = new LiveSocket("/live", Socket)
+let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}});
 liveSocket.connect()

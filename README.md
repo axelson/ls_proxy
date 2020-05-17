@@ -87,10 +87,10 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
   - Maybe we can no set `server: true` initially but start up the server after the fact, that wasy we can register a handler to see if it failed (or in the Endpoint.init callback we can check what ports we've already tried)
 - [x] Add ability to log to lsp output
 - [x] Print http port running on to lsp output
+- [x] Update to latest Phoenix LiveView
 - [ ] Update filtered requests whenever messages changes
 - [ ] Organize messages page for usability
 - [ ] Render messages on homepage instead of messages pages
-- [ ] Update to latest Phoenix LiveView
 - [ ] Show client capabilities
 - [ ] Make the request/response section scannable and usable
 - [ ] Show server capabilities

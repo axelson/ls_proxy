@@ -35,6 +35,5 @@ a:focus, a:hover {
   white-space: pre;
 }
 
-/* Temp? */
-@import "../../deps/phoenix_live_view/assets/css/live_view.css"
+@import "../node_modules/nprogress/nprogress.css";
 

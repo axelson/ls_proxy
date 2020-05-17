@@ -1,11 +1,17 @@
 defmodule LsppWebWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :lspp_web
 
+  @session_options [
+    store: :cookie,
+    key: "_lspp_web_key",
+    signing_salt: "GfSf47g8"
+  ]
+
   socket "/socket", LsppWebWeb.UserSocket,
     websocket: true,
     longpoll: false
 
-  socket "/live", Phoenix.LiveView.Socket
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Disabling Plug.Static because we can't use it with escript's (and maybe
   # releases)
@@ -40,9 +46,7 @@ defmodule LsppWebWeb.Endpoint do
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
-    store: :cookie,
-    key: "_lspp_web_key",
-    signing_salt: "GfSf47g8"
+       @session_options
 
   plug LsppWebWeb.Router
 
