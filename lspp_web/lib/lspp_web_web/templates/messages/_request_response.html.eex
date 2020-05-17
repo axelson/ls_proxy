@@ -39,4 +39,12 @@
     <div>Other</div>
 <% end %>
 
+<%= if @req_resp.request do %>
+  <%= render_message(@req_resp.request, true, false) %>
+<% end %>
+
+<%= if @req_resp.response do %>
+  <%= render_message(@req_resp.response, true, false) %>
+<% end %>
+
 <br />
