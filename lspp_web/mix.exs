@@ -46,7 +46,8 @@ defmodule LsppWeb.MixProject do
       {:utils, path: "../utils"},
       # {:exsync, github: "falood/exsync", ref: "master", only: :dev},
       {:exsync, path: "~/dev/forks/exsync", only: :dev},
-      {:phoenix_live_reload, "~> 1.2", only: :dev}
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:ring_logger, "~> 0.8.0"}
     ]
   end
 end
