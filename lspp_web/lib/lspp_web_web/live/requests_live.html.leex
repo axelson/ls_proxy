@@ -1,3 +1,5 @@
+Requests
+
 <% req = @req_resp.request %>
 <% resp = @req_resp.response %>
 <% method = LsProxy.MessageRecord.method(req) %>
@@ -28,7 +30,7 @@
     <div>
       Duration: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
     </div>
-    <!-- <pre><%= raw (inspect @req_resp, pretty: true)  %></pre> -->
+    <!-- <pre><%= Phoenix.HTML.raw (inspect @req_resp, pretty: true)  %></pre> -->
 
   <% :canceled -> %>
     <div>
@@ -40,11 +42,11 @@
 <% end %>
 
 <%= if @req_resp.request do %>
-  <%= render_message(@req_resp.request, true, false) %>
+  <%= LsppWeb.MessagesView.render_message(@req_resp.request, true, false) %>
 <% end %>
 
 <%= if @req_resp.response do %>
-  <%= render_message(@req_resp.response, true, false) %>
+  <%= LsppWeb.MessagesView.render_message(@req_resp.response, true, false) %>
 <% end %>
 
 <br />

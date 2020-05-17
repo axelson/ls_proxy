@@ -198,7 +198,7 @@ defmodule LsppWeb.MessagesView do
         ~E"""
         Result: <%= Utils.truncate(contents, 100) %>
         <%= render_id(id) %>
-        <%= raw html %>
+        <%= Phoenix.HTML.raw html %>
         """
 
       {:error, html, error_messages} ->

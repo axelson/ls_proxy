@@ -17,13 +17,13 @@
       <% end %>
       <%= for req_resp <- Enum.take(@filtered_requests, 15) do %>
         <div>
-          <%= render "_request_response.html", req_resp: req_resp %>
+          <%= live_component(@socket, LsppWeb.RequestsLive, req_resp: req_resp) %>
         </div>
       <% end %>
     <% else %>
       <%= for req_resp <- Enum.take(@requests, 15) do %>
         <div>
-          <%= render "_request_response.html", req_resp: req_resp %>
+          <%= live_component(@socket, LsppWeb.RequestsLive, req_resp: req_resp) %>
         </div>
       <% end %>
     <% end %>
@@ -34,7 +34,7 @@
         <% expanded = Map.get(@expanded, message_record.id) %>
         <% formatted = Map.get(@formatted, message_record.id) %>
 
-        <%= render_message(message_record, expanded, formatted) %>
+        <%= LsppWeb.MessagesView.render_message(message_record, expanded, formatted) %>
       </div>
     <% end %>
   </div>
