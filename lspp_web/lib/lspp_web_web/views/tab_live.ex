@@ -23,7 +23,12 @@ defmodule LsppWeb.TabLive do
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
     socket = assign(socket, assigns)
-    socket = assign(socket, :active_tab, assigns.initial_tab)
+
+    socket =
+      case socket.assigns[:active_tab] do
+        nil -> assign(socket, :active_tab, assigns.initial_tab)
+        _ -> socket
+      end
 
     {:ok, socket}
   end

@@ -3,6 +3,9 @@ defmodule LsppWeb.MessagesView do
 
   alias LsProxy.MessageRecord
 
+  @doc """
+  Render a detailed view of the message
+  """
   def render_message(message_record, expanded, formatted)
 
   def render_message(%MessageRecord{} = message_record, true, formatted) do

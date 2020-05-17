@@ -53,3 +53,16 @@ a:focus, a:hover {
   background: aliceblue;
   cursor: default;
 }
+
+.req-block {
+  margin: 10px 0;
+}
+.req-block-body {
+  padding-top: 4px;
+  padding-left: 4px;
+  background: #e4f1ff;
+}
+
+.req-block .attribute {
+  line-height: 1.1;
+}

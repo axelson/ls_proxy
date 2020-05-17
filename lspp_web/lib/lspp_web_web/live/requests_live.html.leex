@@ -1,52 +1,57 @@
-Requests
-
 <% req = @req_resp.request %>
 <% resp = @req_resp.response %>
 <% method = LsProxy.MessageRecord.method(req) %>
 
-<%= if method do %>
+<div class="req-block">
   <div>
-    <span class="code"><%= method %></span>
-    <%= @req_resp.id %>
+    <%= if method do %>
+      <div>
+        <span class="code"><%= method %></span>
+        <%= @req_resp.id %>
+      </div>
+    <% else %>
+      <div>Request Response <%= @req_resp.id %></div>
+    <% end %>
   </div>
-<% else %>
-  <div>Request Response <%= @req_resp.id %></div>
-<% end %>
-
-<%= LsppWeb.RequestView.render_request(@req_resp) %>
-
-<%= case @req_resp.status do %>
-  <% :pending -> %>
-    <div>
-      Started: <%= req.timestamp %>
+  <div class="req-block-body">
+    <div class="attribute">
+      valid: <%= LsppWeb.RequestView.render_request(@req_resp) %>
     </div>
 
-  <% :partial -> %>
-    <div>
-      Partial message: <%= resp.timestamp %>
-    </div>
+    <%= case @req_resp.status do %>
+      <% :pending -> %>
+        <div class="attribute">
+          Started: <%= req.timestamp %>
+        </div>
 
-  <% :complete -> %>
-    <div>
-      Duration: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
-    </div>
-    <!-- <pre><%= Phoenix.HTML.raw (inspect @req_resp, pretty: true)  %></pre> -->
+      <% :partial -> %>
+        <div class="attribute">
+          Partial message: <%= resp.timestamp %>
+        </div>
 
-  <% :canceled -> %>
-    <div>
-      Cancelled after: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
-    </div>
+      <% :complete -> %>
+        <div class="attribute">
+          Duration: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
+        </div>
+        <!-- <pre><%= Phoenix.HTML.raw (inspect @req_resp, pretty: true)  %></pre> -->
 
-  <% _ -> %>
-    <div>Other</div>
-<% end %>
+      <% :canceled -> %>
+        <div class="attribute">
+          Cancelled after: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
+        </div>
 
-<%= if @req_resp.request do %>
-  <%= LsppWeb.MessagesView.render_message(@req_resp.request, true, false) %>
-<% end %>
+      <% _ -> %>
+        <div>Other</div>
+    <% end %>
 
-<%= if @req_resp.response do %>
-  <%= LsppWeb.MessagesView.render_message(@req_resp.response, true, false) %>
-<% end %>
+    <%= if @req_resp.request do %>
+      <%= LsppWeb.MessagesView.render_message(@req_resp.request, true, false) %>
+    <% end %>
 
-<br />
+    <div>BETWEEN</div>
+
+    <%= if @req_resp.response do %>
+      <%= LsppWeb.MessagesView.render_message(@req_resp.response, true, false) %>
+    <% end %>
+  </div>
+</div>
