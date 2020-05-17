@@ -1,6 +1,16 @@
 defmodule LsppWebWeb.MessagesLive do
   use Phoenix.LiveView
 
+  defmodule State do
+    defstruct message_records: [],
+              expanded: %{},
+              formatted: %{},
+              query: nil,
+              requests: %{},
+              filtered_requests: nil,
+              test_data: nil
+  end
+
   def mount(_params, _session, socket) do
     if connected?(socket) do
       LsProxy.ProxyState.register_listener()
@@ -8,12 +18,7 @@ defmodule LsppWebWeb.MessagesLive do
 
     socket =
       socket
-      |> assign(:message_records, [])
-      |> assign(:expanded, %{})
-      |> assign(:formatted, %{})
-      |> assign(:query, nil)
-      |> assign(:requests, %{})
-      |> assign(:filtered_requests, nil)
+      |> assign(:state, %State{})
       |> update_messages()
       |> add_bar_chart_data()
 
@@ -54,13 +59,15 @@ defmodule LsppWebWeb.MessagesLive do
   end
 
   def handle_event("filter_requests", %{"q" => ""}, socket) do
-    socket = assign(socket, filtered_requests: nil)
-    {:noreply, socket}
+    state = %State{socket.assigns.state | filtered_requests: nil}
+    {:noreply, assign(socket, state: state)}
   end
 
   def handle_event("filter_requests", %{"q" => query}, socket) when byte_size(query) <= 1000 do
+    state = socket.assigns.state
+
     filtered =
-      socket.assigns.requests
+      state.requests
       |> Enum.filter(fn req_resp ->
         case LsProxy.MessageRecord.method(req_resp.request) do
           nil -> false
@@ -68,70 +75,66 @@ defmodule LsppWebWeb.MessagesLive do
         end
       end)
 
-    socket = assign(socket, filtered_requests: filtered)
+    state = %State{state | filtered_requests: filtered}
 
-    {:noreply, socket}
+    {:noreply, assign(socket, state: state)}
   end
 
   def handle_event("expand:" <> id, _, socket) do
     id = String.to_integer(id)
-    %{expanded: expanded} = socket.assigns
+    %State{expanded: expanded} = state = socket.assigns.state
     expanded = Map.put(expanded, id, true)
 
-    socket =
-      socket
-      |> assign(:expanded, expanded)
+    state = %State{state | expanded: expanded}
 
-    {:noreply, socket}
+    {:noreply, assign(socket, state: state)}
   end
 
   def handle_event("collapse:" <> id, _, socket) do
     id = String.to_integer(id)
-    %{expanded: expanded} = socket.assigns
+    %State{expanded: expanded} = state = socket.assigns.state
     expanded = Map.put(expanded, id, false)
 
-    socket =
-      socket
-      |> assign(:expanded, expanded)
+    state = %State{state | expanded: expanded}
 
-    {:noreply, socket}
+    {:noreply, assign(socket, state: state)}
   end
 
   def handle_event("expand-formatted:" <> id, _, socket) do
     id = String.to_integer(id)
-    %{formatted: formatted} = socket.assigns
+    %State{formatted: formatted} = state = socket.assigns.state
     formatted = Map.put(formatted, id, true)
 
-    socket =
-      socket
-      |> assign(:formatted, formatted)
+    state = %State{state | formatted: formatted}
 
-    {:noreply, socket}
+    {:noreply, assign(socket, state: state)}
   end
 
   def handle_event("collapse-formatted:" <> id, _, socket) do
     id = String.to_integer(id)
-    %{formatted: formatted} = socket.assigns
+    %State{formatted: formatted} = state = socket.assigns.state
     formatted = Map.put(formatted, id, false)
 
-    socket =
-      socket
-      |> assign(:formatted, formatted)
+    state = %State{state | formatted: formatted}
 
-    {:noreply, socket}
+    {:noreply, assign(socket, state: state)}
   end
 
   defp update_messages(socket) do
     socket
-    |> update(:message_records, fn _ ->
-      LsProxy.ProxyState.messages()
-      |> Enum.reverse()
+    |> update(:state, fn state ->
+      message_records =
+        LsProxy.ProxyState.messages()
+        |> Enum.reverse()
+
+      %State{state | message_records: message_records}
     end)
     |> update_requests()
   end
 
+  # TODO: Change this to take state instead of socket?
   defp update_requests(socket) do
-    %{message_records: message_records} = socket.assigns
+    %State{message_records: message_records} = state = socket.assigns.state
 
     requests =
       process(message_records)
@@ -139,8 +142,8 @@ defmodule LsppWebWeb.MessagesLive do
       |> Enum.reverse()
       |> Enum.map(fn {_id, req_resp} -> req_resp end)
 
-    socket
-    |> assign(:requests, requests)
+    state = %State{state | requests: requests}
+    assign(socket, state: state)
   end
 
   defp process(message_records) do
@@ -160,9 +163,8 @@ defmodule LsppWebWeb.MessagesLive do
   end
 
   defp add_bar_chart_data(socket) do
-    requests =
-      socket.assigns.requests
-      |> Enum.take(10)
+    state = socket.assigns.state
+    requests = Enum.take(state.requests, 10)
 
     data =
       requests
@@ -170,8 +172,9 @@ defmodule LsppWebWeb.MessagesLive do
       |> Enum.map(&to_contex_data/1)
 
     dataset = Contex.Dataset.new(data, ["Category", "Series 1"])
+    state = %State{state | test_data: dataset}
 
-    assign(socket, test_data: dataset)
+    assign(socket, state: state)
   end
 
   defp to_contex_data(%LsProxy.RequestResponse{} = request_response) do
