@@ -6,6 +6,10 @@
 
 <div class="row">
   <div class="column">
+    <div class="tab-bar">
+      <div phx-click="focus:requests">Requests</div>
+      <div phx-click="focus:messages">Messages</div>
+    </div>
     <%= case @state.active_tab do %>
       <% :requests -> %>
         <%= live_component(@socket, LsppWeb.ReqRespLive, assigns) %>
