@@ -1,5 +1,6 @@
 /* This file is for your main application css. */
 
+@import "../node_modules/nprogress/nprogress.css";
 @import "./phoenix.css";
 @import "./contex.css";
 
@@ -35,5 +36,20 @@ a:focus, a:hover {
   white-space: pre;
 }
 
-@import "../node_modules/nprogress/nprogress.css";
-
+.tab-bar-nav {
+  display: flex;
+}
+.tab-bar-nav > div {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.tab-bar-nav > div:hover {
+  background: lightblue;
+}
+.tab-bar-nav > div.active {
+  text-decoration: none;
+  background: aliceblue;
+  cursor: default;
+}

@@ -8,8 +8,7 @@ defmodule LsppWebWeb.MessagesLive do
               query: nil,
               requests: %{},
               filtered_requests: nil,
-              test_data: nil,
-              active_tab: :requests
+              test_data: nil
   end
 
   @impl Phoenix.LiveView
@@ -46,6 +45,13 @@ defmodule LsppWebWeb.MessagesLive do
     Contex.Plot.to_svg(plot)
   end
 
+  def tab_config do
+    [
+      requests: {"Requests", LsppWeb.ReqRespLive},
+      messages: {"Message List", LsppWeb.MessageList}
+    ]
+  end
+
   @impl Phoenix.LiveView
   def handle_info({:update_messages}, socket) do
     socket =
@@ -60,13 +66,6 @@ defmodule LsppWebWeb.MessagesLive do
   def handle_event("reset", _, socket) do
     LsProxy.ProxyState.clear()
     {:noreply, socket}
-  end
-
-  def handle_event("focus:" <> focus_target, _params, socket)
-      when focus_target in ["requests", "messages"] do
-    state = %State{socket.assigns.state | active_tab: String.to_existing_atom(focus_target)}
-
-    {:noreply, assign(socket, state: state)}
   end
 
   def handle_event("filter_requests", %{"q" => ""}, socket) do
