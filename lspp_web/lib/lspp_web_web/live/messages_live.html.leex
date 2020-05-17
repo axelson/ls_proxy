@@ -6,37 +6,11 @@
 
 <div class="row">
   <div class="column">
-    <h3>Requests</h3>
-    <form phx-change="filter_requests">
-      <input type="text" name="q" value="<%= @state.query %>" placeholder="Filter...">
-    </form>
-
-    <%= if @state.filtered_requests do %>
-      <%= if @state.filtered_requests == [] do %>
-        No results matched
-      <% end %>
-      <%= for req_resp <- Enum.take(@state.filtered_requests, 15) do %>
-        <div>
-          <%= live_component(@socket, LsppWeb.RequestsLive, req_resp: req_resp) %>
-        </div>
-      <% end %>
-    <% else %>
-      <%= for req_resp <- Enum.take(@state.requests, 15) do %>
-        <div>
-          <%= live_component(@socket, LsppWeb.RequestsLive, req_resp: req_resp) %>
-        </div>
-      <% end %>
-    <% end %>
-
-    <h1>Messages</h1>
-    <%= for message_record <- @state.message_records do %>
-      <div class="message">
-        <%= LsppWeb.MessagesView.render_message(
-            message_record,
-            Map.get(@state.expanded, message_record.id),
-            Map.get(@state.formatted, message_record.id)
-            ) %>
-      </div>
+    <%= case @state.active_tab do %>
+      <% :requests -> %>
+        <%= live_component(@socket, LsppWeb.ReqRespLive, assigns) %>
+      <% :messages -> %>
+        <%= live_component(@socket, LsppWeb.MessageList, assigns) %>
     <% end %>
   </div>
 </div>

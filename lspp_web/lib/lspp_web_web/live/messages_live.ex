@@ -8,7 +8,8 @@ defmodule LsppWebWeb.MessagesLive do
               query: nil,
               requests: %{},
               filtered_requests: nil,
-              test_data: nil
+              test_data: nil,
+              active_tab: :requests
   end
 
   def mount(_params, _session, socket) do
