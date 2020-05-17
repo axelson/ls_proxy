@@ -92,13 +92,15 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
 - [ ] Update filtered requests whenever messages changes
 - [ ] Organize messages page for usability
 - [ ] Render messages on homepage instead of messages pages
+
+Later:
+- [ ] Show cancelled request/responses
 - [ ] Show client capabilities
 - [ ] Make the request/response section scannable and usable
 - [ ] Show server capabilities
 - [ ] Show current diagnostics (warnings/errors)
   - [ ] And provide a way to drill down into what the lsp messages were and the messages around the same time
 - [ ] `LsProxy.ErrorCodesParser` should show server error code when errror is between `serverErrorStart` and `serverErrorEnd` (e.g. `"ServerError -32001"`)
-- [ ] Show cancelled request/responses
 - [ ] Limit number of stored messages
   - Ideally would drop the request along with the response
 - [ ] Use `Node.start/3`: https://hexdocs.pm/elixir/Node.html#start/3
