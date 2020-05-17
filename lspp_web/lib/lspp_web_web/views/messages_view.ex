@@ -265,15 +265,25 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_direction(%MessageRecord{} = message_record) do
-    direction_arrow =
-      case message_record.direction do
-        :incoming -> "➡"
-        :outgoing -> "⬅"
-      end
-
     ~E"""
-    <span class="direction-arrow"><%= direction_arrow %></span>
+    <span class="direction-arrow" title="<%= direction_tooltip(message_record) %>">
+      <%= direction_arrow(message_record) %>
+    </span>
     """
+  end
+
+  def direction_arrow(message_record) do
+    case message_record.direction do
+      :incoming -> "➡"
+      :outgoing -> "⬅"
+    end
+  end
+
+  def direction_tooltip(message_record) do
+    case message_record.direction do
+      :incoming -> "Message sent TO server"
+      :outgoing -> "Message received FROM server"
+    end
   end
 
   def render_timestamp(%MessageRecord{timestamp: timestamp}, :short) do
