@@ -102,7 +102,7 @@ defmodule LsProxy.ProxyPort do
     {:reply, result, state}
   end
 
-  defp log_message(text) do
+  def log_message(text) do
     message =
       LsProxy.Protocol.Messages.WindowLogMessage.build(text)
       |> LsProxy.Protocol.JsonRPC.Protocol.to_rpc_message()
