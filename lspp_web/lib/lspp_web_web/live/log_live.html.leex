@@ -1,0 +1,10 @@
+<h1>Logs</h1>
+<%= for message_record <- logs(@state.message_records) do %>
+  <div class="message">
+    <%= LsppWeb.MessagesView.render_message(
+        message_record,
+        Map.get(@state.expanded, message_record.id),
+        Map.get(@state.formatted, message_record.id)
+        ) %>
+  </div>
+<% end %>
