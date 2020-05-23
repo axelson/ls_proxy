@@ -18,7 +18,7 @@ defmodule LsppWebWeb.Router do
   scope "/", LsppWebWeb do
     pipe_through :browser
 
-    live "/", MessagesLive
+    live "/", DashboardLive
   end
 
   if Application.fetch_env!(:lspp_web, :static_assets) == :static do

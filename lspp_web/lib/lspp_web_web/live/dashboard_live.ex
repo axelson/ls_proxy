@@ -1,4 +1,4 @@
-defmodule LsppWebWeb.MessagesLive do
+defmodule LsppWebWeb.DashboardLive do
   use Phoenix.LiveView
 
   defmodule State do

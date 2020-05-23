@@ -10,14 +10,7 @@
   <body>
     <header>
       <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="/messages">Messages</a></li>
-          </ul>
-        </nav>
-        <a href="/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
+        <h1>LsProxy</h1>
       </section>
     </header>
     <%= @inner_content %>
