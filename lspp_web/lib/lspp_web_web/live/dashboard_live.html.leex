@@ -6,6 +6,9 @@
 
 <div class="row">
   <div class="column">
+    <form phx-change="filter_requests">
+      <input type="text" name="q" value="<%= @state.query %>" placeholder="Filter...">
+    </form>
     <%= live_component(@socket, LsppWeb.TabLive, id: :tab, assigns: assigns, initial_tab: :requests, tabs: tab_config()) %>
   </div>
 </div>

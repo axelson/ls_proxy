@@ -36,6 +36,11 @@ a:focus, a:hover {
   white-space: pre;
 }
 
+.tab-bar {
+  /* This is needed so the size of the page doesn't radically change while filtering messages */
+  min-height: 1000px;
+}
+
 .tab-bar-nav {
   display: flex;
 }

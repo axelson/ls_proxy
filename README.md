@@ -90,8 +90,14 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
 - [x] Update to latest Phoenix LiveView
 - [x] Make requests/messages toggleable as screens
 - [x] Render messages on homepage instead of messages pages
+- [x] Organize messages page for usability
+- [x] Allow filtering all tabs
+- [ ] a live reload doesn't set the query (problem with socket assigns/state? it is a controlled input)
+- [ ] Change LsppWebWeb to LsppWeb (or LpWeb?)
+- [ ] Update Contex
+- [ ] Filter the requests bar chart also (add special handling when no requests match)
+- [ ] Make it possible to hide the graph
 - [ ] Update filtered requests whenever messages changes
-- [ ] Organize messages page for usability
 
 Later:
 - [ ] Show cancelled request/responses
@@ -106,6 +112,7 @@ Later:
 - [ ] Use `Node.start/3`: https://hexdocs.pm/elixir/Node.html#start/3
 - [ ] Generate a random node name, and display the node name on the home page
 - [ ] Track down byte_length issue in messages_view.ex
+- [ ] Auto-complete in filter text input based on seen messages
 
 Later:
 - [ ] Issue: not reliably sending messages via json and via "plain-text" (is this worth fixing?)

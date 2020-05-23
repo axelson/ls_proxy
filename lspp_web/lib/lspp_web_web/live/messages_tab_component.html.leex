@@ -1,5 +1,8 @@
 <h1>Messages</h1>
-<%= for message_record <- @state.message_records do %>
+<%= if @state.filter != "" && @state.filtered_message_records == [] do %>
+  No results matched
+<% end %>
+<%= for message_record <- @state.filtered_message_records do %>
   <div class="message">
     <%= LsppWeb.MessagesView.render_message(
         message_record,

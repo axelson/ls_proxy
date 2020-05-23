@@ -7,8 +7,10 @@ defmodule LsppWebWeb.DashboardLive do
               formatted: %{},
               query: nil,
               requests: %{},
-              filtered_requests: nil,
-              test_data: nil
+              filtered_requests: [],
+              filtered_message_records: [],
+              test_data: nil,
+              filter: ""
   end
 
   @impl Phoenix.LiveView
@@ -21,6 +23,7 @@ defmodule LsppWebWeb.DashboardLive do
       socket
       |> assign(:state, %State{})
       |> update_messages()
+      |> apply_filter()
       |> add_bar_chart_data()
 
     {:ok, socket}
@@ -69,8 +72,19 @@ defmodule LsppWebWeb.DashboardLive do
     {:noreply, socket}
   end
 
+  def handle_event("filter_requests", %{"q" => query}, socket) do
+    state = %State{socket.assigns.state | filter: query}
+    state = apply_filter(state)
+
+    socket =
+      assign(socket, state: state)
+      |> add_bar_chart_data()
+
+    {:noreply, socket}
+  end
+
   def handle_event("filter_requests", %{"q" => ""}, socket) do
-    state = %State{socket.assigns.state | filtered_requests: nil}
+    state = %State{socket.assigns.state | filtered_requests: :empty}
     {:noreply, assign(socket, state: state)}
   end
 
@@ -204,5 +218,44 @@ defmodule LsppWebWeb.DashboardLive do
     duration = duration / 1
 
     [name, duration]
+  end
+
+  defp apply_filter(%Phoenix.LiveView.Socket{} = socket) do
+    state = apply_filter(socket.assigns.state)
+    assign(socket, state: state)
+  end
+
+  defp apply_filter(%State{filter: ""} = state) do
+    %State{
+      state
+      | filtered_requests: state.requests,
+        filtered_message_records: state.message_records
+    }
+  end
+
+  defp apply_filter(%State{} = state) do
+    %State{message_records: message_records, requests: requests, filter: filter} = state
+
+    filtered_requests =
+      state.requests
+      |> Enum.filter(fn req_resp ->
+        case LsProxy.MessageRecord.method(req_resp.request) do
+          nil -> false
+          method -> String.contains?(String.downcase(method), String.downcase(filter))
+        end
+      end)
+
+    filtered_message_records =
+      state.message_records
+      |> Enum.filter(fn message_record ->
+        filter_text = LsProxy.MessageRecord.filter_text(message_record)
+        String.contains?(String.downcase(filter_text), String.downcase(filter))
+      end)
+
+    %State{
+      state
+      | filtered_requests: filtered_requests,
+        filtered_message_records: filtered_message_records
+    }
   end
 end

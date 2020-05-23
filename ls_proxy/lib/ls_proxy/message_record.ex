@@ -46,6 +46,22 @@ defmodule LsProxy.MessageRecord do
     LsProxy.Protocol.Message.method(message)
   end
 
+  @doc """
+  The text that should be used to filter/search on
+  """
+  def filter_text(%__MODULE__{} = message_record) do
+    case method(message_record) do
+      nil ->
+        ""
+
+      "window/logMessage" ->
+        "window/logMessage #{message_record.message.content["params"]["message"]}"
+
+      method ->
+        method
+    end
+  end
+
   def error(message) do
     case message.content do
       %{"error" => error_map} ->
