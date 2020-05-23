@@ -1,2 +1,0 @@
-<h1>The Static Messages:</h1>
-<pre><%= inspect(LsProxy.ProxyState.messages(), pretty: true) %></pre>

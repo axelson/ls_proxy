@@ -18,7 +18,7 @@ defmodule LsppWebWeb.Router do
   scope "/", LsppWebWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", MessagesLive
   end
 
   if Application.fetch_env!(:lspp_web, :static_assets) == :static do
@@ -27,13 +27,6 @@ defmodule LsppWebWeb.Router do
     get "/images/phoenix.png", LsppWebWeb.StaticAssetController, :phoenix_png
   end
 
-  scope "/" do
-    pipe_through :browser
-
-    live "/messages", LsppWebWeb.MessagesLive
-  end
-
-  # Other scopes may use custom stacks.
   scope "/api", LsppWebWeb do
     pipe_through :api
 

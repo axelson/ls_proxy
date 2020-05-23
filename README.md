@@ -89,9 +89,9 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
 - [x] Print http port running on to lsp output
 - [x] Update to latest Phoenix LiveView
 - [x] Make requests/messages toggleable as screens
+- [x] Render messages on homepage instead of messages pages
 - [ ] Update filtered requests whenever messages changes
 - [ ] Organize messages page for usability
-- [ ] Render messages on homepage instead of messages pages
 
 Later:
 - [ ] Show cancelled request/responses
