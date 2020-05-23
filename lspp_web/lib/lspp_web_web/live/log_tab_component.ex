@@ -1,4 +1,4 @@
-defmodule LsppWebWeb.LogLive do
+defmodule LsppWebWeb.LogTabComponent do
   use Phoenix.LiveComponent
   alias LsProxy.MessageRecord
 

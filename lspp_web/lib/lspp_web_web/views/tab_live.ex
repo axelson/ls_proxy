@@ -11,8 +11,8 @@ defmodule LsppWeb.TabLive do
 
       def tab_config do
         [
-          requests: {"Requests", LsppWeb.ReqRespLive},
-          messages: {"Message List", LsppWeb.MessageList}
+          requests: {"Requests", LsppWeb.RequestsTabComponent},
+          messages: {"Message List", LsppWeb.MessagesTabComponent}
         ]
       end
 
