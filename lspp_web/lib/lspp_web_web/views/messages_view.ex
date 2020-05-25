@@ -57,8 +57,6 @@ defmodule LsppWeb.MessagesView do
         "textDocument" => %{"uri" => uri_str},
         "position" => %{"line" => line, "character" => character}
       } ->
-        # IO.inspect(message_record, label: "new message_record for hover")
-
         ~E"""
         textDocument/hover <code><%= uri_str %>:<%= line %></code>(char <%= character %>)
         <div class="code"><%= message_record.extra_info %></div>
@@ -68,6 +66,28 @@ defmodule LsppWeb.MessagesView do
       _ ->
         ~E"""
         textDocument/hover
+        """
+    end
+  end
+
+  def render_message_details(%MessageRecord{} = message_record, "textDocument/completion", opts) do
+    content = message_record.message.content
+    %{"id" => id} = content
+
+    case content["params"] do
+      %{
+        "textDocument" => %{"uri" => uri_str},
+        "position" => %{"line" => line, "character" => character}
+      } ->
+        ~E"""
+        textDocument/completion <code><%= uri_str %>:<%= line %></code>(char <%= character %>)
+        <div class="code"><%= message_record.extra_info %></div>
+        <%= render_id(id) %>
+        """
+
+      _ ->
+        ~E"""
+        textDocument/completion
         """
     end
   end
