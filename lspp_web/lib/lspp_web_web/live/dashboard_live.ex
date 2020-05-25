@@ -61,6 +61,7 @@ defmodule LsppWebWeb.DashboardLive do
     socket =
       socket
       |> update_messages()
+      |> apply_filter()
       |> add_bar_chart_data()
 
     {:noreply, socket}

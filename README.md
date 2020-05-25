@@ -92,6 +92,7 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
 - [x] Render messages on homepage instead of messages pages
 - [x] Organize messages page for usability
 - [x] Allow filtering all tabs
+- [x] Pressing reset doesn't clear requests and messages immediately
 - [ ] a live reload doesn't set the query (problem with socket assigns/state? it is a controlled input)
 - [ ] Change LsppWebWeb to LsppWeb (or LpWeb?)
 - [ ] Update Contex
