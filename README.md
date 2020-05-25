@@ -93,7 +93,9 @@ Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPo
 - [x] Organize messages page for usability
 - [x] Allow filtering all tabs
 - [x] Pressing reset doesn't clear requests and messages immediately
+- [ ] Don't use MessagesView, instead use all live views/components
 - [ ] a live reload doesn't set the query (problem with socket assigns/state? it is a controlled input)
+- [ ] The ReqResp naming is terrible
 - [ ] Change LsppWebWeb to LsppWeb (or LpWeb?)
 - [ ] Update Contex
 - [ ] Filter the requests bar chart also (add special handling when no requests match)
