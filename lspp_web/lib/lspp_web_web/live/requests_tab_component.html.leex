@@ -6,13 +6,13 @@
   <% end %>
   <%= for req_resp <- Enum.take(@state.filtered_requests, 15) do %>
     <div>
-      <%= live_component(@socket, RequestsListComponent, req_resp: req_resp) %>
+      <%= live_component(@socket, RequestsListComponent, req_resp: req_resp, state: @state) %>
     </div>
   <% end %>
 <% else %>
   <%= for req_resp <- Enum.take(@state.requests, 15) do %>
     <div>
-      <%= live_component(@socket, RequestsListComponent, req_resp: req_resp) %>
+      <%= live_component(@socket, RequestsListComponent, req_resp: req_resp, state: @state) %>
     </div>
   <% end %>
 <% end %>
