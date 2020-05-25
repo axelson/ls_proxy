@@ -7,7 +7,8 @@
     <%= LsppWeb.MessagesView.render_message(
         message_record,
         Map.get(@state.expanded, message_record.id),
-        Map.get(@state.formatted, message_record.id)
+        Map.get(@state.formatted, message_record.id),
+        @state.req_by_id
         ) %>
   </div>
 <% end %>

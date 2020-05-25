@@ -7,6 +7,7 @@ defmodule LsppWebWeb.DashboardLive do
               formatted: %{},
               query: nil,
               requests: %{},
+              req_by_id: %{},
               filtered_requests: [],
               filtered_message_records: [],
               test_data: nil,
@@ -84,28 +85,6 @@ defmodule LsppWebWeb.DashboardLive do
     {:noreply, socket}
   end
 
-  def handle_event("filter_requests", %{"q" => ""}, socket) do
-    state = %State{socket.assigns.state | filtered_requests: :empty}
-    {:noreply, assign(socket, state: state)}
-  end
-
-  def handle_event("filter_requests", %{"q" => query}, socket) when byte_size(query) <= 1000 do
-    state = socket.assigns.state
-
-    filtered =
-      state.requests
-      |> Enum.filter(fn req_resp ->
-        case LsProxy.MessageRecord.method(req_resp.request) do
-          nil -> false
-          method -> String.contains?(String.downcase(method), String.downcase(query))
-        end
-      end)
-
-    state = %State{state | filtered_requests: filtered}
-
-    {:noreply, assign(socket, state: state)}
-  end
-
   def handle_event("expand:" <> id, _, socket) do
     id = String.to_integer(id)
     %State{expanded: expanded} = state = socket.assigns.state
@@ -159,17 +138,21 @@ defmodule LsppWebWeb.DashboardLive do
   end
 
   # TODO: Change this to take state instead of socket?
-  defp update_requests(socket) do
-    %State{message_records: message_records} = state = socket.assigns.state
+  defp update_requests(%Phoenix.LiveView.Socket{} = socket) do
+    state = update_requests(socket.assigns.state)
+    assign(socket, state: state)
+  end
 
+  defp update_requests(%State{message_records: message_records} = state) do
     requests =
       process(message_records)
       |> Enum.sort_by(fn {id, _} -> id end)
       |> Enum.reverse()
       |> Enum.map(fn {_id, req_resp} -> req_resp end)
 
-    state = %State{state | requests: requests}
-    assign(socket, state: state)
+    req_by_id = Map.new(requests, fn req -> {req.id, req} end)
+
+    %State{state | requests: requests, req_by_id: req_by_id}
   end
 
   defp process(message_records) do
