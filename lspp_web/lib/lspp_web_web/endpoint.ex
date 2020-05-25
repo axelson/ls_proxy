@@ -50,7 +50,7 @@ defmodule LsppWebWeb.Endpoint do
 
   plug LsppWebWeb.Router
 
-  def init(supervisor, config) do
+  def init(_supervisor, config) do
     port = LsppWeb.PhoenixPortSupervisor.get_port()
     config = put_in(config[:http], [:inet6, {:port, port}])
 

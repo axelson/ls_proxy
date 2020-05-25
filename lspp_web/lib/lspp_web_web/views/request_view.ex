@@ -10,8 +10,6 @@ defmodule LsppWeb.RequestView do
   end
 
   def do_render_request("initialize", request) do
-    capabilities = request.response.message.content["result"]["capabilities"]
-
     case validate_initialize_response(request.response) do
       :ok -> @checkmark
       {:error, message} -> "Error: #{message}"

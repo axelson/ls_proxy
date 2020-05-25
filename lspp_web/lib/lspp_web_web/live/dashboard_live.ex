@@ -238,7 +238,7 @@ defmodule LsppWebWeb.DashboardLive do
     %State{message_records: message_records, requests: requests, filter: filter} = state
 
     filtered_requests =
-      state.requests
+      requests
       |> Enum.filter(fn req_resp ->
         case LsProxy.MessageRecord.method(req_resp.request) do
           nil -> false
@@ -247,7 +247,7 @@ defmodule LsppWebWeb.DashboardLive do
       end)
 
     filtered_message_records =
-      state.message_records
+      message_records
       |> Enum.filter(fn message_record ->
         filter_text = LsProxy.MessageRecord.filter_text(message_record)
         String.contains?(String.downcase(filter_text), String.downcase(filter))
