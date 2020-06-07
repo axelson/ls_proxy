@@ -39,6 +39,7 @@ defmodule LsppWebWeb.DashboardLive do
       |> Contex.BarChart.type(:stacked)
       |> Contex.BarChart.data_labels(true)
       |> Contex.BarChart.orientation(:vertical)
+      |> Contex.BarChart.axis_label_rotation(45)
       |> Contex.BarChart.colours(LsppWebWeb.BarchartHelpers.lookup_colours("themed"))
 
     plot =
