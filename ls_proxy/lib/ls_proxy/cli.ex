@@ -12,7 +12,10 @@ defmodule LsProxy.CLI do
 
     # In order to use IO.binread/2 with stdio we need to change the encoding of the input device
     # https://stackoverflow.com/a/34459112
-    :io.setopts(:standard_io, encoding: :latin1)
+    # 2020-05-25 Disabling this because it is interfering with outputting
+    # messages that contain emoji (such as the new formatted stack traces from
+    # https://github.com/elixir-lsp/elixir-ls/pull/241)
+    # :io.setopts(:standard_io, encoding: :latin1)
 
     read_messages()
   end
