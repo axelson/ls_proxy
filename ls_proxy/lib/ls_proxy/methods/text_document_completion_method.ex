@@ -12,8 +12,10 @@ defmodule LsProxy.Methods.TextDocumentCompletionMethod do
       {:ok, text} ->
         text
 
-      {:error, error} ->
-        IO.warn(inspect(error))
+      {:error, _error} ->
+        nil
+
+      _ ->
         nil
     end
   end

@@ -27,8 +27,7 @@ defmodule LsProxy.Methods.TextDocumentHoverMethod do
       {:ok, text} ->
         text
 
-      {:error, error} ->
-        IO.warn(inspect(error))
+      {:error, _error} ->
         nil
     end
   end

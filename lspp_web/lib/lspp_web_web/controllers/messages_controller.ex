@@ -12,8 +12,6 @@ defmodule LsppWebWeb.MessagesController do
   end
 
   def create(conn, %{"message" => message, "direction" => direction_str}) do
-    # IO.inspect(message, label: "incoming message in controller message", limit: :infinity)
-    # DataTracer.store(message_text)
     case parse_direction(direction_str) do
       :incoming -> :ok = LsProxy.ProxyState.record_incoming(message)
       :outgoing -> :ok = LsProxy.ProxyState.record_outgoing(message)

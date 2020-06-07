@@ -3,7 +3,6 @@ defmodule LsProxy.Logger do
 
   defp log_to(file, message) do
     if Application.fetch_env!(:ls_proxy, :logging_enabled) do
-      # IO.puts(message)
       File.write(file, [message], [:append])
     end
   end
