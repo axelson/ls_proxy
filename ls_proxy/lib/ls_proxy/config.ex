@@ -4,6 +4,9 @@ defmodule LsProxy.Config do
       "elixir_ls" ->
         Path.join(__DIR__, "../../../elixir-ls/release/language_server.sh") |> Path.expand()
 
+      "elixir_ls_dev" ->
+        Path.expand("~/dev/forks/elixir-ls/release/language_server.sh")
+
       "ls_proxy" ->
         "/home/jason/dev/ls_proxy/ls_proxy"
     end
