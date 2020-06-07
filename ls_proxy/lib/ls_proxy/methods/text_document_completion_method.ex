@@ -28,11 +28,11 @@ defmodule LsProxy.Methods.TextDocumentCompletionMethod do
   end
 
   def read_file_line(path, line) do
-    File.stream!(path, [:read, :utf8], :line)
-    |> Stream.drop(line)
-    |> Enum.take(1)
-    |> hd()
-    |> Utils.wrap_in_ok()
+    with stream <- File.stream!(path, [:read, :utf8], :line),
+         stream <- Stream.drop(stream, line),
+         [line] <- Enum.take(stream, 1) do
+      {:ok, line}
+    end
   rescue
     e in File.Error ->
       {:error, e}
