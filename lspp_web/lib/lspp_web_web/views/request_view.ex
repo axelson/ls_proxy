@@ -25,4 +25,8 @@ defmodule LsppWeb.RequestView do
 
     LsProxy.Requests.Initialize.validate_capabilities(capabilities)
   end
+
+  defp validate_initialize_response(nil) do
+    {:error, "no response found"}
+  end
 end

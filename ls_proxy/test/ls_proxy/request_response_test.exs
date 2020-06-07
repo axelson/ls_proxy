@@ -95,7 +95,8 @@ defmodule LsProxy.RequestResponseTest do
       assert {:ok, req_resp} = LsProxy.RequestResponse.add(req_resp, cancel_outgoing)
       assert req_resp.status == :canceled
 
-      assert {:ok, ^req_resp} = LsProxy.RequestResponse.add(req_resp, result_outgoing)
+      assert {:ok, req_resp} = LsProxy.RequestResponse.add(req_resp, result_outgoing)
+      assert req_resp.status == :complete
     end
 
     test "when the result comes before the cancellation", %{
@@ -109,7 +110,8 @@ defmodule LsProxy.RequestResponseTest do
       assert {:ok, req_resp} = LsProxy.RequestResponse.add(req_resp, result_outgoing)
       assert req_resp.status == :complete
 
-      assert {:ok, ^req_resp} = LsProxy.RequestResponse.add(req_resp, cancel_outgoing)
+      assert {:ok, req_resp} = LsProxy.RequestResponse.add(req_resp, cancel_outgoing)
+      assert req_resp.status == :canceled
     end
 
     test "when the response comes before the result", %{

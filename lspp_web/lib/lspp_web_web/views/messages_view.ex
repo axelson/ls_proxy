@@ -371,5 +371,6 @@ defmodule LsppWeb.MessagesView do
 
   def render_id(id), do: ~E"<div>id: <b><%= id %></b></div>"
 
-  defdelegate plot_response_times(data), to: LsppWebWeb.MessagesLive
+  # TODO: This call seems to indicate bad call structuring
+  defdelegate plot_response_times(data), to: LsppWebWeb.DashboardLive
 end
