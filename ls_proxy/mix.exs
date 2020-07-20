@@ -29,7 +29,6 @@ defmodule LsProxy.MixProject do
     [
       {:mojito, "~> 0.2.0"},
       {:jason, "~> 1.1"},
-      {:logger_file_backend, "~> 0.0.10"},
       # runtime: false because for an escript we need to manually start it
       {:erlexec, "~> 1.10.0", runtime: false},
       {:ecto, "~> 3.3"},
