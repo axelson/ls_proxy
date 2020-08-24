@@ -21,8 +21,8 @@ config :logger, level: :warn
 config :ls_proxy,
   logging_enabled: true
 
-config :logger,
-  backends: [{LoggerFileBackend, :error_log}]
+#config :logger,
+#  backends: [{LoggerFileBackend, :error_log}]
 
 config :logger, :error_log,
   path: "/tmp/ls_proxy_error.log",
