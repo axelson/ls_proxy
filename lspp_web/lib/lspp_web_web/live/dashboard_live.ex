@@ -11,6 +11,7 @@ defmodule LsppWebWeb.DashboardLive do
               filtered_requests: [],
               filtered_message_records: [],
               test_data: nil,
+              word_wrap: false,
               filter: ""
   end
 
@@ -123,6 +124,12 @@ defmodule LsppWebWeb.DashboardLive do
 
     state = %State{state | formatted: formatted}
 
+    {:noreply, assign(socket, state: state)}
+  end
+
+  def handle_event("toggle-word-wrap", _, socket) do
+    %State{word_wrap: word_wrap} = state = socket.assigns.state
+    state = %State{state | word_wrap: !word_wrap}
     {:noreply, assign(socket, state: state)}
   end
 

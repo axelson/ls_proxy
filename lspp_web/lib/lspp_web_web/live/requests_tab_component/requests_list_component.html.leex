@@ -49,7 +49,8 @@
           @req_resp.response,
           Map.get(@state.expanded, @req_resp.response.id),
           Map.get(@state.formatted, @req_resp.response.id),
-          @state.req_by_id
+          @state.req_by_id,
+          @state.word_wrap
           ) %>
     <% end %>
 
@@ -58,7 +59,8 @@
           @req_resp.request,
           Map.get(@state.expanded, @req_resp.request.id),
           Map.get(@state.formatted, @req_resp.request.id),
-          @state.req_by_id
+          @state.req_by_id,
+          @state.word_wrap
           ) %>
     <% end %>
   </div>

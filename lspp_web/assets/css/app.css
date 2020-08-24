@@ -71,3 +71,7 @@ a:focus, a:hover {
 .req-block .attribute {
   line-height: 1.1;
 }
+
+.word-wrap {
+  white-space: pre-wrap;
+}

@@ -6,11 +6,11 @@ defmodule LsppWeb.MessagesView do
   @doc """
   Render a detailed view of the message
   """
-  def render_message(message_record, expanded, formatted, req_by_id)
+  def render_message(message_record, expanded, formatted, req_by_id, word_wrap)
 
-  def render_message(%MessageRecord{} = message_record, true, formatted, req_by_id) do
+  def render_message(%MessageRecord{} = message_record, true, formatted, req_by_id, word_wrap) do
     ~E"""
-    <%= message_common(message_record, true, formatted, req_by_id) %>
+    <%= message_common(message_record, true, formatted, req_by_id, word_wrap) %>
     <div class="text-btn">
     <a phx-click="collapse:<%= message_record.id %>">collapse</a>
     </div>
@@ -18,9 +18,9 @@ defmodule LsppWeb.MessagesView do
     """
   end
 
-  def render_message(%MessageRecord{} = message_record, expanded, formatted, req_by_id) do
+  def render_message(%MessageRecord{} = message_record, expanded, formatted, req_by_id, word_wrap) do
     ~E"""
-    <%= message_common(message_record, expanded, formatted, req_by_id) %>
+    <%= message_common(message_record, expanded, formatted, req_by_id, word_wrap) %>
     <div class="text-btn">
       <a phx-click="expand:<%= message_record.id %>">show full</a>
       <%= if(has_formatting?(message_record.message.content)) do %>
@@ -29,12 +29,13 @@ defmodule LsppWeb.MessagesView do
         <% else %>
           <a phx-click="expand-formatted:<%= message_record.id %>">show formatted message</a>
         <% end %>
+        <a phx-click="toggle-word-wrap">toggle word wrap</a>
       <% end %>
     </div>
     """
   end
 
-  def message_common(%MessageRecord{} = message_record, expanded, formatted, req_by_id) do
+  def message_common(%MessageRecord{} = message_record, expanded, formatted, req_by_id, word_wrap) do
     timestamp_format = if expanded, do: :full, else: :short
     method_name = MessageRecord.method(message_record)
 
@@ -42,7 +43,7 @@ defmodule LsppWeb.MessagesView do
     <%= render_direction(message_record) %>
     <%= render_timestamp(message_record, timestamp_format) %>
     <div>
-      <%= render_message_details(message_record, method_name, formatted: formatted, req_by_id: req_by_id) %>
+      <%= render_message_details(message_record, method_name, formatted: formatted, req_by_id: req_by_id, word_wrap: word_wrap) %>
     </div>
     """
   end
@@ -115,13 +116,15 @@ defmodule LsppWeb.MessagesView do
 
   def render_message_contents(%{"method" => "window/logMessage"} = message, opts) do
     formatted = Keyword.get(opts, :formatted)
+    word_wrap = Keyword.get(opts, :word_wrap)
+    word_wrap_class = if word_wrap, do: "word-wrap", else: ""
 
     %{"params" => %{"message" => log_message}} = message
 
     if formatted do
       ~E"""
       <div>Log: <%= Utils.truncate(log_message, 100) %></div>
-      <pre>
+      <pre class="<%= word_wrap_class %>">
         <%= log_message %>
       </pre>
       """
