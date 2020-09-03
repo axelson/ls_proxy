@@ -45,7 +45,8 @@ defmodule LsppWebWeb.DashboardLive do
 
     plot =
       Contex.Plot.new(300, 200, plot_content)
-      |> Contex.Plot.titles("Response Times", nil)
+      |> Contex.Plot.titles("Recent Requests", nil)
+      |> Contex.Plot.axis_labels(nil, "Response Time (ms)")
       |> Contex.Plot.plot_options(%{})
 
     Contex.Plot.to_svg(plot)
