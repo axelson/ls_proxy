@@ -4,10 +4,18 @@
 @import "./phoenix.css";
 @import "./contex.css";
 
+pre {
+  margin: 0;
+}
+
 .message {
   margin: 6px 0;
   padding-left: 8px;
   border-left: 1px solid blue;
+}
+
+.log-message {
+  border-left: 0;
 }
 
 a:focus, a:hover {
