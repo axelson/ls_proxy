@@ -312,7 +312,15 @@ defmodule LsppWeb.MessagesView do
     end
   end
 
-  def render_result_message_contents(id, contents, _formatted) do
+  def render_result_message_contents(id, %{"kind" => "markdown", "value" => value}, formatted) do
+    render_result_message_contents(id, value, formatted)
+  end
+
+  def render_result_message_contents(id, %{"kind" => "plaintext", "value" => value}, formatted) do
+    render_result_message_contents(id, value, formatted)
+  end
+
+  def render_result_message_contents(id, contents, _formatted) when is_binary(contents) do
     ~E"""
     Result: <%= Utils.truncate(contents, 100) %>
     <%= render_id(id) %>
