@@ -290,6 +290,12 @@ defmodule LsppWeb.MessagesView do
   end
 
   # Messages like textDocument/hover typically have contents
+  def render_result_message_contents(id, contents_list, formatted) when is_list(contents_list) do
+    for contents <- contents_list do
+      render_result_message_contents(id, contents, formatted)
+    end
+  end
+
   def render_result_message_contents(id, contents, true = _formatted) do
     case Earmark.as_html(contents, %Earmark.Options{smartypants: false}) do
       {:ok, html, []} ->
@@ -317,6 +323,11 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_result_message_contents(id, %{"kind" => "plaintext", "value" => value}, formatted) do
+    render_result_message_contents(id, value, formatted)
+  end
+
+  # NOTE: This appears to be non-standard
+  def render_result_message_contents(id, %{"language" => "rust", "value" => value}, formatted) do
     render_result_message_contents(id, value, formatted)
   end
 
