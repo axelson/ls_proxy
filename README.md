@@ -1,4 +1,4 @@
-# LsProxy
+# LSP Proxy
 
 ![LSP Proxy Logo](LSPProxy_logo.png)
 
@@ -15,10 +15,10 @@ Architecture:
               ^
               |
               v
-Editor <-> LsProxy <-> LanguageServer
+Editor <-> LSP Proxy <-> LanguageServer
 ```
 
-LsProxy reads input from the Editor (stdin), collects metrics on it, and then sends it to the LanguageServer, and sends all responses back to the Editor.
+LSP Proxy reads input from the Editor (stdin), collects metrics on it, and then sends it to the LanguageServer, and sends all responses back to the Editor.
 
 It also exposes a website with metrics of what was sent to aid in debugging and understanding a LanguageServer.
 
@@ -28,19 +28,19 @@ Steps:
 3) Forward on to the LanguageServer
 4) Return output from the LanguageServer to the Editor 
 
-LsProxy architecture:
+LSP Proxy architecture:
 ```
-            LsProxy.Collector
+            LSP Proxy.Collector
                     ^
                     |
                     v
-EditorPort <-> LsProxy.Tee <-> LanguageServerPort
+EditorPort <-> LSP Proxy.Tee <-> LanguageServerPort
 ```
 
-`EditorPort` to `LsProxy.Tee` is controlled purely by our `stdin` and `stdout`
-`LsProxy.Tee` communicates with `LanguageServerPort` via `erlexec`
+`EditorPort` to `LSP Proxy.Tee` is controlled purely by our `stdin` and `stdout`
+`LSP Proxy.Tee` communicates with `LanguageServerPort` via `erlexec`
 
-And the `LsProxy.Collector` collects the metrics info to be displayed via HTTP or other interfaces
+And the `LSP Proxy.Collector` collects the metrics info to be displayed via HTTP or other interfaces
 
 Since EditorPort is the entrypoint into the system it will be the group leader for all of the processes because it has to write to stdout (not implemented yet).
 
@@ -68,7 +68,7 @@ Env var `LS_PROXY_TO`: Where to find the LanguageServer to proxy to (defaults to
 Typically used only for development:
 
 Env var `LS_HTTP_PROXY_TO`: Where to send copies of the HTTP messages to, useful to quickly iterate on the web frontend
-Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LsProxy.ProxyPort` (defaults to `true`)
+Env var `LS_PROXY_RUN_LANGUAGE_SERVER`: Controls if we start up `LSP Proxy.ProxyPort` (defaults to `true`)
 
 # TODO
 
@@ -111,7 +111,7 @@ Later:
 - [ ] Show server capabilities
 - [ ] Show current diagnostics (warnings/errors)
   - [ ] And provide a way to drill down into what the lsp messages were and the messages around the same time
-- [ ] `LsProxy.ErrorCodesParser` should show server error code when errror is between `serverErrorStart` and `serverErrorEnd` (e.g. `"ServerError -32001"`)
+- [ ] `LSP Proxy.ErrorCodesParser` should show server error code when errror is between `serverErrorStart` and `serverErrorEnd` (e.g. `"ServerError -32001"`)
 - [ ] Limit number of stored messages
   - Ideally would drop the request along with the response
 - [ ] Use `Node.start/3`: https://hexdocs.pm/elixir/Node.html#start/3
