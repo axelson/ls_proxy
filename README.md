@@ -1,5 +1,7 @@
 # LsProxy
 
+![LSP Proxy Logo](LSPProxy_logo.png)
+
 Proxy for [Language Server](https://microsoft.github.io/language-server-protocol/)'s.
 
 It is kind of similar to:
