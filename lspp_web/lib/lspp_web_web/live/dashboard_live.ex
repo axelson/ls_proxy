@@ -182,7 +182,7 @@ defmodule LsppWebWeb.DashboardLive do
 
   defp add_bar_chart_data(socket) do
     state = socket.assigns.state
-    requests = Enum.take(state.requests, 10)
+    requests = Enum.take(state.requests, 25)
 
     data =
       requests
