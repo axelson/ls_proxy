@@ -5,7 +5,7 @@
 .exc-tick text {
   fill: grey;
   stroke: none;
-  font-size: 0.7rem;
+  font-size: 0.5rem;
 }
 .exc-grid {
   stroke: lightgrey;
