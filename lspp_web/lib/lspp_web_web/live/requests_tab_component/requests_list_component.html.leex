@@ -1,0 +1,67 @@
+<% req = @req_resp.request %>
+<% resp = @req_resp.response %>
+<% method = LsProxy.MessageRecord.method(req) %>
+
+<div class="req-block">
+  <div>
+    <%= if method do %>
+      <div>
+        <span class="code"><%= method %></span>
+        <%= @req_resp.id %>
+      </div>
+    <% else %>
+      <div>Request Response <%= @req_resp.id %></div>
+    <% end %>
+  </div>
+  <div class="req-block-body">
+    <div class="attribute">
+      valid: <%= LsppWeb.RequestView.render_request(@req_resp) %>
+    </div>
+
+    <%= case @req_resp.status do %>
+      <% :pending -> %>
+        <div class="attribute">
+          Started: <%= req.timestamp %>
+        </div>
+
+      <% :partial -> %>
+        <div class="attribute">
+          Partial message: <%= resp.timestamp %>
+        </div>
+
+      <% :complete -> %>
+        <div class="attribute">
+          Duration: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
+        </div>
+        <!-- <pre><%= Phoenix.HTML.raw (inspect @req_resp, pretty: true)  %></pre> -->
+
+      <% :canceled -> %>
+        <div class="attribute">
+          Cancelled after: <%= NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond) %> milliseconds
+        </div>
+
+      <% _ -> %>
+        <div>Other</div>
+    <% end %>
+
+    <%= if @req_resp.response do %>
+      <%= LsppWeb.MessagesView.render_message(
+          @req_resp.response,
+          Map.get(@state.expanded, @req_resp.response.id),
+          Map.get(@state.formatted, @req_resp.response.id),
+          @state.req_by_id,
+          @state.word_wrap
+          ) %>
+    <% end %>
+
+    <%= if @req_resp.request do %>
+      <%= LsppWeb.MessagesView.render_message(
+          @req_resp.request,
+          Map.get(@state.expanded, @req_resp.request.id),
+          Map.get(@state.formatted, @req_resp.request.id),
+          @state.req_by_id,
+          @state.word_wrap
+          ) %>
+    <% end %>
+  </div>
+</div>

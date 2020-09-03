@@ -1,0 +1,9 @@
+<h1>Logs</h1>
+<%= if @state.filter != "" && @state.filtered_message_records == [] do %>
+  No results matched
+<% end %>
+<%= for message_record <- logs(@state.filtered_message_records) do %>
+  <div class="message">
+    <%= LsppWeb.LogMessageView.render_message(message_record) %>
+  </div>
+<% end %>

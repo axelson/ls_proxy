@@ -1,0 +1,85 @@
+/* This file is for your main application css. */
+
+@import "../node_modules/nprogress/nprogress.css";
+@import "./phoenix.css";
+@import "./contex.css";
+
+pre {
+  margin: 0;
+}
+
+.message {
+  margin: 6px 0;
+  padding-left: 8px;
+  border-left: 1px solid blue;
+}
+
+.log-message {
+  border-left: 0;
+}
+
+a:focus, a:hover {
+  color: #004b9b !important;
+  cursor: pointer;
+}
+
+.text-btn {
+  font-size: 1.2rem;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.text-btn a {
+  margin-right: 4px;
+}
+
+.direction-arrow {
+  font-size: 2.2rem;
+  margin-right: 4px;
+}
+
+.code {
+  font-family: "Lucida Console", Monaco, monospace;
+  background: #f4f5f6;
+  white-space: pre;
+}
+
+.tab-bar {
+  /* This is needed so the size of the page doesn't radically change while filtering messages */
+  min-height: 1000px;
+}
+
+.tab-bar-nav {
+  display: flex;
+}
+.tab-bar-nav > div {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.tab-bar-nav > div:hover {
+  background: lightblue;
+}
+.tab-bar-nav > div.active {
+  text-decoration: none;
+  background: aliceblue;
+  cursor: default;
+}
+
+.req-block {
+  margin: 10px 0;
+}
+.req-block-body {
+  padding-top: 4px;
+  padding-left: 4px;
+  background: #e4f1ff;
+}
+
+.req-block .attribute {
+  line-height: 1.1;
+}
+
+.word-wrap {
+  white-space: pre-wrap;
+}
