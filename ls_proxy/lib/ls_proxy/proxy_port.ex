@@ -7,6 +7,9 @@ defmodule LsProxy.ProxyPort do
   use GenServer
   require Logger
 
+  @compiled_elixir_version System.version()
+  @compiled_otp_version System.otp_release()
+
   defmodule State do
     defstruct [:pid, :os_pid, :partial_message]
   end
@@ -29,7 +32,15 @@ defmodule LsProxy.ProxyPort do
     initial_state = %State{pid: pid, os_pid: os_pid, partial_message: ""}
 
     LsProxy.Logger.info("ProxyPort initial state: #{inspect(initial_state)}")
-    log_message("LsProxy starting")
+
+    log_message("LsProxy starting!")
+    log_message("LsProxy Elixir version: #{System.build_info()[:build]}")
+    log_message("LsProxy Erlang version: #{System.otp_release()}")
+
+    log_message(
+      "LsProxy compiled with Elixir #{@compiled_elixir_version}" <>
+        " and erlang #{@compiled_otp_version}"
+    )
 
     {:ok, initial_state}
   end
