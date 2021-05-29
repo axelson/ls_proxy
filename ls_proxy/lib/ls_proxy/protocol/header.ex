@@ -75,7 +75,7 @@ defmodule LsProxy.Protocol.Header do
   def to_string(%__MODULE__{} = header) do
     """
     Content-Length: #{header.content_length}\r
-    Content-Type: utf-8
+    Content-Type: application/vscode-jsonrpc; charset=utf-8
     """
     |> String.trim()
   end

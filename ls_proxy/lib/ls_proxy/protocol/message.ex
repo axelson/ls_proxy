@@ -54,7 +54,7 @@ defmodule LsProxy.Protocol.Message do
 
     """
     Content-Length: #{byte_size(message_content)}\r
-    Content-Type: utf-8\r
+    Content-Type: application/vscode-jsonrpc; charset=utf-8\r
     \r
     #{message_content}
     """
