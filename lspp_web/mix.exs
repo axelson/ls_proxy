@@ -36,7 +36,7 @@ defmodule LsppWeb.MixProject do
       {:phoenix, "~> 1.5.0"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_view, "~> 0.12.0"},
+      {:phoenix_live_view, "~> 0.15.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.1"},

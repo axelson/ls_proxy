@@ -41,7 +41,7 @@ defmodule LsppWeb.TabLive do
     <div class="tab-bar">
       <%= render_nav(assigns) %>
 
-      <%= live_component(@socket, component(assigns), @assigns) %>
+      <%= live_component(@socket, my_component(assigns), @assigns) %>
     </div>
     """
   end
@@ -79,7 +79,7 @@ defmodule LsppWeb.TabLive do
   defp active_class(key, key), do: "active"
   defp active_class(_, _), do: ""
 
-  def component(assigns) do
+  def my_component(assigns) do
     {_name, component} = Keyword.fetch!(assigns.tabs, assigns.active_tab)
     component
   end
