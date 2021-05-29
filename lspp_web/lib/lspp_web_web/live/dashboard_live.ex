@@ -207,9 +207,6 @@ defmodule LsppWebWeb.DashboardLive do
 
     duration = NaiveDateTime.diff(resp.timestamp, req.timestamp, :millisecond)
 
-    # Force duration to a float until https://github.com/mindok/contex/pull/4 is fixed
-    duration = duration / 1
-
     [name, duration]
   end
 
