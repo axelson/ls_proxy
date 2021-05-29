@@ -32,7 +32,7 @@ defmodule LsppWeb.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:contex, github: "mindok/contex"},
+      {:contex, "~> 0.3.0"},
       {:phoenix, "~> 1.5.0"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_html, "~> 2.11"},

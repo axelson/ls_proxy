@@ -1,6 +1,6 @@
 %{
   "castore": {:hex, :castore, "0.1.10", "b01a007416a0ae4188e70b3b306236021b16c11474038ead7aff79dd75538c23", [:mix], [], "hexpm", "a48314e0cb45682db2ea27b8ebfa11bd6fa0a6e21a65e5772ad83ca136ff2665"},
-  "contex": {:git, "https://github.com/mindok/contex.git", "0fae1678363fe646e41c827ce2c86e37ff8f82fa", []},
+  "contex": {:hex, :contex, "0.3.0", "d390713efee604702600ba801a481bcb8534a9af43e118b29d9d37fe4495fcba", [:mix], [{:nimble_strftime, "~> 0.1.0", [hex: :nimble_strftime, repo: "hexpm", optional: false]}], "hexpm", "3fa7535cc3b265691a4eabc2707fe8622aa60a2565145a14da9aebd613817652"},
   "cowboy": {:hex, :cowboy, "2.9.0", "865dd8b6607e14cf03282e10e934023a1bd8be6f6bacf921a7e2a96d800cd452", [:make, :rebar3], [{:cowlib, "2.11.0", [hex: :cowlib, repo: "hexpm", optional: false]}, {:ranch, "1.8.0", [hex: :ranch, repo: "hexpm", optional: false]}], "hexpm", "2c729f934b4e1aa149aff882f57c6372c15399a20d54f65c8d67bef583021bde"},
   "cowboy_telemetry": {:hex, :cowboy_telemetry, "0.3.1", "ebd1a1d7aff97f27c66654e78ece187abdc646992714164380d8a041eda16754", [:rebar3], [{:cowboy, "~> 2.7", [hex: :cowboy, repo: "hexpm", optional: false]}, {:telemetry, "~> 0.4", [hex: :telemetry, repo: "hexpm", optional: false]}], "hexpm", "3a6efd3366130eab84ca372cbd4a7d3c3a97bdfcfb4911233b035d117063f0af"},
   "cowlib": {:hex, :cowlib, "2.11.0", "0b9ff9c346629256c42ebe1eeb769a83c6cb771a6ee5960bd110ab0b9b872063", [:make, :rebar3], [], "hexpm", "2b3e9da0b21c4565751a6d4901c20d1b4cc25cbb7fd50d91d2ab6dd287bc86a9"},
