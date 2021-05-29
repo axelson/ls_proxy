@@ -71,7 +71,7 @@ defmodule LsProxy.Protocol.Message do
   @doc """
   Returns the method name, or nil if it doesn't exist
   """
-  def method(%__MODULE__{content: content} = message) do
+  def method(%__MODULE__{content: content}) do
     content["method"]
   end
 end
