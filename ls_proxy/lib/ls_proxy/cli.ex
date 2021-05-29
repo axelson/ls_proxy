@@ -40,7 +40,7 @@ defmodule LsProxy.CLI do
         read_messages()
 
       {:error, :no_content} ->
-        LsProxy.Logger.info("no content")
+        LsProxy.Logger.info("got a :no_content on a message")
         Process.sleep(1000)
 
       {:error, :eof} ->

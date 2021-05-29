@@ -64,6 +64,8 @@ defmodule LsProxy.Protocol.Header do
 
   def parse_content_length(string), do: String.to_integer(string)
 
+  def parse_content_type("application/vscode-jsonrpc; charset=utf-8"), do: :default_content_type
+
   def parse_content_type("utf-8"), do: :utf8
 
   # For backwards compatibility it is highly recommended that a client and a server treats the string utf8 as utf-8

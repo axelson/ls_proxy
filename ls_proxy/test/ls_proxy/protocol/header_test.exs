@@ -4,6 +4,16 @@ defmodule LsProxy.Protocol.HeaderTest do
   alias LsProxyTest.Protocol.ParserHarness
 
   describe "Protocol.Parse behaviour" do
+    test "parses a new header" do
+      header_text = """
+      Content-Length: 99
+      Content-Type: application/vscode-jsonrpc; charset=utf-8
+      """
+
+      assert ParserHarness.read_message(Header, header_text) ==
+               {:ok, %Header{content_length: 99, content_type: :default_content_type}}
+    end
+
     test "parses a complete header" do
       header_text = """
       Content-Length: 99
