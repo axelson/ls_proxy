@@ -1,6 +1,6 @@
 # This file is responsible for configuring your application
 # and its dependencies with the aid of the Mix.Config module.
-use Mix.Config
+import Config
 
 config :ls_proxy, proxy_to: System.get_env("LS_PROXY_TO") || "elixir_ls"
 config :ls_proxy, logging_enabled: false

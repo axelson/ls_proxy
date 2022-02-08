@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :lspp_web, LsppWebWeb.Endpoint,
   # Note this is overridden in the Endpoint init callback

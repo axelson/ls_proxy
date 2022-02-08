@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :lspp_web, LsppWebWeb.Endpoint,
   http: [port: 4000],
