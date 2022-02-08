@@ -10,6 +10,7 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :lspp_web, LsppWebWeb.Endpoint,
+  debug_errors: true,
   http: [:inet6, port: System.get_env("PORT") || 5000],
   # Do we want to keep this?
   check_origin: false,
