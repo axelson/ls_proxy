@@ -1,5 +1,5 @@
 defmodule LsProxy.Protocol.MessageType do
-  @_interface """
+  @moduledoc """
   export namespace MessageType {
     /**
     * An error message.

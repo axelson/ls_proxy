@@ -7,7 +7,10 @@ defmodule LsProxy.CLI do
   alias LsProxy.Protocol
 
   def main(_args) do
-    # Node.set_cookie :cookie
+    Node.set_cookie(:cookie)
+    # res =Node.start(:example, :shortnames, 15000)
+    # LsProxy.Logger.info("Node start attempt: #{inspect res}")
+
     LsProxy.Logger.info("Started node: #{inspect({Node.self(), Node.get_cookie()})}")
 
     # In order to use IO.binread/2 with stdio we need to change the encoding of the input device
@@ -24,7 +27,8 @@ defmodule LsProxy.CLI do
   Reads message from stdio until stdio is closed. Forwards the responses to the
   LS and prints the responses back to stdout
 
-  TODO: Should this module be responsible for sending the messages back to stdout? Maybe that should be in a GenServer
+  TODO: Should this module be responsible for sending the messages back to
+  stdout? Maybe that should be in a GenServer
   """
   def read_messages() do
     LsProxy.Logger.info("LsProxy.CLI read_messages")
