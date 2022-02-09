@@ -10,7 +10,9 @@ defmodule LsppWeb.LogMessageView do
   end
 
   def render_full(other) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     <pre><code>
     <%= inspect(other, pretty: true) %>
     </code></pre>
@@ -19,8 +21,9 @@ defmodule LsppWeb.LogMessageView do
 
   def render_message_contents(%{"method" => "window/logMessage"} = message) do
     %{"params" => %{"message" => log_message}} = message
+    assigns = %{}
 
-    ~E"""
+    ~H"""
     <pre class="word-wrap log-message"><%= log_message %></pre>
     """
   end

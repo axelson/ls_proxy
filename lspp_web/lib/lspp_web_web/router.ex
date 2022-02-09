@@ -22,8 +22,8 @@ defmodule LsppWebWeb.Router do
   end
 
   if Application.fetch_env!(:lspp_web, :static_assets) == :static do
-    get "/css/app.css", LsppWebWeb.StaticAssetController, :app_css
-    get "/js/app.js", LsppWebWeb.StaticAssetController, :app_js
+    get "/assets/app.css", LsppWebWeb.StaticAssetController, :app_css
+    get "/assets/app.js", LsppWebWeb.StaticAssetController, :app_js
     get "/images/phoenix.png", LsppWebWeb.StaticAssetController, :phoenix_png
   end
 

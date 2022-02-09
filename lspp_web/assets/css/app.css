@@ -1,6 +1,7 @@
 /* This file is for your main application css. */
 
-@import "../node_modules/nprogress/nprogress.css";
+/* TODO: Look for how to re-enable this */
+/* @import "../node_modules/nprogress/nprogress.css"; */
 @import "./phoenix.css";
 @import "./contex.css";
 

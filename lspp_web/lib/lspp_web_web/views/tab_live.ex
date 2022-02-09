@@ -37,23 +37,23 @@ defmodule LsppWeb.TabLive do
   def render(assigns) do
     validate_tab_config!(assigns)
 
-    ~L"""
+    ~H"""
     <div class="tab-bar">
       <%= render_nav(assigns) %>
 
-      <%= live_component(@socket, component(assigns), @assigns) %>
+      <%= live_component(my_component(assigns), @assigns) %>
     </div>
     """
   end
 
   def render_nav(assigns) do
-    ~L"""
+    ~H"""
     <div class="tab-bar-nav">
       <%= for {key, {name, _}} <- @tabs do %>
         <div
-          class="<%= active_class(key, @active_tab) %>"
-          phx-target="<%= @myself %>"
-          phx-click="focus:<%= key %>">
+          class={ active_class(key, @active_tab) }
+          phx-target={ @myself }
+          phx-click={"focus:#{key}"}>
           <%= name %>
         </div>
       <% end %>
@@ -79,7 +79,7 @@ defmodule LsppWeb.TabLive do
   defp active_class(key, key), do: "active"
   defp active_class(_, _), do: ""
 
-  def component(assigns) do
+  def my_component(assigns) do
     {_name, component} = Keyword.fetch!(assigns.tabs, assigns.active_tab)
     component
   end

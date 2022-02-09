@@ -9,7 +9,8 @@ defmodule LsppWeb.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
@@ -33,20 +34,30 @@ defmodule LsppWeb.MixProject do
   defp deps do
     [
       {:contex, github: "mindok/contex"},
-      {:phoenix, "~> 1.5.0"},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:phoenix, "~> 1.6.0"},
       {:phoenix_pubsub, "~> 2.0"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_view, "~> 0.12.0"},
+      {:phoenix_html, "~> 3.0"},
+      {:phoenix_live_view, "~> 0.17.7"},
+      {:phoenix_live_dashboard, "~> 0.5"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.1"},
       {:earmark, "~> 1.4"},
       {:ls_proxy, path: "../ls_proxy"},
       {:utils, path: "../utils"},
-      {:exsync, github: "falood/exsync", ref: "master", only: :dev},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 0.5"},
+      {:exsync, github: "falood/exsync", only: :dev},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:ring_logger, "~> 0.8.0"}
+    ]
+  end
+
+  defp aliases do
+    [
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end

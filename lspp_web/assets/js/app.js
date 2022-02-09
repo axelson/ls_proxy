@@ -1,5 +1,5 @@
-import {Socket} from "phoenix"
-import LiveSocket from "phoenix_live_view"
+import { Socket } from "phoenix"
+import { LiveSocket } from "phoenix_live_view"
 
 console.log("in app.js")
 // We need to import the CSS so that webpack will load it.

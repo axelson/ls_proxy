@@ -3,9 +3,11 @@ defmodule LsppWebWeb.StaticAssetController do
 
   # Maybe the "static" part of this should be in app, that way the webpack code is already run?
   @static_dir :code.priv_dir(:lspp_web) |> to_string() |> Path.join("static")
-  @app_css File.read(Path.join(@static_dir, "css/app.css"))
-  @app_js File.read(Path.join(@static_dir, "js/app.js"))
-  @phoenix_png File.read(Path.join(@static_dir, "images/phoenix.png"))
+  @app_css File.read(Path.join(@static_dir, "assets/app.css"))
+  @app_js File.read(Path.join(@static_dir, "assets/app.js"))
+
+  @images_dir Path.join([__DIR__, "..", "assets", "static", "images"])
+  @phoenix_png File.read(Path.join(@images_dir, "phoenix.png"))
 
   def app_css(conn, _params) do
     conn

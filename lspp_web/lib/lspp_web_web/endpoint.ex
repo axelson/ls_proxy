@@ -20,7 +20,7 @@ defmodule LsppWebWeb.Endpoint do
       at: "/",
       from: :lspp_web,
       gzip: false,
-      only: ~w(css fonts images js favicon.ico robots.txt)
+      only: ~w(assets fonts images favicon.ico robots.txt)
   end
 
   # Code reloading can be explicitly enabled under the

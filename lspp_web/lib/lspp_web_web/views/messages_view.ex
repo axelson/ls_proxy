@@ -9,25 +9,29 @@ defmodule LsppWeb.MessagesView do
   def render_message(message_record, expanded, formatted, req_by_id, word_wrap)
 
   def render_message(%MessageRecord{} = message_record, true, formatted, req_by_id, word_wrap) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     <%= message_common(message_record, true, formatted, req_by_id, word_wrap) %>
     <div class="text-btn">
-    <a phx-click="collapse:<%= message_record.id %>">collapse</a>
+    <a phx-click={"collapse:#{message_record.id}"}>collapse</a>
     </div>
     <%= render_full(message_record.message.content) %>
     """
   end
 
   def render_message(%MessageRecord{} = message_record, expanded, formatted, req_by_id, word_wrap) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     <%= message_common(message_record, expanded, formatted, req_by_id, word_wrap) %>
     <div class="text-btn">
-      <a phx-click="expand:<%= message_record.id %>">show full</a>
+      <a phx-click={"expand:#{message_record.id }"}>show full</a>
       <%= if(has_formatting?(message_record.message.content)) do %>
         <%= if formatted do %>
-          <a phx-click="collapse-formatted:<%= message_record.id %>">hide formatted message</a>
+          <a phx-click={"collapse-formatted:#{message_record.id}"}>hide formatted message</a>
         <% else %>
-          <a phx-click="expand-formatted:<%= message_record.id %>">show formatted message</a>
+          <a phx-click={"expand-formatted:#{message_record.id}"}>show formatted message</a>
         <% end %>
         <a phx-click="toggle-word-wrap">toggle word wrap</a>
       <% end %>
@@ -38,8 +42,9 @@ defmodule LsppWeb.MessagesView do
   def message_common(%MessageRecord{} = message_record, expanded, formatted, req_by_id, word_wrap) do
     timestamp_format = if expanded, do: :full, else: :short
     method_name = MessageRecord.method(message_record)
+    assigns = %{}
 
-    ~E"""
+    ~H"""
     <%= render_direction(message_record) %>
     <%= render_timestamp(message_record, timestamp_format) %>
     <div>
@@ -52,20 +57,21 @@ defmodule LsppWeb.MessagesView do
       when is_list(opts) do
     content = message_record.message.content
     %{"id" => id} = content
+    assigns = %{}
 
     case content["params"] do
       %{
         "textDocument" => %{"uri" => uri_str},
         "position" => %{"line" => line, "character" => character}
       } ->
-        ~E"""
+        ~H"""
         textDocument/hover <code><%= uri_str %>:<%= line %></code>(char <%= character %>)
         <div class="code"><%= message_record.extra_info %></div>
         <%= render_id(id) %>
         """
 
       _ ->
-        ~E"""
+        ~H"""
         textDocument/hover
         """
     end
@@ -74,20 +80,21 @@ defmodule LsppWeb.MessagesView do
   def render_message_details(%MessageRecord{} = message_record, "textDocument/completion", _opts) do
     content = message_record.message.content
     %{"id" => id} = content
+    assigns = %{}
 
     case content["params"] do
       %{
         "textDocument" => %{"uri" => uri_str},
         "position" => %{"line" => line, "character" => character}
       } ->
-        ~E"""
+        ~H"""
         textDocument/completion <code><%= uri_str %>:<%= line %></code>(char <%= character %>)
         <div class="code"><%= message_record.extra_info %></div>
         <%= render_id(id) %>
         """
 
       _ ->
-        ~E"""
+        ~H"""
         textDocument/completion
         """
     end
@@ -95,19 +102,25 @@ defmodule LsppWeb.MessagesView do
 
   def render_message_details(%MessageRecord{} = message_record, _method, opts)
       when is_list(opts) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     <%= render_message_contents(message_record.message.content, opts) %>
     """
   end
 
   def render_message_contents(%{"method" => "initialize"}, _opts) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     initialize
     """
   end
 
   def render_message_contents(message, _opts) when is_binary(message) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     <pre><code>
     <%= Phoenix.HTML.Format.text_to_html(message) %>
     </code></pre>
@@ -118,18 +131,19 @@ defmodule LsppWeb.MessagesView do
     formatted = Keyword.get(opts, :formatted)
     word_wrap = Keyword.get(opts, :word_wrap)
     word_wrap_class = if word_wrap, do: "word-wrap", else: ""
+    assigns = %{}
 
     %{"params" => %{"message" => log_message}} = message
 
     if formatted do
-      ~E"""
+      ~H"""
       <div>Log: <%= Utils.truncate(log_message, 100) %></div>
-      <pre class="<%= word_wrap_class %>">
+      <pre class={"#{word_wrap_class}"}>
         <%= log_message %>
       </pre>
       """
     else
-      ~E"""
+      ~H"""
       <div>Log: <%= Utils.truncate(log_message, 100) %></div>
       """
     end
@@ -139,18 +153,20 @@ defmodule LsppWeb.MessagesView do
         %{"method" => "textDocument/hover", "id" => id} = message_record,
         _opts
       ) do
+    assigns = %{}
+
     case message_record["params"] do
       %{
         "textDocument" => %{"uri" => uri_str},
         "position" => %{"line" => line, "character" => character}
       } ->
-        ~E"""
+        ~H"""
         textDocument/hover <code><%= uri_str %>:<%= line %></code>(char <%= character %>)
         <%= render_id(id) %>
         """
 
       _ ->
-        ~E"""
+        ~H"""
         textDocument/hover
         """
     end
@@ -158,8 +174,9 @@ defmodule LsppWeb.MessagesView do
 
   def render_message_contents(%{"method" => "$/cancelRequest", "params" => params}, _opts) do
     %{"id" => id} = params
+    assigns = %{}
 
-    ~E"""
+    ~H"""
     $/cancelRequest id: <%= id %>
     """
   end
@@ -169,8 +186,9 @@ defmodule LsppWeb.MessagesView do
         _opts
       ) do
     uri_str = get_in(message_record, ["params", "textDocument", "uri"])
+    assigns = %{}
 
-    ~E"""
+    ~H"""
     textDocument/codeLens: <code><%= uri_str %></code>
     <div>
       id: <b><%= id %></b>
@@ -179,9 +197,11 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_message_contents(%{"method" => "textDocument/didOpen"} = message_record, _opts) do
+    assigns = %{}
+
     case message_record["params"]["textDocument"] do
       %{"text" => text, "uri" => uri_str} ->
-        ~E"""
+        ~H"""
         textDocument/didOpen: <code><%= uri_str %></code>
         <div>
           <%= Utils.truncate(text, 80) %>
@@ -197,9 +217,11 @@ defmodule LsppWeb.MessagesView do
         %{"method" => "textDocument/publishDiagnostics"} = message_record,
         _opts
       ) do
+    assigns = %{}
+
     case message_record["params"]["uri"] do
       uri_str when not is_nil(uri_str) ->
-        ~E"""
+        ~H"""
         textDocument/publishDiagnostics: <code><%= uri_str %></code>
         """
 
@@ -209,7 +231,9 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_message_contents(%{"id" => id, "result" => %{"contents" => []}}, _opts) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     Result: empty
     <%= render_id(id) %>
     """
@@ -230,6 +254,7 @@ defmodule LsppWeb.MessagesView do
   def render_message_contents(%{"error" => error} = message_contents, opts) do
     formatted = Keyword.get(opts, :formatted)
     %{"code" => error_code, "message" => error_message} = error
+    assigns = %{}
 
     error_name =
       case LsProxy.ErrorCodes.error_name(error_code) do
@@ -237,7 +262,7 @@ defmodule LsppWeb.MessagesView do
         _ -> "An Unknown Error"
       end
 
-    ~E"""
+    ~H"""
     <div><%= error_name %>: <%= Utils.truncate(error_message, 100) %></div>
     <%= if formatted do %>
       <pre><%= error_message %></pre>
@@ -256,10 +281,11 @@ defmodule LsppWeb.MessagesView do
 
   def render_result_message("textDocument/completion", message, request, _opts)
       when not is_nil(request) do
+    assigns = %{}
     %{"id" => id} = message
     items = request.response.message.content["result"]["items"]
 
-    ~E"""
+    ~H"""
     items:
     <%= for item <- items do %>
       <div>
@@ -283,7 +309,9 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_result_message_default(%{"id" => id}) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     Result (no contents2)
     <%= render_id(id) %>
     """
@@ -297,16 +325,18 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_result_message_contents(id, contents, true = _formatted) do
+    assigns = %{}
+
     case Earmark.as_html(contents, %Earmark.Options{smartypants: false}) do
       {:ok, html, []} ->
-        ~E"""
+        ~H"""
         Result: <%= Utils.truncate(contents, 100) %>
         <%= render_id(id) %>
         <%= Phoenix.HTML.raw html %>
         """
 
       {:error, html, error_messages} ->
-        ~E"""
+        ~H"""
         Result: <%= Utils.truncate(contents, 100) %>
         <%= render_id(id) %>
         Unable to render full contents
@@ -332,14 +362,18 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_result_message_contents(id, contents, _formatted) when is_binary(contents) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     Result: <%= Utils.truncate(contents, 100) %>
     <%= render_id(id) %>
     """
   end
 
   def render_full(other) do
-    ~E"""
+    assigns = %{}
+
+    ~H"""
     <pre><code>
     <%= inspect(other, pretty: true) %>
     </code></pre>
@@ -347,8 +381,10 @@ defmodule LsppWeb.MessagesView do
   end
 
   def render_direction(%MessageRecord{} = message_record) do
-    ~E"""
-    <span class="direction-arrow" title="<%= direction_tooltip(message_record) %>">
+    assigns = %{}
+
+    ~H"""
+    <span class="direction-arrow" title={direction_tooltip(message_record)}>
       <%= direction_arrow(message_record) %>
     </span>
     """
@@ -391,7 +427,10 @@ defmodule LsppWeb.MessagesView do
 
   defp zero_pad(number), do: String.pad_leading(to_string(number), 2, "0")
 
-  def render_id(id), do: ~E"<div>id: <b><%= id %></b></div>"
+  def render_id(id) do
+    assigns = %{}
+    ~H"<div>id: <b><%= id %></b></div>"
+  end
 
   # TODO: This call seems to indicate bad call structuring
   defdelegate plot_response_times(data), to: LsppWebWeb.DashboardLive

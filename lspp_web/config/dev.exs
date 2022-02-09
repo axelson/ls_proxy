@@ -6,13 +6,8 @@ config :lspp_web, LsppWebWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
-    ]
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support
@@ -56,7 +51,7 @@ config :ls_proxy,
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
-config :logger, backends: [RingLogger]
+# config :logger, backends: [RingLogger]
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
@@ -66,6 +61,6 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :exsync,
-  extensions: [".erl", ".hrl", ".ex", ".leex", ".eex"],
+  extensions: [".erl", ".hrl", ".ex", ".leex", ".eex", ".heex"],
   reload_timeout: 75,
   reload_callback: {LsProxy.ProxyState, :kill_listeners, []}
