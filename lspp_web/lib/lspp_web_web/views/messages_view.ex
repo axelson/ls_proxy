@@ -261,6 +261,9 @@ defmodule LsppWeb.MessagesView do
 
     ~E"""
     items:
+    <%= if items == [] do %>
+      []
+    <% end %>
     <%= for item <- items do %>
       <div>
         - <%= item["label"] %>
