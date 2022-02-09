@@ -22,7 +22,7 @@ defmodule LsProxy.ProxyPort do
   @impl GenServer
   def init(_) do
     LsProxy.Logger.info("ProxyPort starting!")
-    cmd = LsProxy.Config.language_server_script_path() |> to_charlist()
+    cmd = LsProxy.Config.language_server_script_path()
 
     {:ok, pid, os_pid} = :exec.run(cmd, [:stdout, :stderr, :stdin, :monitor])
 

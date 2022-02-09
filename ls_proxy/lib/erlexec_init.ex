@@ -16,6 +16,7 @@ defmodule ErlexecInit do
                            :erlang.system_info(:system_architecture),
                            "exec-port"
                          ])
+  @external_resource @exec_port_binary_path
 
   @execport_binary File.read!(@exec_port_binary_path)
 
