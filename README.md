@@ -79,8 +79,11 @@ There's a bug with the clustering logic, if you have multiple instances of LSP P
 
 # Configuration
 
-Env var `LS_PROXY_TO`: Where to find the LanguageServer to proxy to (defaults to
-the elixir-ls that is a git submodule in this repository `"elixir-ls/release/language_server.sh"`)
+Environment Variables:
+- `LS_PROXY_TO`: Where to find the LanguageServer to proxy to
+  - `"elixir_ls"` (default): a git submodule in this repository `"elixir-ls/release/language_server.sh"`
+  - `"elixir_ls_dev"`: `~/dev/forks/elixir-ls/release/language_server.sh`
+  - `"ls_proxy"`: `~/dev/ls_proxy/ls_proxy`
 
 Typically used only for development:
 
