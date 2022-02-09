@@ -19,6 +19,8 @@ Content uses jsonrpc (is there a useful jsonrpc library in Elixir?)
 
 
 Useful debugging commands
+`env MIX_ENV=prod LS_HTTP_PROXY_TO='http://localhost:4000/api/messages' mix escript.build && ./install-vscode.bash`
+
 `mix escript.build`?
 `mix escript.build; cat sample | ./ls_proxy`?
 `mix escript.build; cat /tmp/sample | ./ls_proxy |head`
