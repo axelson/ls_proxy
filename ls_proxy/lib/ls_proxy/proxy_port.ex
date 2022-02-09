@@ -42,6 +42,8 @@ defmodule LsProxy.ProxyPort do
         " and erlang #{@compiled_otp_version}"
     )
 
+    log_message("LsProxy connecting to #{LsProxy.Config.language_server_script_path()}")
+
     {:ok, initial_state}
   end
 
