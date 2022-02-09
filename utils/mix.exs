@@ -22,7 +22,7 @@ defmodule Utils.MixProject do
   defp deps do
     [
       # {:data_tracer, github: "axelson/data_tracer"}
-      {:data_tracer, path: "~/dev/data_tracer"}
+      # {:data_tracer, path: "~/dev/data_tracer"}
     ]
   end
 end

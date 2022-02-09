@@ -22,7 +22,7 @@ config :logger, level: :warn
 config :ls_proxy,
   logging_enabled: true
 
-#config :logger,
+# config :logger,
 #  backends: [{LoggerFileBackend, :error_log}]
 
 config :logger, :error_log,
