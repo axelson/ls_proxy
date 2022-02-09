@@ -75,7 +75,6 @@ defmodule LsProxy.Protocol.MessageTest do
       expected =
         """
         Content-Length: 95\r
-        Content-Type: utf-8\r
         \r
         {"jsonrpc":"2.0","method":"window/logMessage","params":{"message":"Started ElixirLS","type":4}}
         """

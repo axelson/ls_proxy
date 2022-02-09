@@ -9,6 +9,8 @@ defmodule LsProxy.ParserRunner do
   end
 
   def read_message(module, device) do
+    # LsProxy.Logger.info("Going to read #{inspect(module)} message from #{inspect(device)}")
+
     read_message(module, device, :init, nil)
     |> Utils.tap(fn
       {:ok, _} -> nil

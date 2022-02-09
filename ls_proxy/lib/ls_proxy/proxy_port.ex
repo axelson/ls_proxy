@@ -35,10 +35,7 @@ defmodule LsProxy.ProxyPort do
   end
 
   def read_message(msg) when is_binary(msg) do
-    {:ok, string_io} = StringIO.open(msg)
-
-    LsProxy.ParserRunner.read_message(LsProxy.Protocol.Message, string_io)
-    |> Utils.tap(fn _ -> StringIO.close(string_io) end)
+    LsProxy.ParserRunner.read_message(LsProxy.Protocol.Message, msg)
   end
 
   def handle_successful_message(message) do

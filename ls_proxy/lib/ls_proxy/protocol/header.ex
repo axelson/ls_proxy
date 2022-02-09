@@ -32,8 +32,12 @@ defmodule LsProxy.Protocol.Header do
 
   defp done(lines) do
     case parse(lines) do
-      {:ok, struct} -> {:ok, :done, struct}
-      {:error, errors} -> {:error, errors}
+      {:ok, struct} ->
+        {:ok, :done, struct}
+
+      {:error, errors} ->
+        LsProxy.Logger.info("error parsing header: #{inspect(errors)}")
+        {:error, errors}
     end
   end
 
@@ -73,7 +77,6 @@ defmodule LsProxy.Protocol.Header do
   def to_string(%__MODULE__{} = header) do
     """
     Content-Length: #{header.content_length}\r
-    Content-Type: utf-8
     """
     |> String.trim()
   end

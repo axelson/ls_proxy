@@ -54,7 +54,6 @@ defmodule LsProxy.Protocol.Message do
 
     """
     Content-Length: #{byte_size(message_content)}\r
-    Content-Type: utf-8\r
     \r
     #{message_content}
     """
@@ -71,7 +70,7 @@ defmodule LsProxy.Protocol.Message do
   @doc """
   Returns the method name, or nil if it doesn't exist
   """
-  def method(%__MODULE__{content: content} = message) do
+  def method(%__MODULE__{content: content}) do
     content["method"]
   end
 end
